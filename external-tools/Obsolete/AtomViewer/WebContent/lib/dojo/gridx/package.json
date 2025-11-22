@@ -17,9 +17,9 @@
     "url":"https://github.com/evanhw/gridx"
   },
   "dependencies": {
-    "dojo": "1.7.2",
-    "dijit": "1.7.2",
-    "dojox": "1.7.2"
+    "dojo": "1.16.5",
+    "dijit": "1.13.8",
+    "dojox": "1.11.10"
   },
   "main": "./Grid",
   "icon": " "
