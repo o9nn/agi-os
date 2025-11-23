@@ -19,11 +19,13 @@ The ggml cognitive kernels bridge the gap between symbolic reasoning (AtomSpace)
 - `symbolic_reasoning.c` - Gradient-free symbolic reasoning kernels
 - `attention_kernels.c` - ECAN attention allocation optimization
 - `hypergraph_ops.c` - AtomSpace hypergraph tensor operations
+- **`cross_modal_fusion.c`** - Unified cognitive processing (AtomSpace + PLN + MOSES) ✨ **NEW**
 
 ### Integration Modules
 - `atomspace_bridge.h` - AtomSpace integration interface
 - `hurd_cognitive_api.h` - GNU Hurd cognitive primitive bindings
 - `tensor_signatures.h` - 5D cognitive tensor definitions
+- **`cross_modal_fusion.h`** - Cross-modal cognitive fusion API ✨ **NEW**
 
 ## Tensor Architecture
 
@@ -122,6 +124,18 @@ make benchmark
 - Recursive Transform: **3.9M ops/sec** (0.25μs latency)
 - Memory Management: **9.5M ops/sec** (0.10μs latency)
 
+## Recent Implementations (2025-11)
+
+### Cross-Modal Cognitive Fusion ✨ **NEW**
+- **Priority #1 from Autogenesis Engine Analysis**
+- Unified processing of AtomSpace (memory), PLN (reasoning), and MOSES (learning)
+- 4 fusion strategies: Sequential, Parallel, Hierarchical, Adaptive
+- PLN→MOSES feedback loops for learning from reasoning
+- Meta-learning from reasoning history
+- Self-evolving reasoning strategies
+- Target: <5μs per fusion, <10MB memory
+- See: `CROSS_MODAL_FUSION.md` for full documentation
+
 ## Future Enhancements
 
 - Quantum cognitive kernel exploration
@@ -129,6 +143,9 @@ make benchmark
 - Distributed cognitive tensor networks
 - Evolutionary kernel optimization
 - Real-time cognitive adaptation
+- ~~Cross-Modal Cognitive Fusion~~ ✓ Implemented (2025-11)
+- Attention-Guided Evolutionary Learning (Priority #2 from Autogenesis)
+- GPU-Accelerated Hypergraph Inference (Priority #4 from Autogenesis)
 
 ---
 
