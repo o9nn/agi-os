@@ -696,7 +696,7 @@ jobs:
       if: hashFiles('unify/CMakeLists.txt') != ''
       run: |
         cd unify/build
-        make ${{ env.MAKEFLAGS }} check ARGS=${{ env.MAKEFLAGS }}
+        make check ARGS="${{ env.MAKEFLAGS }}"
       continue-on-error: true
     
     - name: Install Unify
@@ -796,7 +796,7 @@ jobs:
       if: hashFiles('ure/CMakeLists.txt') != ''
       run: |
         cd ure/build
-        make ${{ env.MAKEFLAGS }} check ARGS=${{ env.MAKEFLAGS }}
+        make check ARGS="${{ env.MAKEFLAGS }}"
       continue-on-error: true
     
     - name: Install URE
@@ -914,7 +914,7 @@ jobs:
       if: hashFiles('miner/CMakeLists.txt') != ''
       run: |
         cd miner/build
-        make ${{ env.MAKEFLAGS }} check ARGS=${{ env.MAKEFLAGS }}
+        make check ARGS="${{ env.MAKEFLAGS }}"
       continue-on-error: true
     
     - name: Install Miner
@@ -1126,6 +1126,8 @@ jobs:
         make ${{ env.MAKEFLAGS }}
     
     # Temporary fix: install asmoses to please the unit tests
+    # Note: Some AS-MOSES unit tests require the libraries to be installed
+    # before they can run. This matches the pattern from CircleCI config.
     - name: Install AS-MOSES
       if: hashFiles('asmoses/CMakeLists.txt') != ''
       run: |
@@ -1317,7 +1319,7 @@ jobs:
       if: hashFiles('spacetime/CMakeLists.txt') != ''
       run: |
         cd spacetime/build
-        make ${{ env.MAKEFLAGS }} check ARGS=${{ env.MAKEFLAGS }}
+        make check ARGS="${{ env.MAKEFLAGS }}"
       continue-on-error: true
     
     - name: Install SpaceTime
@@ -1531,7 +1533,16 @@ jobs:
   package-and-report:
     runs-on: ubuntu-latest
     name: Package OCC Build
-    needs: [build-miner, build-attention, build-asmoses, build-matrix, build-spacetime, build-pln, build-learn, build-atomspace-rocks, build-atomspace-cog]
+    needs:
+      - build-miner
+      - build-attention
+      - build-asmoses
+      - build-matrix
+      - build-spacetime
+      - build-pln
+      - build-learn
+      - build-atomspace-rocks
+      - build-atomspace-cog
     if: always()
     
     steps:
