@@ -832,7 +832,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake libboost-all-dev guile-3.0-dev python3-nose valgrind doxygen liboctomap-dev liboctomap-tools
+          sudo apt-get install -y build-essential cmake libboost-all-dev guile-3.0-dev python3-nose valgrind doxygen liboctomap-dev
 
       - name: Install Cython
         run: python3 -m pip install --upgrade pip cython
@@ -1158,7 +1158,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake libboost-all-dev guile-3.0-dev python3-nose valgrind doxygen liboctomap-dev liboctomap-tools
+          sudo apt-get install -y build-essential cmake libboost-all-dev guile-3.0-dev python3-nose valgrind doxygen liboctomap-dev
 
       - name: Install Cython
         run: python3 -m pip install --upgrade pip cython
@@ -1528,7 +1528,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake libboost-all-dev guile-3.0-dev python3-nose valgrind doxygen liboctomap-dev liboctomap-tools
+          sudo apt-get install -y build-essential cmake libboost-all-dev guile-3.0-dev python3-nose valgrind doxygen liboctomap-dev
 
       - name: Install Cython
         run: python3 -m pip install --upgrade pip cython
@@ -3303,7 +3303,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake libboost-all-dev librocksdb-dev guile-3.0-dev python3-nose valgrind doxygen liboctomap-dev liboctomap-tools
+          sudo apt-get install -y build-essential cmake libboost-all-dev librocksdb-dev guile-3.0-dev python3-nose valgrind doxygen liboctomap-dev
 
       - name: Install Cython
         run: python3 -m pip install --upgrade pip cython
