@@ -41,6 +41,29 @@ The new Python implementation that integrates three personas:
 - Subsystem architecture analysis (Marduk-v15)
 - Knowledge graph representation (OpenCog-Org)
 
+### 🎮 NeuroCog Playground (NEW!)
+
+**Location**: `neurocog_playground.py`
+
+An interactive CLI tool for exploring the NeuroCog Core Self! Features:
+- **💬 Persona Chat** - Talk to OpenCog, Marduk, or Neuro individually
+- **🧪 Experiments** - Run cognitive experiments (memory, evolution, spawning, etc.)
+- **🏟️ Evolution Arena** - Watch competing NeuroCog instances evolve
+- **📖 Story Generator** - Collaborative storytelling with all three personas
+- **📊 Live Dashboard** - Real-time cognitive metrics visualization
+- **🎲 Surprise Mode** - Random fun modes (chaos, ultra-evolution, agent army, etc.)
+
+**Quick Start**:
+```bash
+# From occ directory
+./launch_playground.sh
+
+# Or directly with Python
+PYTHONPATH=. python3 cogself/neurocog_playground.py
+```
+
+See [PLAYGROUND_README.md](PLAYGROUND_README.md) for detailed documentation.
+
 ## Architecture
 
 ```
