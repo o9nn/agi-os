@@ -1,0 +1,9 @@
+usr/lib/opencog/*.so
+usr/share/guile/site/3.0/opencog/ghost.scm
+usr/share/guile/site/3.0/opencog/ghost/*
+usr/share/guile/site/3.0/opencog/nlp.scm
+usr/share/guile/site/3.0/opencog/nlp/*
+usr/share/guile/site/3.0/opencog/eva.scm
+usr/share/guile/site/3.0/opencog/eva/*
+usr/share/guile/site/3.0/opencog/openpsi.scm
+usr/share/guile/site/3.0/opencog/openpsi/*

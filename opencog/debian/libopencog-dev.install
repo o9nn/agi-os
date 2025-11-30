@@ -1,0 +1,7 @@
+usr/include/opencog/ghost/*
+usr/include/opencog/nlp/*
+usr/include/opencog/eva/*
+usr/include/opencog/openpsi/*
+usr/include/opencog/neighbors/*
+usr/lib/cmake/OpenCog/*
+usr/share/opencog/cmake/*
