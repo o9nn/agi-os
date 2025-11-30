@@ -69,6 +69,65 @@ SOURCE_DIR=/path/to/cogutil
 
 ---
 
+### test-debian-packaging.sh
+
+**Purpose**: Test that all components are properly configured for Debian packaging
+
+**Usage**:
+```bash
+./test-debian-packaging.sh
+```
+
+**What it does**:
+1. Tests all 10 components defined in the workflow
+2. Verifies each component has a valid update script
+3. Checks that debian directories exist in opencog-debian/
+4. Validates all required debian files are present
+5. Reports pass/fail status for each component
+6. Returns exit code 0 if all pass, 1 if any fail
+
+**Output Example**:
+```
+Testing: cogutil
+  Package: opencog-cogutil
+  Version: 2.0.3
+  ✅ Source directory exists
+  ✅ Debian directory exists
+  ✅ All required debian files present
+
+Test Summary
+Total Components: 10
+Passed: 10
+Failed: 0
+✅ All components are properly configured!
+```
+
+**Used by**: Development and CI validation
+
+---
+
+### visualize-workflow.sh
+
+**Purpose**: Visualize the Debian package build workflow and dependencies
+
+**Usage**:
+```bash
+./visualize-workflow.sh
+```
+
+**What it does**:
+1. Shows all build stages and their dependencies
+2. Displays package names and versions for each component
+3. Illustrates the build order visually
+4. Identifies parallel build opportunities
+5. Provides workflow summary statistics
+
+**Output**: Beautiful ASCII visualization of the entire build workflow
+
+**Used by**: Documentation and development understanding
+
+---
+
 ## Integration with opencog-debian
 
 The scripts are designed to work with the debian packaging structure in the `opencog-debian/` directory. Each component has:
