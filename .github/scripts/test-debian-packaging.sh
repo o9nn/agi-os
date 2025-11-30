@@ -45,8 +45,25 @@ for component in "${COMPONENTS[@]}"; do
         continue
     fi
     
-    # Source the package info
-    eval "$("$SCRIPT_DIR/parse-package-info.sh" "$component")"
+    # Source the package info safely
+    PARSE_OUTPUT=$("$SCRIPT_DIR/parse-package-info.sh" "$component" 2>&1)
+    if [ $? -ne 0 ]; then
+        echo "❌ FAILED: Failed to parse package info for $component"
+        echo "  $PARSE_OUTPUT"
+        FAILED=$((FAILED + 1))
+        FAILED_COMPONENTS+=("$component")
+        continue
+    fi
+    
+    # Validate output format before sourcing
+    if ! echo "$PARSE_OUTPUT" | grep -q "^REPO_NAME="; then
+        echo "❌ FAILED: Invalid output format from parse-package-info.sh"
+        FAILED=$((FAILED + 1))
+        FAILED_COMPONENTS+=("$component")
+        continue
+    fi
+    
+    source <(echo "$PARSE_OUTPUT")
     
     echo "  Package: $DEB_NAME"
     echo "  Version: $VERSION"

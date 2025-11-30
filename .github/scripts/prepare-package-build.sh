@@ -35,7 +35,28 @@ fi
 
 # Extract package metadata
 echo "📋 Reading package metadata from $UPDATE_SCRIPT"
-source <("$SCRIPT_DIR/parse-package-info.sh" "$COMPONENT")
+PARSE_OUTPUT=$("$SCRIPT_DIR/parse-package-info.sh" "$COMPONENT")
+PARSE_EXIT_CODE=$?
+
+if [ $PARSE_EXIT_CODE -ne 0 ]; then
+    echo "❌ Error: Failed to parse package information"
+    echo "$PARSE_OUTPUT"
+    exit 1
+fi
+
+# Source the parsed variables
+source <(echo "$PARSE_OUTPUT")
+
+# Validate that required variables are set
+if [ -z "$REPO_NAME" ] || [ -z "$DEB_NAME" ] || [ -z "$VERSION" ] || [ -z "$DEBIAN_DIR" ] || [ -z "$SOURCE_DIR" ]; then
+    echo "❌ Error: Package information incomplete"
+    echo "  REPO_NAME='$REPO_NAME'"
+    echo "  DEB_NAME='$DEB_NAME'"
+    echo "  VERSION='$VERSION'"
+    echo "  DEBIAN_DIR='$DEBIAN_DIR'"
+    echo "  SOURCE_DIR='$SOURCE_DIR'"
+    exit 1
+fi
 
 echo "  REPO_NAME: $REPO_NAME"
 echo "  DEB_NAME: $DEB_NAME"

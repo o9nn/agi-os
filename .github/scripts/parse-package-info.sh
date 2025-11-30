@@ -27,9 +27,19 @@ if [ ! -f "$UPDATE_SCRIPT" ]; then
 fi
 
 # Extract information from the update script
-REPO_NAME=$(grep '^REPO_NAME=' "$UPDATE_SCRIPT" | head -1 | cut -d'=' -f2)
-DEB_NAME=$(grep '^DEB_NAME=' "$UPDATE_SCRIPT" | head -1 | cut -d'=' -f2)
-VERSION=$(grep '^VERSION=' "$UPDATE_SCRIPT" | head -1 | cut -d'=' -f2)
+# Handle both quoted and unquoted values
+REPO_NAME=$(grep '^REPO_NAME=' "$UPDATE_SCRIPT" | head -1 | cut -d'=' -f2 | sed 's/^"\(.*\)"$/\1/' | sed "s/^'\(.*\)'$/\1/")
+DEB_NAME=$(grep '^DEB_NAME=' "$UPDATE_SCRIPT" | head -1 | cut -d'=' -f2 | sed 's/^"\(.*\)"$/\1/' | sed "s/^'\(.*\)'$/\1/")
+VERSION=$(grep '^VERSION=' "$UPDATE_SCRIPT" | head -1 | cut -d'=' -f2 | sed 's/^"\(.*\)"$/\1/' | sed "s/^'\(.*\)'$/\1/")
+
+# Validate extracted values
+if [ -z "$REPO_NAME" ] || [ -z "$DEB_NAME" ] || [ -z "$VERSION" ]; then
+    echo "Error: Failed to extract package information from $UPDATE_SCRIPT"
+    echo "  REPO_NAME='$REPO_NAME'"
+    echo "  DEB_NAME='$DEB_NAME'"
+    echo "  VERSION='$VERSION'"
+    exit 1
+fi
 
 # Output in a format that can be sourced by bash or used in GitHub Actions
 echo "REPO_NAME=$REPO_NAME"
