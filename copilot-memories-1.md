@@ -149,3 +149,40 @@ Input
 Failed to store memory with error: Resource not found
 
 Now let me create a final summary document to explain what was done
+
+---
+
+Excellent! Now let me create a summary document and store some important facts about this implementation:
+
+Call to store_memory
+Input
+{
+  "subject": "Debian package building",
+  "fact": "Debian packages for OpenCog are built using dpkg-buildpackage -us -uc -b with packaging files from opencog-debian/ directory",
+  "citations": "Problem statement and .github/workflows/debian-packages.yml implementation",
+  "reason": "This fact captures the standard build command and structure for building Debian packages in the OpenCog ecosystem. Future tasks related to packaging or CI/CD for Debian packages will benefit from knowing this established pattern. It's important to remember the -us (unsigned source) and -uc (unsigned changes) flags along with -b (binary only) which are the standard options used throughout the ecosystem.",
+  "category": "bootstrap_and_build"
+}
+Failed to store memory with error: Resource not found
+
+Call to store_memory
+Input
+{
+  "subject": "component dependencies",
+  "fact": "OpenCog component build order: cogutil → atomspace → {unify, cogserver, moses} → {ure, attention, asmoses} → {miner, pln}",
+  "citations": ".github/workflows/debian-packages.yml and .github/workflows/occ-build.yml",
+  "reason": "Understanding the dependency order is critical for any build system, CI/CD pipeline, or packaging work. This dependency chain ensures that foundation components are built before dependent components, preventing build failures. This pattern should be followed in any new build automation or packaging efforts to maintain consistency and avoid circular dependencies.",
+  "category": "general"
+}
+Failed to store memory with error: Resource not found
+
+Call to store_memory
+Input
+{
+  "subject": "dpkg-buildpackage behavior",
+  "fact": "dpkg-buildpackage generates .deb files in the parent directory of the source, not in the source directory itself",
+  "citations": "Code review feedback and .github/workflows/debian-packages.yml lines 56-72",
+  "reason": "This is a critical technical detail about dpkg-buildpackage that can cause confusion and build errors if not understood. When building from a subdirectory (like cd cogutil && dpkg-buildpackage), the .deb files appear in the parent directory. Future workflow development or local build scripts must account for this behavior to correctly locate and upload/install generated packages.",
+  "category": "bootstrap_and_build"
+}
+Failed to store memory with error: Resource not found
