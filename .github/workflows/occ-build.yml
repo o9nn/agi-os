@@ -1298,11 +1298,11 @@ jobs:
         sudo make install
         sudo ldconfig
 
-  # Stage 11: Build SpaceTime (depends on AtomSpace)
+  # Stage 11: Build SpaceTime (depends on CogServer)
   build-spacetime:
     runs-on: ubuntu-latest
     name: Build SpaceTime
-    needs: build-atomspace
+    needs: build-cogserver
     
     steps:
     - name: Checkout Repository
@@ -1345,6 +1345,27 @@ jobs:
       run: |
         mkdir -p atomspace/build
         cd atomspace/build
+        cmake .. -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+        make ${{ env.MAKEFLAGS }}
+        sudo make install
+        sudo ldconfig
+
+    - name: Rebuild and Install AtomSpace Storage
+      if: hashFiles('atomspace-storage/CMakeLists.txt') != ''
+      run: |
+        mkdir -p atomspace-storage/build
+        cd atomspace-storage/build
+        cmake .. -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+        make ${{ env.MAKEFLAGS }}
+        sudo make install
+        sudo ldconfig
+      continue-on-error: true
+    
+    - name: Rebuild and Install CogServer
+      if: hashFiles('cogserver/CMakeLists.txt') != ''
+      run: |
+        mkdir -p cogserver/build
+        cd cogserver/build
         cmake .. -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
         make ${{ env.MAKEFLAGS }}
         sudo make install
@@ -1441,6 +1462,27 @@ jobs:
       run: |
         mkdir -p atomspace/build
         cd atomspace/build
+        cmake .. -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+        make ${{ env.MAKEFLAGS }}
+        sudo make install
+        sudo ldconfig
+
+    - name: Rebuild and Install AtomSpace Storage
+      if: hashFiles('atomspace-storage/CMakeLists.txt') != ''
+      run: |
+        mkdir -p atomspace-storage/build
+        cd atomspace-storage/build
+        cmake .. -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+        make ${{ env.MAKEFLAGS }}
+        sudo make install
+        sudo ldconfig
+      continue-on-error: true
+    
+    - name: Rebuild and Install CogServer
+      if: hashFiles('cogserver/CMakeLists.txt') != ''
+      run: |
+        mkdir -p cogserver/build
+        cd cogserver/build
         cmake .. -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
         make ${{ env.MAKEFLAGS }}
         sudo make install
