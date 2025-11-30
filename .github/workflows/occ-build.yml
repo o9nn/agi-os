@@ -375,7 +375,14 @@ jobs:
         make ${{ env.MAKEFLAGS }}
         sudo make install
         sudo ldconfig
-      continue-on-error: true
+    
+    - name: Verify AtomSpace Storage Installation
+      if: hashFiles('atomspace-storage/CMakeLists.txt') != ''
+      run: |
+        echo "Checking for AtomSpaceStorageConfig.cmake..."
+        find /usr/local -name "*AtomSpaceStorage*Config.cmake" || echo "AtomSpaceStorageConfig.cmake not found"
+        ls -la /usr/local/lib/cmake/ || echo "No cmake directory"
+        ls -la /usr/local/share/cmake/ || echo "No share/cmake directory"
     
     - name: Check AtomSpace Rocks Directory
       run: |
@@ -392,7 +399,9 @@ jobs:
       run: |
         mkdir -p atomspace-rocks/build
         cd atomspace-rocks/build
-        cmake .. -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+        cmake .. \
+          -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
+          -DCMAKE_PREFIX_PATH="/usr/local/lib/cmake;/usr/local/share/cmake"
     
     - name: Build AtomSpace Rocks
       if: hashFiles('atomspace-rocks/CMakeLists.txt') != ''
@@ -1111,6 +1120,7 @@ jobs:
           libboost-program-options-dev \
           libboost-system-dev \
           libboost-thread-dev \
+          libboost-regex-dev \
           guile-3.0-dev \
           cython3 \
           python3-nose \
@@ -1171,7 +1181,9 @@ jobs:
       run: |
         mkdir -p asmoses/build
         cd asmoses/build
-        cmake .. -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+        cmake .. \
+          -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} \
+          -DBoost_NO_SYSTEM_PATHS=OFF
     
     - name: Build AS-MOSES
       if: hashFiles('asmoses/CMakeLists.txt') != ''
@@ -1330,8 +1342,7 @@ jobs:
           python3-dev \
           valgrind \
           doxygen \
-          liboctomap-dev \
-          liboctomap-tools
+          liboctomap-dev
     
     - name: Rebuild and Install CogUtil
       run: |
@@ -1447,9 +1458,7 @@ jobs:
           python3-nose \
           python3-dev \
           valgrind \
-          doxygen \
-          liboctomap-dev \
-          liboctomap-tools
+          doxygen
     
     - name: Rebuild and Install CogUtil
       run: |
