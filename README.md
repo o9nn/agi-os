@@ -34,6 +34,30 @@ We recommend using the provided devcontainer for the best experience. This will 
 
 For more detailed instructions, please see our [Getting Started Guide](docs/getting-started.md).
 
+### System Dependencies
+
+The OCC requires several system dependencies to build successfully. On Ubuntu/Debian systems, install the following:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y \
+  build-essential \
+  cmake \
+  libboost-all-dev \
+  guile-3.0-dev \
+  python3-dev \
+  cython3 \
+  liboctomap-dev \
+  liboctomap-tools
+```
+
+**Required Dependencies:**
+- **Octomap** (`liboctomap-dev`, `liboctomap-tools`): Required for the SpaceTime component, which provides 3D spatiotemporal object tracking and representation capabilities.
+- **Boost**: C++ libraries for various utilities
+- **Guile 3.0**: Scheme interpreter for AtomSpace scripting
+- **Python 3 & Cython**: For Python bindings
+- **CMake**: Build system
+
 ---
 
 ## Documentation

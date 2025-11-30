@@ -1330,7 +1330,8 @@ jobs:
           python3-dev \
           valgrind \
           doxygen \
-          liboctomap-dev
+          liboctomap-dev \
+          liboctomap-tools
     
     - name: Rebuild and Install CogUtil
       run: |
@@ -1426,7 +1427,8 @@ jobs:
           python3-dev \
           valgrind \
           doxygen \
-          liboctomap-dev
+          liboctomap-dev \
+          liboctomap-tools
     
     - name: Rebuild and Install CogUtil
       run: |
