@@ -37,7 +37,7 @@ The package `liboctomap-tools` does not exist in Ubuntu repositories. The correc
 **Problem:**
 ```
 CMake Error at CMakeLists.txt:39 (FIND_PACKAGE)
-Could not find a package configuration file provided by "AtomSpaceRocks" (requested version 1.3.0)
+Could not find a package configuration file provided by "AtomSpaceStorage" (requested version 4.1)
 Configuring incomplete, errors occurred!
 ```
 
