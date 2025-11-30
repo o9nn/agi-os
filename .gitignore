@@ -153,3 +153,5 @@ Makefile
 *.swo
 *~
 test-build/
+cogutil/debian-test/
+*/debian-test/
