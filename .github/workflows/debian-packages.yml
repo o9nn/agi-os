@@ -2,6 +2,15 @@ name: Build Debian Packages
 
 # This workflow builds Debian packages for OpenCog components
 # Following the dependency order and using dpkg-buildpackage
+# 
+# The workflow uses helper scripts from .github/scripts/:
+#   - parse-package-info.sh: Extracts package metadata from opencog-debian update scripts
+#   - prepare-package-build.sh: Prepares package directories with debian/ files
+#
+# These scripts read information from opencog-debian/*/update-*.sh scripts which contain:
+#   - REPO_NAME: The source repository/directory name
+#   - DEB_NAME: The Debian package name
+#   - VERSION: The package version number
 
 on:
   push:
@@ -45,14 +54,10 @@ jobs:
           python3-dev \
           patchelf
     
-    - name: Copy Debian packaging files
+    - name: Prepare Debian packaging files
       run: |
-        if [ -d "opencog-debian/cogutil/debian" ]; then
-          cp -r opencog-debian/cogutil/debian cogutil/
-          echo "✅ Copied existing debian/ directory"
-        else
-          echo "⚠️  No debian/ directory found in opencog-debian/cogutil"
-        fi
+        chmod +x .github/scripts/prepare-package-build.sh
+        .github/scripts/prepare-package-build.sh cogutil
     
     - name: Build cogutil Package
       run: |
@@ -135,14 +140,10 @@ jobs:
         sudo dpkg -i *.deb || echo "Some packages failed to install"
         sudo apt-get install -f -y
     
-    - name: Copy Debian packaging files
+    - name: Prepare Debian packaging files
       run: |
-        if [ -d "opencog-debian/atomspace/debian" ]; then
-          cp -r opencog-debian/atomspace/debian atomspace/
-          echo "✅ Copied existing debian/ directory"
-        else
-          echo "⚠️  No debian/ directory found in opencog-debian/atomspace"
-        fi
+        chmod +x .github/scripts/prepare-package-build.sh
+        .github/scripts/prepare-package-build.sh atomspace
     
     - name: Build atomspace Package
       run: |
@@ -216,14 +217,10 @@ jobs:
         sudo dpkg -i ./deps/atomspace/*.deb || echo "Some packages failed to install"
         sudo apt-get install -f -y
     
-    - name: Copy Debian packaging files
+    - name: Prepare Debian packaging files
       run: |
-        if [ -d "opencog-debian/unify/debian" ]; then
-          cp -r opencog-debian/unify/debian unify/
-          echo "✅ Copied existing debian/ directory"
-        else
-          echo "⚠️  No debian/ directory found in opencog-debian/unify"
-        fi
+        chmod +x .github/scripts/prepare-package-build.sh
+        .github/scripts/prepare-package-build.sh unify
     
     - name: Build unify Package
       run: |
@@ -285,14 +282,10 @@ jobs:
         sudo dpkg -i ./deps/*.deb || echo "Some packages failed to install"
         sudo apt-get install -f -y
     
-    - name: Copy Debian packaging files
+    - name: Prepare Debian packaging files
       run: |
-        if [ -d "opencog-debian/ure/debian" ]; then
-          cp -r opencog-debian/ure/debian ure/
-          echo "✅ Copied existing debian/ directory"
-        else
-          echo "⚠️  No debian/ directory found in opencog-debian/ure"
-        fi
+        chmod +x .github/scripts/prepare-package-build.sh
+        .github/scripts/prepare-package-build.sh ure
     
     - name: Build ure Package
       run: |
@@ -348,14 +341,10 @@ jobs:
         sudo dpkg -i ./deps/*.deb || echo "Some packages failed to install"
         sudo apt-get install -f -y
     
-    - name: Copy Debian packaging files
+    - name: Prepare Debian packaging files
       run: |
-        if [ -d "opencog-debian/cogserver/debian" ]; then
-          cp -r opencog-debian/cogserver/debian cogserver/
-          echo "✅ Copied existing debian/ directory"
-        else
-          echo "⚠️  No debian/ directory found in opencog-debian/cogserver"
-        fi
+        chmod +x .github/scripts/prepare-package-build.sh
+        .github/scripts/prepare-package-build.sh cogserver
     
     - name: Build cogserver Package
       run: |
@@ -411,14 +400,10 @@ jobs:
         sudo dpkg -i ./deps/*.deb || echo "Some packages failed to install"
         sudo apt-get install -f -y
     
-    - name: Copy Debian packaging files
+    - name: Prepare Debian packaging files
       run: |
-        if [ -d "opencog-debian/attention/debian" ]; then
-          cp -r opencog-debian/attention/debian attention/
-          echo "✅ Copied existing debian/ directory"
-        else
-          echo "⚠️  No debian/ directory found in opencog-debian/attention"
-        fi
+        chmod +x .github/scripts/prepare-package-build.sh
+        .github/scripts/prepare-package-build.sh attention
     
     - name: Build attention Package
       run: |
@@ -471,14 +456,10 @@ jobs:
         sudo dpkg -i *.deb || echo "Some packages failed to install"
         sudo apt-get install -f -y
     
-    - name: Copy Debian packaging files
+    - name: Prepare Debian packaging files
       run: |
-        if [ -d "opencog-debian/moses/debian" ]; then
-          cp -r opencog-debian/moses/debian moses/
-          echo "✅ Copied existing debian/ directory"
-        else
-          echo "⚠️  No debian/ directory found in opencog-debian/moses"
-        fi
+        chmod +x .github/scripts/prepare-package-build.sh
+        .github/scripts/prepare-package-build.sh moses
     
     - name: Build moses Package
       run: |
@@ -534,14 +515,10 @@ jobs:
         sudo dpkg -i ./deps/*.deb || echo "Some packages failed to install"
         sudo apt-get install -f -y
     
-    - name: Copy Debian packaging files
+    - name: Prepare Debian packaging files
       run: |
-        if [ -d "opencog-debian/asmoses/debian" ]; then
-          cp -r opencog-debian/asmoses/debian asmoses/
-          echo "✅ Copied existing debian/ directory"
-        else
-          echo "⚠️  No debian/ directory found in opencog-debian/asmoses"
-        fi
+        chmod +x .github/scripts/prepare-package-build.sh
+        .github/scripts/prepare-package-build.sh asmoses
     
     - name: Build asmoses Package
       run: |
@@ -597,14 +574,10 @@ jobs:
         sudo dpkg -i ./deps/*.deb || echo "Some packages failed to install"
         sudo apt-get install -f -y
     
-    - name: Copy Debian packaging files
+    - name: Prepare Debian packaging files
       run: |
-        if [ -d "opencog-debian/miner/debian" ]; then
-          cp -r opencog-debian/miner/debian miner/
-          echo "✅ Copied existing debian/ directory"
-        else
-          echo "⚠️  No debian/ directory found in opencog-debian/miner"
-        fi
+        chmod +x .github/scripts/prepare-package-build.sh
+        .github/scripts/prepare-package-build.sh miner
     
     - name: Build miner Package
       run: |
@@ -660,14 +633,10 @@ jobs:
         sudo dpkg -i ./deps/*.deb || echo "Some packages failed to install"
         sudo apt-get install -f -y
     
-    - name: Copy Debian packaging files
+    - name: Prepare Debian packaging files
       run: |
-        if [ -d "opencog-debian/pln/debian" ]; then
-          cp -r opencog-debian/pln/debian pln/
-          echo "✅ Copied existing debian/ directory"
-        else
-          echo "⚠️  No debian/ directory found in opencog-debian/pln"
-        fi
+        chmod +x .github/scripts/prepare-package-build.sh
+        .github/scripts/prepare-package-build.sh pln
     
     - name: Build pln Package
       run: |
