@@ -1484,7 +1484,8 @@ jobs:
           python3-nose \
           python3-dev \
           valgrind \
-          doxygen
+          doxygen \
+          liboctomap-dev
     
     - name: Rebuild and Install CogUtil
       run: |
