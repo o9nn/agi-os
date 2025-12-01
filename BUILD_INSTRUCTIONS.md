@@ -279,7 +279,7 @@ Alternatively, if Asio is installed in a custom location:
 cmake .. -DAsio_INCLUDE_DIR=/path/to/asio/include
 ```
 
-**Note**: The Asio library is required for building CogServer and components that depend on it (AtomSpace-Cog, Attention, Learn). It provides asynchronous I/O capabilities for network communication.
+**Note**: The Asio library is required for building CogServer and components that depend on it (AtomSpace-Cog, Attention, SpaceTime, PLN, Learn). It provides asynchronous I/O capabilities for network communication.
 
 ### Missing CMakeLists.txt in lib/
 
