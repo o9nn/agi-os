@@ -135,7 +135,19 @@ jobs:
           valgrind \
           doxygen \
           graphviz \
-          patchelf
+          patchelf \
+          libopenmpi-dev \
+          ghc \
+          haskell-stack \
+          libgearman-dev \
+          libpq-dev \
+          libprotobuf-dev \
+          libzmq3-dev \
+          odbc-postgresql \
+          postgresql \
+          postgresql-client \
+          protobuf-compiler \
+          unixodbc-dev
     
     - name: Download cogutil Packages
       uses: actions/download-artifact@v4
