@@ -58,11 +58,15 @@ jobs:
           libboost-thread-dev \
           libboost-regex-dev \
           guile-3.0-dev \
-          libgoogle-sparsehash-dev \
           python3-nose \
           valgrind \
           doxygen \
           ccache
+    
+    - name: Install Sparsehash
+      run: |
+        chmod +x .github/scripts/install-sparsehash.sh
+        .github/scripts/install-sparsehash.sh
     
     - name: Verify Dependencies
       run: |

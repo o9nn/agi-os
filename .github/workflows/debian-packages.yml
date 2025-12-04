@@ -62,7 +62,6 @@ jobs:
           libboost-thread-dev \
           binutils-dev \
           libiberty-dev \
-          libgoogle-sparsehash-dev \
           cxxtest \
           doxygen \
           graphviz \
@@ -70,6 +69,11 @@ jobs:
           python3-nose \
           valgrind \
           patchelf
+    
+    - name: Install Sparsehash
+      run: |
+        chmod +x .github/scripts/install-sparsehash.sh
+        .github/scripts/install-sparsehash.sh
     
     - name: Prepare Debian packaging files
       run: |
