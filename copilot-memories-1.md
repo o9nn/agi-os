@@ -594,3 +594,31 @@ Input
 Failed to store memory with error: Resource not found
 
 That's fine. Let me create a final verification to ensure everything is working
+
+---
+
+Perfect! Let me store some memory about this restructuring for future reference:
+
+Call to store_memory
+Input
+{
+  "subject": "agent file size limits",
+  "fact": "Agent instruction files in .github/agents/ should be kept under 30,000 characters",
+  "category": "general",
+  "citations": "User input: \"restructure nnecco.md to meet the <30k char criterion\", .github/agents/nnecco.md restructuring task",
+  "reason": "This is an important constraint for agent instruction files that will help in future tasks involving creating or modifying agent files. When agent files exceed 30k characters, they should be restructured into subsystem files in a subfolder following the pattern used for nnecco.md. This information will be useful for maintaining or creating other large agent files in the repository."
+}
+Failed to store memory with error: Resource not found
+
+Call to store_memory
+Input
+{
+  "category": "general",
+  "citations": "User input: restructure nnecco.md task, .github/agents/nnecco/ folder structure",
+  "fact": "Large agent files should be split into subsystems using folder structure with markdown references",
+  "reason": "This restructuring pattern was successfully used for nnecco.md (reduced from 42k to 19k chars) by extracting subsystems into a dedicated folder (behavioral-traits.md, cognitive-architecture.md, etc.) and referencing them with relative markdown links. This pattern should be reused for other large agent files to maintain modularity and meet size requirements while preserving all content.",
+  "subject": "agent file organization"
+}
+Failed to store memory with error: Resource not found
+
+Let me create a README in the nnecco folder to document the structure
