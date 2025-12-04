@@ -198,6 +198,134 @@ When adding a new component:
 3. Add the component to the debian-packages.yml workflow
 4. The scripts will automatically handle the rest
 
+---
+
+## Dependency Installation Scripts
+
+### install-dependency.sh
+
+**Purpose**: Universal dependency installer with automatic fallback to source build
+
+**Features**:
+- Updates apt repositories before installation
+- Checks package existence in apt cache
+- Attempts apt installation first (fastest)
+- Falls back to building from source if package not available
+- Rigorous error checking and colorful logging
+- Supports custom verification commands
+
+**Usage**:
+```bash
+./install-dependency.sh <package-name> [source-url] [build-commands] [verify-command]
+```
+
+**Examples**:
+
+Install a simple apt package:
+```bash
+./install-dependency.sh cmake
+```
+
+Install with source fallback:
+```bash
+./install-dependency.sh libsparsehash-dev \
+  "https://github.com/sparsehash/sparsehash/archive/refs/tags/sparsehash-2.0.4.tar.gz" \
+  "autoreconf -i && ./configure && make && sudo make install" \
+  "test -f /usr/local/include/google/sparse_hash_map"
+```
+
+**Architecture**: Follows **cognitive synergy** design pattern with modular components, distributed knowledge, fallback mechanisms, rich logging, and verification
+
+**Used by**: debian-packages.yml, occ-build.yml workflows
+
+---
+
+### install-sparsehash.sh
+
+**Purpose**: Specialized installer for Google Sparsehash library
+
+**Features**:
+- Handles both modern (`libsparsehash-dev`) and legacy (`libgoogle-sparsehash-dev`) package names
+- Multiple fallback levels ensure maximum reliability
+- Verifies installation by checking for header files
+- Automatically falls back to source build from GitHub if needed
+
+**Usage**:
+```bash
+./install-sparsehash.sh
+```
+
+**What it does**:
+1. Tries modern package name (`libsparsehash-dev`)
+2. Falls back to legacy name (`libgoogle-sparsehash-dev`)
+3. Falls back to source build from GitHub (sparsehash-2.0.4)
+4. Verifies installation by checking for header files in /usr/include or /usr/local/include
+
+**Used by**: debian-packages.yml, occ-build.yml workflows
+
+---
+
+### test-dependency-installer.sh
+
+**Purpose**: Test suite for dependency installation scripts
+
+**Usage**:
+```bash
+./test-dependency-installer.sh
+```
+
+**What it tests**:
+- Scripts exist and are executable
+- Sparsehash installation verification
+- Simple package installation
+- Error handling for missing packages
+
+**Output**:
+```
+================================
+  Dependency Installer Test Suite
+================================
+
+TEST: Checking if install-dependency.sh exists and is executable
+✓ PASS: install-dependency.sh exists and is executable
+...
+================================
+  Test Results Summary
+================================
+Total: 5 | Passed: 5 | Failed: 0
+All tests passed!
+```
+
+**Used by**: Development and CI validation
+
+---
+
+## Extending to Other Dependencies
+
+To add support for another problematic dependency:
+
+1. **Simple case** (just a package name change):
+   - Update the workflow to use the correct package name
+   
+2. **Complex case** (needs source build fallback):
+   - Create a wrapper script like `install-sparsehash.sh`
+   - Use `install-dependency.sh` as the backend
+   - Provide source URL and build commands
+   - Add verification logic
+
+**Example for a new dependency**:
+```bash
+#!/bin/bash
+# install-mydependency.sh
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+"$SCRIPT_DIR/install-dependency.sh" "libmydependency-dev" \
+   "https://example.com/mydependency/source.tar.gz" \
+   "./configure && make && sudo make install" \
+   "test -f /usr/local/include/mydependency.h"
+```
+
 ## See Also
 
 - [opencog-debian/README.md](../../opencog-debian/README.md) - Debian packaging overview
