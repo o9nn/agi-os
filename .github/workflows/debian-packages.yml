@@ -35,6 +35,13 @@ jobs:
         submodules: recursive
         fetch-depth: 0
     
+    - name: Fix File Permissions
+      run: |
+        echo "=== Fixing File Permissions ==="
+        # Ensure all files are readable and directories are accessible
+        chmod -R a+rX .
+        echo "Permissions fixed successfully"
+    
     - name: Install Prerequisites
       run: |
         sudo apt-get update
@@ -55,6 +62,7 @@ jobs:
           libboost-thread-dev \
           binutils-dev \
           libiberty-dev \
+          libgoogle-sparsehash-dev \
           cxxtest \
           doxygen \
           graphviz \
