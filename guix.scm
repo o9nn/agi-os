@@ -127,15 +127,15 @@
                 (when guile
                   (setenv "GUILE_LOAD_PATH" 
                           (string-append guile "/share/guile/site/3.0"))
-                  (setenv "GUILE_LIBRARY"
-                          (string-append guile "/lib"))
-                  (setenv "GUILE_INCLUDE_DIR"
+                  (setenv "GUILE_LIBRARIES"
+                          (string-append guile "/lib/libguile-3.0.so"))
+                  (setenv "GUILE_INCLUDE_DIRS"
                           (string-append guile "/include/guile/3.0"))
                   (format #t "GUILE_LOAD_PATH set to: ~a~%" 
                           (string-append guile "/share/guile/site/3.0"))
-                  (format #t "GUILE_LIBRARY set to: ~a~%" 
-                          (string-append guile "/lib"))
-                  (format #t "GUILE_INCLUDE_DIR set to: ~a~%" 
+                  (format #t "GUILE_LIBRARIES set to: ~a~%" 
+                          (string-append guile "/lib/libguile-3.0.so"))
+                  (format #t "GUILE_INCLUDE_DIRS set to: ~a~%" 
                           (string-append guile "/include/guile/3.0")))
                 (when pkg-config
                   (setenv "PKG_CONFIG_PATH"
@@ -185,8 +185,8 @@
                                    (list (string-append "-DCMAKE_INSTALL_PREFIX=" out))
                                    (if guile
                                        (list
-                                        (string-append "-DGUILE_LIBRARY=" guile "/lib")
-                                        (string-append "-DGUILE_INCLUDE_DIR=" guile "/include/guile/3.0"))
+                                        (string-append "-DGUILE_LIBRARIES=" guile "/lib/libguile-3.0.so")
+                                        (string-append "-DGUILE_INCLUDE_DIRS=" guile "/include/guile/3.0"))
                                        '())
                                    configure-flags
                                    (list "../source"))))

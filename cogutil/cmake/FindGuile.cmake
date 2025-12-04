@@ -10,6 +10,15 @@
 # GUILE_LIBRARIES - The libraries needed to use GUILE
 
 
+# Support both singular and plural parameter names for backward compatibility
+IF(GUILE_LIBRARIES AND NOT GUILE_LIBRARY)
+	SET(GUILE_LIBRARY ${GUILE_LIBRARIES})
+ENDIF()
+
+IF(GUILE_INCLUDE_DIRS AND NOT GUILE_INCLUDE_DIR)
+	SET(GUILE_INCLUDE_DIR ${GUILE_INCLUDE_DIRS})
+ENDIF()
+
 # Look for the header file
 # Look for guile-3.0 first, then 2.2
 # Macports for OSX puts things in /opt/local
@@ -32,9 +41,13 @@ FIND_PATH(GUILE_INCLUDE_DIR libguile.h
 
 	/opt/homebrew/include/guile/3.0
 
+	# Add GNU Guix store paths
+	/gnu/store/*/include/guile/3.0
+	/gnu/store/*/include/guile/2.2
+	/gnu/store/*/include/guile/2.0
+
 	/usr/include
 	/usr/local/include
-	NO_DEFAULT_PATH
 )
 
 # Look for the library
@@ -42,6 +55,8 @@ FIND_LIBRARY(GUILE_LIBRARY NAMES guile-3.0 guile-2.2 guile-2.0 guile PATHS
 	/usr/lib
 	/usr/local/lib
 	/opt/local/lib
+	# Add GNU Guix store paths
+	/gnu/store/*/lib
 )
 
 # Copy the results to the output variables.
@@ -109,7 +124,7 @@ IF(GUILE_FOUND)
 		MESSAGE(STATUS "Guile ${_GUILE_VERSION_MESSAGE_STRING} was found.")
 	ENDIF(NOT GUILE_FIND_QUIETLY)
 ELSE(GUILE_FOUND)
-	SET(GUILE_DIR_MESSAGE "Guile ${_GUILE_VERSION_MESSAGE_STRING} was not found. Make sure GUILE_LIBRARY and GUILE_INCLUDE_DIR are set.")
+	SET(GUILE_DIR_MESSAGE "Guile ${_GUILE_VERSION_MESSAGE_STRING} was not found. Make sure GUILE_LIBRARIES (or GUILE_LIBRARY) and GUILE_INCLUDE_DIRS (or GUILE_INCLUDE_DIR) are set.\nSearched paths: /usr/include/guile/*, /usr/local/include/guile/*, /gnu/store/*/include/guile/*")
 	IF(NOT GUILE_FIND_QUIETLY)
 		MESSAGE(STATUS "${GUILE_DIR_MESSAGE}")
 	ELSE(NOT GUILE_FIND_QUIETLY)
