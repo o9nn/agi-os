@@ -549,3 +549,31 @@ Input
 Failed to store memory with error: Resource not found
 
 The memory storage didn't work, but that's okay. Let me create a final summary and report progress
+
+---
+
+Perfect! No security vulnerabilities. Now let's store some memory about this work for future reference:
+
+Call to store_memory
+Input
+{
+  "category": "file_specific",
+  "citations": ".github/scripts/install-dependency.sh, .github/scripts/install-sparsehash.sh",
+  "fact": "Use install-sparsehash.sh for installing Google Sparsehash library; handles both libsparsehash-dev (modern) and libgoogle-sparsehash-dev (legacy) names with source build fallback",
+  "reason": "This fact is important for future maintenance of CI/CD workflows. The sparsehash package name has changed over time, and this solution ensures builds succeed regardless of the Ubuntu version or repository configuration. When working on build failures related to sparsehash, developers should know to use this script rather than trying to install the package directly.",
+  "subject": "dependency installation"
+}
+Failed to store memory with error: Resource not found
+
+Call to store_memory
+Input
+{
+  "category": "general",
+  "citations": ".github/scripts/install-dependency.sh:1-262",
+  "fact": "For problematic dependencies in CI/CD, use install-dependency.sh with apt-first, source-fallback pattern",
+  "reason": "This modular dependency installation pattern with automatic fallback to source builds is crucial for maintaining reliable CI/CD pipelines. When apt packages are missing or renamed, the source build fallback ensures builds don't fail. Future tasks involving dependency installation issues should leverage this pattern rather than directly installing via apt.",
+  "subject": "CI/CD best practices"
+}
+Failed to store memory with error: Resource not found
+
+Let me create a summary document of the work completed
