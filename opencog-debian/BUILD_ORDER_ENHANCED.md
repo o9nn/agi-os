@@ -10,7 +10,7 @@ This document provides the complete build order for all OpenCog Debian packages,
 
 ## Complete Package List
 
-The packaging infrastructure now includes **28 packages** organized into 11 layers, from microkernel foundation through cognitive OS to application-level AGI framework.
+The packaging infrastructure now includes **32 packages** organized into 11 layers, from microkernel foundation through cognitive OS to application-level AGI framework.
 
 ### Layer 0: Microkernel Foundation
 1. **cognumach** - Enhanced GNU Mach microkernel with cognitive features
@@ -55,11 +55,12 @@ The packaging infrastructure now includes **28 packages** organized into 11 laye
 22. **lg-atomese** - Link Grammar integration
 23. **relex** - Relation extraction system
 
-### Layer 8: Evolutionary and Specialized Systems
-24. **moses** - Meta-Optimizing Semantic Evolutionary Search
-25. **asmoses** - AtomSpace-based MOSES
-26. **agi-bio** - Bioinformatics AGI applications
-27. **vision** - Vision processing components
+### Layer 8: Specialized Systems
+23. **moses** - Meta-Optimizing Semantic Evolutionary Search
+24. **asmoses** - AS-MOSES (Atomspace MOSES)
+25. **agi-bio** - Bioinformatics and genomics
+26. **vision** - Computer vision system
+27. **kogboldai-kernel** - High-performance narrative generation library
 
 ### Layer 9: Meta-Package
 28. **opencog** - Complete OpenCog framework
