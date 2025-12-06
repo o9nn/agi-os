@@ -21,9 +21,10 @@
   (package
     (name "cognumach")
     (version "1.8+git")
-    (source (local-file "/home/ubuntu/cognumach" "cognumach-checkout"
+    (source (local-file (string-append (dirname (dirname (current-filename))) "/cognumach")
+                        "cognumach-checkout"
                         #:recursive? #t
-                        #:select? (git-predicate "/home/ubuntu/cognumach")))
+                        #:select? (git-predicate (string-append (dirname (dirname (current-filename))) "/cognumach"))))
     (build-system gnu-build-system)
     (arguments
      (list #:configure-flags

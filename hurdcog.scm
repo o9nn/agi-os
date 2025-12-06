@@ -26,9 +26,10 @@
   (package
     (name "hurdcog")
     (version "2.1")
-    (source (local-file "/home/ubuntu/hurdcog" "hurdcog-checkout"
+    (source (local-file (string-append (dirname (dirname (current-filename))) "/hurdcog")
+                        "hurdcog-checkout"
                         #:recursive? #t
-                        #:select? (git-predicate "/home/ubuntu/hurdcog")))
+                        #:select? (git-predicate (string-append (dirname (dirname (current-filename))) "/hurdcog"))))
     (build-system gnu-build-system)
     (arguments
      (list #:configure-flags
