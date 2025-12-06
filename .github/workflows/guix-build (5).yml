@@ -137,7 +137,14 @@ jobs:
 
         # Run installer (requires yes for prompts)
         echo "Running Guix installer..."
-        yes '' | sudo -E ./guix-install.sh || {
+        if yes '' | sudo -E ./guix-install.sh; then
+          # Ensure Guix is in PATH for all subsequent steps (SSR/CI best practice)
+          if [ -f "/var/guix/profiles/per-user/root/current-guix/etc/profile" ]; then
+              source /var/guix/profiles/per-user/root/current-guix/etc/profile
+          fi
+          export PATH="/var/guix/profiles/per-user/root/current-guix/bin:$PATH"
+          echo "PATH=/var/guix/profiles/per-user/root/current-guix/bin:$PATH" >> $GITHUB_ENV
+        else
           # If official installer fails, try manual installation
           echo "Official installer failed, trying alternative method..."
 
@@ -173,7 +180,14 @@ jobs:
           sudo /var/guix/profiles/per-user/root/current-guix/bin/guix-daemon \
             --build-users-group=guixbuild &
           sleep 5
-        }
+
+          # Ensure Guix is in PATH for all subsequent steps (SSR/CI best practice)
+          if [ -f "/var/guix/profiles/per-user/root/current-guix/etc/profile" ]; then
+              source /var/guix/profiles/per-user/root/current-guix/etc/profile
+          fi
+          export PATH="/var/guix/profiles/per-user/root/current-guix/bin:$PATH"
+          echo "PATH=/var/guix/profiles/per-user/root/current-guix/bin:$PATH" >> $GITHUB_ENV
+        fi
 
         echo "Guix installation complete"
 
@@ -542,6 +556,10 @@ jobs:
         chmod +x guix-install.sh
         yes '' | sudo -E ./guix-install.sh || true
 
+        # Ensure Guix is in PATH for all subsequent steps (SSR/CI best practice)
+        if [ -f "/var/guix/profiles/per-user/root/current-guix/etc/profile" ]; then
+            source /var/guix/profiles/per-user/root/current-guix/etc/profile
+        fi
         export PATH="/var/guix/profiles/per-user/root/current-guix/bin:$PATH"
         echo "PATH=/var/guix/profiles/per-user/root/current-guix/bin:$PATH" >> $GITHUB_ENV
       continue-on-error: true
