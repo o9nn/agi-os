@@ -29,7 +29,7 @@ ADD_DEFINITIONS(-DPROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
 # because it supplies the various FindXXX macros.
 
 # Cogutil
-FIND_PACKAGE(CogUtil 2.0.1 CONFIG REQUIRED)
+FIND_PACKAGE(CogUtil 2.1.0 CONFIG REQUIRED)
 IF (COGUTIL_FOUND)
 	MESSAGE(STATUS "CogUtil version ${COGUTIL_VERSION} found.")
 	ADD_DEFINITIONS(-DHAVE_COGUTIL)
@@ -48,7 +48,7 @@ include(Summary)
 # ------------------------------------------------------------
 # The atomspace is required.
 
-FIND_PACKAGE(AtomSpace 5.0.3 CONFIG REQUIRED)
+FIND_PACKAGE(AtomSpace 5.0.5 CONFIG REQUIRED)
 IF (ATOMSPACE_FOUND)
 	MESSAGE(STATUS "AtomSpace found.")
 	ADD_DEFINITIONS(-DHAVE_ATOMSPACE)

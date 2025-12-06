@@ -27,7 +27,7 @@ ELSE(Boost_FOUND)
 ENDIF(Boost_FOUND)
 
 #cogutil
-find_package(CogUtil 2.0.1 CONFIG REQUIRED)
+find_package(CogUtil 2.1.0 CONFIG REQUIRED)
 IF (COGUTIL_FOUND)
     message(STATUS "CogUtil version ${COGUTIL_VERSION} found.")
     add_definitions(-DHAVE_COGUTIL)
@@ -40,7 +40,7 @@ ENDIF (COGUTIL_FOUND)
 list(APPEND CMAKE_MODULE_PATH  ${COGUTIL_DATA_DIR}/cmake)
 
 #atomspace
-find_package(AtomSpace 5.0.3 CONFIG REQUIRED)
+find_package(AtomSpace 5.0.5 CONFIG REQUIRED)
 IF(ATOMSPACE_FOUND)
     message(STATUS "AtomSpace found.")
     add_definitions(-DHAVE_ATOMSPACE)

@@ -48,7 +48,7 @@ ADD_DEFINITIONS(-DPROJECT_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
 # CogUtil must come first, because it supplies various FindXXX macros.
 
 # Cogutil
-FIND_PACKAGE(CogUtil 2.0.1 CONFIG REQUIRED)
+FIND_PACKAGE(CogUtil 2.1.0 CONFIG REQUIRED)
 IF (COGUTIL_FOUND)
     MESSAGE(STATUS "CogUtil found.")
     ADD_DEFINITIONS(-DHAVE_COGUTIL)
@@ -69,7 +69,7 @@ include(${COGUTIL_DATA_DIR}/cmake/Summary.cmake)
 # Check for existance of various required, optional packages.
 
 # AtomSpace
-FIND_PACKAGE(AtomSpace 5.0.3 CONFIG REQUIRED)
+FIND_PACKAGE(AtomSpace 5.0.5 CONFIG REQUIRED)
 IF (ATOMSPACE_FOUND)
 	MESSAGE(STATUS "AtomSpace found.")
 	ADD_DEFINITIONS(-DHAVE_ATOMSPACE)

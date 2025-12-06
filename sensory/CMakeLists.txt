@@ -9,7 +9,7 @@ SET(CMAKE_BUILD_TYPE Release)
 
 # ----------------------------------------------------------
 # Cogutil. Required prerequisite.
-FIND_PACKAGE(CogUtil 2.0.3 CONFIG REQUIRED)
+FIND_PACKAGE(CogUtil 2.1.0 CONFIG REQUIRED)
 IF(COGUTIL_FOUND)
 	SET(HAVE_COGUTIL 1)
 
@@ -29,7 +29,7 @@ IF(COGUTIL_FOUND)
 ENDIF()
 
 # AtomSpace
-FIND_PACKAGE(AtomSpace 5.0.4 CONFIG REQUIRED)
+FIND_PACKAGE(AtomSpace 5.0.5 CONFIG REQUIRED)
 IF(ATOMSPACE_FOUND)
 	SET(HAVE_ATOMSPACE 1)
 ENDIF()

@@ -33,7 +33,7 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/lib/")
 
 # Cogutil
-find_package(CogUtil 2.0.1 REQUIRED)
+find_package(CogUtil 2.1.0 REQUIRED)
 if (COGUTIL_FOUND)
     message(STATUS "CogUtil found.")
     # add_definitions(-DHAVE_COGUTIL)
@@ -54,7 +54,7 @@ include(Summary)
 # Check for existance of various required, optional packages.
 
 # AtomSpace
-find_package(AtomSpace 5.0.3 REQUIRED)
+find_package(AtomSpace 5.0.5 REQUIRED)
 if (ATOMSPACE_FOUND)
 	message(STATUS "AtomSpace found.")
 	# add_definitions(-DHAVE_ATOMSPACE)

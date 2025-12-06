@@ -40,7 +40,7 @@ include(${COGUTIL_DATA_DIR}/cmake/Summary.cmake)
 # Check for existance of various required, optional packages.
 
 # AtomSpace
-FIND_PACKAGE(AtomSpace 5.0.3 REQUIRED)
+FIND_PACKAGE(AtomSpace 5.0.5 REQUIRED)
 IF (ATOMSPACE_FOUND)
 	MESSAGE(STATUS "AtomSpace found.")
 	ADD_DEFINITIONS(-DHAVE_ATOMSPACE)
