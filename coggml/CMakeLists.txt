@@ -6,10 +6,13 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.12)
 
 PROJECT(coggml
-    VERSION 0.1.0
+    VERSION 1.0.0
     DESCRIPTION "CogGML Self-Aware Microkernel for Cognitive Shards"
     LANGUAGES CXX
 )
+
+# Version information
+SET(SEMANTIC_VERSION 1.0.0)
 
 # Set C++17 standard
 set(CMAKE_CXX_STANDARD 17)

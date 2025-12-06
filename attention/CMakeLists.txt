@@ -241,7 +241,7 @@ STRING(TIMESTAMP UTC_DATE %Y%m%d UTC)
 FILE(WRITE "${PROJECT_BINARY_DIR}/install_manifest.txt")
 ## It doesn't have a header-file declaring the version similar to cogutil and
 ## atomspace.
-SET(SEMANTIC_VERSION 0.1.4)
+SET(SEMANTIC_VERSION 1.0.0)
 
 ## Cpack configuration
 SET(CPACK_GENERATOR "DEB")

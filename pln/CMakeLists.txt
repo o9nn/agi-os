@@ -14,7 +14,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.12)
 
 # Project name and version
 PROJECT(pln)
-SET(SEMANTIC_VERSION 0.1.1)
+SET(SEMANTIC_VERSION 1.0.0)
 
 # ----------------------------------------------------------
 # User-modifiable options. Feel free to change these!

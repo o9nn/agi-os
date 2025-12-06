@@ -23,6 +23,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Options for selective building
+
+# AGI-OS Layer 1: Cognitive Microkernel
+OPTION(BUILD_COGNUMACH "Build Cognumach (GNU Mach) microkernel - Layer 1" OFF)
+
+# AGI-OS Layer 2: Cognitive Operating System
+OPTION(BUILD_HURDCOG "Build HurdCog (GNU Hurd + cognitive extensions) - Layer 2" OFF)
+
+# Core OpenCog components
 OPTION(BUILD_COGUTIL "Build CogUtil library" ON)
 OPTION(BUILD_ATOMSPACE "Build AtomSpace hypergraph database" ON)  
 OPTION(BUILD_COGSERVER "Build CogServer networking" ON)
@@ -41,6 +49,35 @@ OPTION(BUILD_AGENTIC_CHATBOTS "Build agentic chatbots integration" ON)
 OPTION(BUILD_GNUCASH "Build Gnucash cognitive accounting integration" OFF)
 OPTION(BUILD_KOBOLDCPP "Build KoboldCpp story/world modeling integration" OFF)
 OPTION(BUILD_APHRODITE "Build Aphrodite Engine LLM inference integration" OFF)
+
+# ============================================================================
+# AGI-OS Build Sequence - Three Layer Architecture
+# ============================================================================
+# Layer 1: Cognumach (Microkernel)
+# Layer 2: HurdCog (Operating System + Cognitive Extensions) 
+# Layer 3: OCC (AGI Framework)
+# ============================================================================
+
+# Layer 1: Cognumach Microkernel (autotools-based)
+IF(BUILD_COGNUMACH)
+    MESSAGE(STATUS "Building Layer 1: Cognumach Microkernel...")
+    MESSAGE(STATUS "  Note: Requires autotools (autoconf, automake, libtool)")
+    add_subdirectory(cognumach)
+ENDIF()
+
+# Layer 2: HurdCog Operating System (autotools-based + cognitive extensions)
+IF(BUILD_HURDCOG)
+    MESSAGE(STATUS "Building Layer 2: HurdCog Operating System...")
+    MESSAGE(STATUS "  Note: Requires Cognumach and autotools")
+    IF(BUILD_COGNUMACH)
+        add_subdirectory(hurdcog)
+    ELSE()
+        MESSAGE(WARNING "HurdCog requires Cognumach. Skipping HurdCog build.")
+    ENDIF()
+ENDIF()
+
+# Layer 3: OCC Components (CMake-based)
+MESSAGE(STATUS "Building Layer 3: OpenCog Collection (OCC)...")
 
 # Core components built in dependency order
 IF(BUILD_COGUTIL)
@@ -137,6 +174,11 @@ MESSAGE(STATUS "")
 MESSAGE(STATUS "OpenCog Collection Configuration Summary:")
 MESSAGE(STATUS "========================================")
 MESSAGE(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+MESSAGE(STATUS "")
+MESSAGE(STATUS "AGI-OS Stack:")
+MESSAGE(STATUS "Layer 1 - Cognumach (Microkernel): ${BUILD_COGNUMACH}")
+MESSAGE(STATUS "Layer 2 - HurdCog (OS + Cognitive): ${BUILD_HURDCOG}")
+MESSAGE(STATUS "Layer 3 - OCC (AGI Framework): enabled")
 MESSAGE(STATUS "")
 MESSAGE(STATUS "Core Components:")
 MESSAGE(STATUS "CogUtil: ${BUILD_COGUTIL}")

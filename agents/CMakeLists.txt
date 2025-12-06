@@ -8,6 +8,9 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.12)
 PROJECT(agents)
 
+# Version information
+SET(SEMANTIC_VERSION 1.0.0)
+
 MESSAGE(STATUS "Configuring Atomese Agents...")
 
 # Install Scheme files if available
