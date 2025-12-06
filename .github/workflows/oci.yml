@@ -13,7 +13,7 @@ on:
 
 env:
   CCACHE_DIR: /ws/ccache
-  MAKEFLAGS: -j2
+  MAKEFLAGS: -j$(nproc)
 
 jobs:
   build-and-test:
@@ -24,7 +24,7 @@ jobs:
       options: --user root
       env:
         CCACHE_DIR: /ws/ccache
-        MAKEFLAGS: -j2
+        MAKEFLAGS: -j$(nproc)
     services:
       opencog-postgres:
         image: opencog/postgres
@@ -55,7 +55,7 @@ jobs:
         run: |
           mkdir -p cogutil/build && cd cogutil/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -65,7 +65,7 @@ jobs:
         run: |
           mkdir -p atomspace/build && cd atomspace/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -75,7 +75,7 @@ jobs:
         run: |
           mkdir -p atomspace-storage/build && cd atomspace-storage/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -85,7 +85,7 @@ jobs:
         run: |
           mkdir -p atomspace-rocks/build && cd atomspace-rocks/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -95,7 +95,7 @@ jobs:
         run: |
           mkdir -p atomspace-restful/build && cd atomspace-restful/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -105,7 +105,7 @@ jobs:
         run: |
           mkdir -p cogserver/build && cd cogserver/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -115,7 +115,7 @@ jobs:
         run: |
           mkdir -p unify/build && cd unify/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -125,7 +125,7 @@ jobs:
         run: |
           mkdir -p ure/build && cd ure/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -135,7 +135,7 @@ jobs:
         run: |
           mkdir -p spacetime/build && cd spacetime/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -145,7 +145,7 @@ jobs:
         run: |
           mkdir -p attention/build && cd attention/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -155,7 +155,7 @@ jobs:
         run: |
           mkdir -p miner/build && cd miner/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -165,7 +165,7 @@ jobs:
         run: |
           mkdir -p pln/build && cd pln/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -175,7 +175,7 @@ jobs:
         run: |
           mkdir -p moses/build && cd moses/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -185,7 +185,7 @@ jobs:
         run: |
           mkdir -p asmoses/build && cd asmoses/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -195,7 +195,7 @@ jobs:
         run: |
           mkdir -p lg-atomese/build && cd lg-atomese/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -205,7 +205,7 @@ jobs:
         run: |
           mkdir -p learn/build && cd learn/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -215,7 +215,7 @@ jobs:
         run: |
           mkdir -p pattern-index/build && cd pattern-index/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -225,7 +225,7 @@ jobs:
         run: |
           mkdir -p vision/build && cd vision/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
@@ -235,7 +235,7 @@ jobs:
         run: |
           mkdir -p opencog/build && cd opencog/build
           cmake -DCMAKE_BUILD_TYPE=Release ..
-          make -j2
+          make -j$(nproc)
           sudo make install
           sudo ldconfig
           cd ../..
