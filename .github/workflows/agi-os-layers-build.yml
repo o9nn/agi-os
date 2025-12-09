@@ -78,11 +78,22 @@ jobs:
           bison \
           texinfo \
           libpci-dev \
-          libacpica-dev \
           libpciaccess-dev \
           device-tree-compiler \
           uuid-dev \
-          mig
+          git
+
+        # Build MIG from source (not available in Ubuntu repos)
+        echo "Building MIG from source..."
+        cd /tmp
+        git clone https://git.savannah.gnu.org/git/hurd/mig.git || echo "MIG clone may have failed"
+        if [ -d mig ]; then
+          cd mig
+          autoreconf -ivf || echo "autoreconf failed"
+          ./configure --prefix=/usr/local || echo "configure failed"
+          make -j2 || echo "make failed"
+          sudo make install || echo "install failed"
+        fi
 
     - name: Check Cognumach Directory
       run: |

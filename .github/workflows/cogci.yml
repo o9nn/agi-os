@@ -180,7 +180,7 @@ jobs:
           sudo ldconfig
 
       - name: Cache cogutil build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogutil/build
           key: cogutil-${{ runner.os }}-${{ github.sha }}
@@ -200,7 +200,7 @@ jobs:
           sudo apt-get install -y build-essential cmake libboost-all-dev guile-3.0-dev cython3 python3-nose valgrind doxygen
 
       - name: Restore cogutil cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogutil/build
           key: cogutil-${{ runner.os }}-${{ github.sha }}
@@ -262,7 +262,7 @@ jobs:
           sudo ldconfig
 
       - name: Cache atomspace build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: atomspace/build
           key: atomspace-${{ runner.os }}-${{ github.sha }}
@@ -285,7 +285,7 @@ jobs:
         run: python3 -m cython --version
 
       - name: Restore cogutil cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogutil/build
           key: cogutil-${{ runner.os }}-${{ github.sha }}
@@ -293,7 +293,7 @@ jobs:
             cogutil-${{ runner.os }}-
 
       - name: Restore atomspace cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: atomspace/build
           key: atomspace-${{ runner.os }}-${{ github.sha }}
@@ -516,7 +516,7 @@ jobs:
         run: python3 -m cython --version
 
       - name: Restore cogutil cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogutil/build
           key: cogutil-${{ runner.os }}-${{ github.sha }}
@@ -524,7 +524,7 @@ jobs:
             cogutil-${{ runner.os }}-
 
       - name: Restore atomspace cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: atomspace/build
           key: atomspace-${{ runner.os }}-${{ github.sha }}
@@ -670,7 +670,7 @@ jobs:
         run: python3 -m cython --version
 
       - name: Restore cogutil cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogutil/build
           key: cogutil-${{ runner.os }}-${{ github.sha }}
@@ -678,7 +678,7 @@ jobs:
             cogutil-${{ runner.os }}-
 
       - name: Restore atomspace cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: atomspace/build
           key: atomspace-${{ runner.os }}-${{ github.sha }}
@@ -817,7 +817,7 @@ jobs:
           sudo ldconfig
 
       - name: Cache ure build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ure/build
           key: ure-${{ runner.os }}-${{ github.sha }}
@@ -841,7 +841,7 @@ jobs:
         run: python3 -m cython --version
 
       - name: Restore cogutil cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogutil/build
           key: cogutil-${{ runner.os }}-${{ github.sha }}
@@ -849,7 +849,7 @@ jobs:
             cogutil-${{ runner.os }}-
 
       - name: Restore atomspace cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: atomspace/build
           key: atomspace-${{ runner.os }}-${{ github.sha }}
@@ -1167,7 +1167,7 @@ jobs:
         run: python3 -m cython --version
 
       - name: Restore cogutil cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogutil/build
           key: cogutil-${{ runner.os }}-${{ github.sha }}
@@ -1175,7 +1175,7 @@ jobs:
             cogutil-${{ runner.os }}-
 
       - name: Restore atomspace cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: atomspace/build
           key: atomspace-${{ runner.os }}-${{ github.sha }}
@@ -1487,7 +1487,7 @@ jobs:
           sudo apt-get install -y build-essential cmake libboost-all-dev python3-nose valgrind doxygen
 
       - name: Restore cogutil cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogutil/build
           key: cogutil-${{ runner.os }}-${{ github.sha }}
@@ -1537,7 +1537,7 @@ jobs:
         run: python3 -m cython --version
 
       - name: Restore cogutil cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogutil/build
           key: cogutil-${{ runner.os }}-${{ github.sha }}
@@ -1545,7 +1545,7 @@ jobs:
             cogutil-${{ runner.os }}-
 
       - name: Restore atomspace cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: atomspace/build
           key: atomspace-${{ runner.os }}-${{ github.sha }}
@@ -1864,7 +1864,7 @@ jobs:
         run: python3 -m cython --version
           
       - name: Restore cogutil cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogutil/build
           key: cogutil-${{ runner.os }}-${{ github.sha }}
@@ -1872,7 +1872,7 @@ jobs:
             cogutil-${{ runner.os }}-
             
       - name: Restore atomspace cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: atomspace/build
           key: atomspace-${{ runner.os }}-${{ github.sha }}
@@ -1997,7 +1997,7 @@ jobs:
           make test || true
 
       - name: Cache cogserver build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogserver/build
           key: cogserver-${{ runner.os }}-${{ github.sha }}
@@ -2022,7 +2022,7 @@ jobs:
         run: python3 -m cython --version
 
       - name: Restore cogutil cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogutil/build
           key: cogutil-${{ runner.os }}-${{ github.sha }}
@@ -2030,7 +2030,7 @@ jobs:
             cogutil-${{ runner.os }}-
 
       - name: Restore atomspace cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: atomspace/build
           key: atomspace-${{ runner.os }}-${{ github.sha }}
@@ -2437,7 +2437,7 @@ jobs:
         run: python3 -m cython --version
 
       - name: Restore cogutil cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogutil/build
           key: cogutil-${{ runner.os }}-${{ github.sha }}
@@ -2445,7 +2445,7 @@ jobs:
             cogutil-${{ runner.os }}-
 
       - name: Restore atomspace cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: atomspace/build
           key: atomspace-${{ runner.os }}-${{ github.sha }}
@@ -2756,7 +2756,7 @@ jobs:
         run: python3 -m cython --version
 
       - name: Restore cogutil cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogutil/build
           key: cogutil-${{ runner.os }}-${{ github.sha }}
@@ -2764,7 +2764,7 @@ jobs:
             cogutil-${{ runner.os }}-
 
       - name: Restore atomspace cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: atomspace/build
           key: atomspace-${{ runner.os }}-${{ github.sha }}
@@ -2981,7 +2981,7 @@ jobs:
           python3 -m pip install numpy pandas matplotlib jupyter notebook
 
       - name: Restore cogutil cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogutil/build
           key: cogutil-${{ runner.os }}-${{ github.sha }}
@@ -2989,7 +2989,7 @@ jobs:
             cogutil-${{ runner.os }}-
 
       - name: Restore atomspace cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: atomspace/build
           key: atomspace-${{ runner.os }}-${{ github.sha }}
@@ -3105,7 +3105,7 @@ jobs:
         run: python3 -m cython --version
 
       - name: Restore cogutil cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogutil/build
           key: cogutil-${{ runner.os }}-${{ github.sha }}
@@ -3113,7 +3113,7 @@ jobs:
             cogutil-${{ runner.os }}-
 
       - name: Restore atomspace cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: atomspace/build
           key: atomspace-${{ runner.os }}-${{ github.sha }}
@@ -3312,7 +3312,7 @@ jobs:
         run: python3 -m cython --version
 
       - name: Restore cogutil cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: cogutil/build
           key: cogutil-${{ runner.os }}-${{ github.sha }}
@@ -3320,7 +3320,7 @@ jobs:
             cogutil-${{ runner.os }}-
 
       - name: Restore atomspace cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: atomspace/build
           key: atomspace-${{ runner.os }}-${{ github.sha }}

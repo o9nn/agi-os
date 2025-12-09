@@ -146,16 +146,15 @@ jobs:
           bison \
           texinfo \
           libpci-dev \
-          libacpica-dev \
           libpciaccess-dev \
           device-tree-compiler \
           uuid-dev \
           xorriso \
           grub-common \
-          qemu-system-x86
+          qemu-system-x86 \
+          git
 
-        # Install MIG if available
-        sudo apt-get install -y mig || echo "MIG not available, will build from source"
+        # MIG is not available in Ubuntu repos, will build from source if needed
 
     - name: Build MIG from Source (if needed)
       run: |
@@ -269,7 +268,6 @@ jobs:
           cmake \
           ninja-build \
           libpci-dev \
-          libacpica-dev \
           uuid-dev
 
     - name: Configure with CMake
