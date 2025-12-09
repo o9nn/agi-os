@@ -75,31 +75,54 @@ jobs:
           flex \
           bison
 
-    - name: Check for MIG
-      id: check_mig
+    - name: Cache MIG Build
+      id: cache-mig
+      uses: actions/cache@v4
+      with:
+        path: ~/mig-install
+        key: mig-cognumach-${{ runner.os }}-${{ hashFiles('cognumach/mig/configure.ac') }}
+        restore-keys: |
+          mig-cognumach-${{ runner.os }}-
+
+    - name: Build MIG from cognumach/mig
+      if: steps.cache-mig.outputs.cache-hit != 'true'
       run: |
-        if command -v mig &> /dev/null; then
-          echo "MIG is available"
-          echo "available=true" >> $GITHUB_OUTPUT
-        elif [ -d "build-tools/mig" ]; then
-          echo "MIG source found at build-tools/mig"
-          echo "available=source" >> $GITHUB_OUTPUT
+        echo "Building MIG from cognumach/mig..."
+        cd cognumach/mig
+        
+        if [ -f "configure.ac" ]; then
+          echo "Running autoreconf..."
+          autoreconf -ivf
+          
+          echo "Configuring MIG..."
+          ./configure --prefix=$HOME/mig-install
+          
+          echo "Building MIG..."
+          make ${{ env.MAKEFLAGS }}
+          
+          echo "Installing MIG..."
+          make install
+          
+          echo "MIG build complete:"
+          ls -la $HOME/mig-install/bin/
         else
-          echo "MIG not available"
-          echo "available=false" >> $GITHUB_OUTPUT
+          echo "ERROR: configure.ac not found in cognumach/mig"
+          exit 1
         fi
 
-    - name: Build MIG from Source
-      if: steps.check_mig.outputs.available == 'source'
+    - name: Verify MIG Installation
       run: |
-        cd build-tools/mig
-        if [ -f "configure.ac" ]; then
-          autoreconf -ivf || echo "autoreconf completed"
-          ./configure --prefix=/usr/local || echo "Configure completed"
-          make ${{ env.MAKEFLAGS }} || echo "Build completed"
-          sudo make install || echo "Install completed"
-        fi
-      continue-on-error: true
+        echo "$HOME/mig-install/bin" >> $GITHUB_PATH
+        export PATH="$HOME/mig-install/bin:$PATH"
+        which mig || echo "MIG not found in PATH"
+        mig --version || echo "MIG version check failed"
+
+    - name: Upload MIG Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: mig-build
+        path: ~/mig-install
+        retention-days: 7
 
   # ============================================================================
   # Layer 1: Cognumach Microkernel (GNU Mach + Cognitive Extensions)
@@ -117,6 +140,19 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
+
+    - name: Download MIG Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: mig-build
+        path: ~/mig-install
+
+    - name: Setup MIG in PATH
+      run: |
+        echo "$HOME/mig-install/bin" >> $GITHUB_PATH
+        chmod +x $HOME/mig-install/bin/* || true
+        echo "MIG setup complete:"
+        ls -la $HOME/mig-install/bin/
 
     - name: Cache Cognumach Build
       uses: actions/cache@v4
@@ -271,6 +307,19 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
+
+    - name: Download MIG Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: mig-build
+        path: ~/mig-install
+
+    - name: Setup MIG in PATH
+      run: |
+        echo "$HOME/mig-install/bin" >> $GITHUB_PATH
+        chmod +x $HOME/mig-install/bin/* || true
+        echo "MIG setup complete:"
+        ls -la $HOME/mig-install/bin/
 
     - name: Cache HurdCog Build
       uses: actions/cache@v4
