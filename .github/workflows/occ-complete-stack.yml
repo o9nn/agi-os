@@ -733,12 +733,11 @@ jobs:
         ├── atomspace
         │   ├── atomspace-storage
         │   │   ├── atomspace-rocks
-        │   │   ├── atomspace-cog (+ cogserver)
-        │   │   └── atomspace-pgres
-        │   ├── cogserver
-        │   │   ├── attention
-        │   │   ├── learn
-        │   │   └── atomspace-cog
+        │   │   ├── atomspace-pgres
+        │   │   └── cogserver
+        │   │        ├── attention
+        │   │        ├── learn
+        │   │        └── atomspace-cog
         │   ├── matrix
         │   ├── unify
         │   │   ├── ure
