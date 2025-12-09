@@ -25,6 +25,13 @@ from .planes import ThreePlanes, PlaneOfEnergy, PlaneOfInformation, PlaneOfTotal
 from .cycles import SixCycles
 from .spiral_triad import SpiralTriad, SpiralStep
 from .evolutionary_helix import EvolutionaryHelix, HelixStage
+from .enterprise_autogenesis import (
+    EnterpriseAutogenesis,
+    EnterpriseStage,
+    ThinSlice,
+    LearningLoop,
+    AutonomousPod,
+)
 
 
 @dataclass
@@ -384,6 +391,158 @@ class IdentityMetasystemBridge:
 
 
 @dataclass
+class EnterpriseMetasystemBridge:
+    """
+    Bridge between Enterprise Autogenesis and Metasystem
+
+    Maps enterprise concepts to metasystem concepts:
+    - Executive Vision (Stage 1) -> Self-Referential Cycle / Plane of Totality
+    - Product Strategy (Stage 2) -> Autogenesis Cycle
+    - Portfolio Management (Stage 3) -> Retroaction Cycle / Plane of Information
+    - Product Architecture (Stage 4) -> Morphogenesis Cycle
+    - Lean Delivery (Stage 5) -> Autopoiesis Cycle / Plane of Energy
+    - Measure Value (Stage 6) -> Vortex Cycle
+
+    Learning loops map to autogenetic rule generation.
+    Thin slices map to autopoietic production units.
+    """
+    metasystem: Metasystem = field(default_factory=Metasystem)
+    enterprise: EnterpriseAutogenesis = field(default_factory=EnterpriseAutogenesis)
+
+    def enterprise_to_metasystem(self, enterprise_state: Dict[str, Any] = None) -> Dict[str, Any]:
+        """
+        Transform enterprise autogenesis state to metasystem input
+
+        Maps:
+        - enterprise coherence -> totality wholeness
+        - enterprise emergence -> morphogenesis activation
+        - enterprise autonomy -> autogenesis progress
+        - thin slice throughput -> autopoietic production
+        """
+        if enterprise_state is None:
+            enterprise_state = self.enterprise.get_state()
+
+        metrics = enterprise_state.get('metrics', {})
+        coherence = metrics.get('coherence', 0.0)
+        emergence = metrics.get('emergence', 0.0)
+        autonomy = metrics.get('autonomy', 0.0)
+        value_throughput = metrics.get('value_throughput', 0.0)
+
+        # Map to metasystem planes
+        self.metasystem.planes.totality.wholeness = coherence
+        self.metasystem.planes.information.coherence = emergence
+        self.metasystem.planes.energy.flux = value_throughput
+
+        # Update totality being with enterprise metrics
+        self.metasystem.planes.totality.update_being({
+            'enterprise_coherence': coherence,
+            'enterprise_emergence': emergence,
+            'enterprise_autonomy': autonomy,
+            'value_throughput': value_throughput,
+        })
+
+        return {
+            'mapped': True,
+            'coherence': coherence,
+            'emergence': emergence,
+            'autonomy': autonomy,
+            'value_throughput': value_throughput,
+        }
+
+    def metasystem_to_enterprise(self) -> Dict[str, Any]:
+        """
+        Transform metasystem state to enterprise guidance
+
+        Provides:
+        - Vision clarity recommendations
+        - Portfolio optimization suggestions
+        - Delivery acceleration guidance
+        - Learning loop activation
+        """
+        ms_state = self.metasystem.get_state()
+        spiral_state = ms_state['spiral']
+        helix_state = ms_state['helix']
+
+        # Generate enterprise recommendations
+        recommendations = []
+
+        if ms_state['state']['coherence'] < 0.3:
+            recommendations.append({
+                'stage': 'EXECUTIVE_VISION',
+                'action': 'strengthen_vision_goal_alignment',
+                'priority': 'high',
+            })
+
+        if ms_state['state']['emergence'] < 0.3:
+            recommendations.append({
+                'stage': 'PRODUCT_ARCHITECTURE',
+                'action': 'create_more_thin_slices',
+                'priority': 'medium',
+            })
+
+        if ms_state['state']['autonomy'] < 0.3:
+            recommendations.append({
+                'stage': 'LEAN_DELIVERY',
+                'action': 'empower_autonomous_pods',
+                'priority': 'high',
+            })
+
+        # Map spiral step to enterprise focus
+        spiral_step = spiral_state['current_step']
+        enterprise_focus = {
+            'UNITY': 'EXECUTIVE_VISION',
+            'DISTINCTION': 'PRODUCT_STRATEGY',
+            'DISTANCIATION': 'PORTFOLIO_MANAGEMENT',
+            'EMERGENCE': 'PRODUCT_ARCHITECTURE',
+            'AUTOPOIESIS': 'LEAN_DELIVERY',
+            'SELF_REFERENCE': 'MEASURE_VALUE',
+            'AUTOGENESIS': 'EXECUTIVE_VISION',  # Return to vision with new rules
+        }.get(spiral_step, 'EXECUTIVE_VISION')
+
+        return {
+            'enterprise_guidance': {
+                'current_focus': enterprise_focus,
+                'spiral_alignment': spiral_step,
+                'helix_stage': helix_state['current_stage'],
+                'recommendations': recommendations,
+                'learning_loop_priority': 'cross_enterprise' if ms_state['state']['autonomy'] > 0.5 else 'agile_development',
+            }
+        }
+
+    def synchronized_step(self, input_value: float = 0.5) -> Dict[str, Any]:
+        """
+        Execute synchronized step of both enterprise and metasystem
+
+        1. Step enterprise autogenesis
+        2. Map enterprise state to metasystem
+        3. Step metasystem
+        4. Generate enterprise guidance from metasystem
+        """
+        # Step enterprise
+        enterprise_result = self.enterprise.step(input_value)
+
+        # Map to metasystem
+        mapping_result = self.enterprise_to_metasystem()
+
+        # Step metasystem
+        metasystem_result = self.metasystem.step(input_value)
+
+        # Generate guidance
+        guidance = self.metasystem_to_enterprise()
+
+        return {
+            'enterprise': enterprise_result,
+            'mapping': mapping_result,
+            'metasystem': metasystem_result,
+            'guidance': guidance,
+        }
+
+    def get_mapping(self) -> Dict[str, Any]:
+        """Get the theoretical mapping between enterprise and metasystem"""
+        return self.enterprise.to_metasystem_mapping()
+
+
+@dataclass
 class IntegratedMetasystem:
     """
     Fully integrated metasystem with all OCC bridges
@@ -393,6 +552,7 @@ class IntegratedMetasystem:
     - Synergy integration (component coordination)
     - Membrane integration (boundary management)
     - Identity integration (self-model)
+    - Enterprise integration (organizational autogenesis)
     """
     config: MetasystemConfig = field(default_factory=MetasystemConfig)
     metasystem: Metasystem = field(default_factory=lambda: None)
@@ -402,6 +562,7 @@ class IntegratedMetasystem:
     synergy_bridge: SynergyMetasystemBridge = field(default_factory=lambda: None)
     membrane_bridge: MembraneMetasystemBridge = field(default_factory=lambda: None)
     identity_bridge: IdentityMetasystemBridge = field(default_factory=lambda: None)
+    enterprise_bridge: EnterpriseMetasystemBridge = field(default_factory=lambda: None)
 
     def __post_init__(self):
         """Initialize all components"""
@@ -410,6 +571,7 @@ class IntegratedMetasystem:
         self.synergy_bridge = SynergyMetasystemBridge(metasystem=self.metasystem)
         self.membrane_bridge = MembraneMetasystemBridge(metasystem=self.metasystem)
         self.identity_bridge = IdentityMetasystemBridge(metasystem=self.metasystem)
+        self.enterprise_bridge = EnterpriseMetasystemBridge(metasystem=self.metasystem)
 
     def initialize(self) -> Dict[str, Any]:
         """Initialize the integrated metasystem"""
@@ -419,7 +581,8 @@ class IntegratedMetasystem:
                         aar_state: Optional[Dict[str, Any]] = None,
                         synergy_state: Optional[Dict[str, Any]] = None,
                         membrane_state: Optional[Dict[str, Any]] = None,
-                        identity_state: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+                        identity_state: Optional[Dict[str, Any]] = None,
+                        enterprise_state: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
         Execute integrated step with all available inputs
 
@@ -444,6 +607,10 @@ class IntegratedMetasystem:
         if identity_state:
             results['identity'] = self.identity_bridge.identity_to_metasystem(identity_state)
 
+        # Process enterprise input
+        if enterprise_state:
+            results['enterprise'] = self.enterprise_bridge.enterprise_to_metasystem(enterprise_state)
+
         # Compute combined input value
         input_value = 0.5
         input_count = 0
@@ -456,6 +623,9 @@ class IntegratedMetasystem:
             input_count += 1
         if identity_state:
             input_value += identity_state.get('self_awareness', 0)
+            input_count += 1
+        if enterprise_state:
+            input_value += enterprise_state.get('metrics', {}).get('coherence', 0)
             input_count += 1
 
         if input_count > 0:
@@ -471,6 +641,7 @@ class IntegratedMetasystem:
             'synergy': self.synergy_bridge.metasystem_to_synergy(),
             'membrane': self.membrane_bridge.metasystem_to_membrane(),
             'identity': self.identity_bridge.metasystem_to_identity(),
+            'enterprise': self.enterprise_bridge.metasystem_to_enterprise(),
         }
 
         return results

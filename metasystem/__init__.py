@@ -51,6 +51,17 @@ from .metasystem_core import (
     MetasystemConfig,
 )
 
+from .enterprise_autogenesis import (
+    EnterpriseAutogenesis,
+    EnterpriseStage,
+    ThinSlice,
+    LearningLoop,
+    AutonomousPod,
+    VisionGoalBet,
+    LoopType,
+    ControlMode,
+)
+
 __all__ = [
     # Planes
     'PlaneOfEnergy',
@@ -80,6 +91,15 @@ __all__ = [
     'Metasystem',
     'MetasystemState',
     'MetasystemConfig',
+    # Enterprise Autogenesis
+    'EnterpriseAutogenesis',
+    'EnterpriseStage',
+    'ThinSlice',
+    'LearningLoop',
+    'AutonomousPod',
+    'VisionGoalBet',
+    'LoopType',
+    'ControlMode',
 ]
 
 __version__ = '0.1.0'
