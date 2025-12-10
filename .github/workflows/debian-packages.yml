@@ -176,6 +176,13 @@ jobs:
         chmod +x .github/scripts/prepare-package-build.sh
         .github/scripts/prepare-package-build.sh atomspace
     
+    - name: Install Cython3 Build Dependency
+      run: |
+        echo "=== Installing Cython3 for Python bindings ==="
+        sudo apt-get install -y cython3
+        cython3 --version
+        echo "Cython3 installation complete"
+    
     - name: Build atomspace Package
       run: |
         cd atomspace
