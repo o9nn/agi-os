@@ -1,6 +1,6 @@
 # .github/workflows/ocall.yml
 
-name: opencog all
+name: ocog all
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
 jobs:
   build-and-test:
     name: Build and Test All Components
-    runs-on: ubuntu-latest
+    runs-on: cog9
 
     steps:
       - uses: actions/checkout@v4
@@ -116,7 +116,7 @@ jobs:
             mkdir -p $repo/build/
             cd $repo/build
             cmake .. || { echo "❌ CMake failed for $repo"; cd ../..; continue; }
-            make || { echo "❌ Make failed for $repo"; cd ../..; continue; }
+            make -j$(nproc) || { echo "❌ Make failed for $repo"; cd ../..; continue; }
             sudo make install || { echo "❌ Install failed for $repo"; cd ../..; continue; }
             sudo ldconfig
             cd ../..
