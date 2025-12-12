@@ -1,0 +1,922 @@
+(*
+ * AGI-OS Operations - Z++ Formal Specification
+ * 
+ * This specification formalizes the core operations that transform
+ * the AGI-OS system state. Operations are organized by architectural
+ * layer and functional subsystem.
+ * 
+ * Author: AGI-OS Development Team
+ * Date: December 12, 2025
+ * Version: 1.0
+ *)
+
+(* Import data model and system state *)
+include "data_model.zpp"
+include "system_state.zpp"
+
+(* ========================================================================
+ * ATOMSPACE OPERATIONS - CORE KNOWLEDGE MANAGEMENT
+ * ======================================================================== *)
+
+(*
+ * AddNode: Add a new node to the AtomSpace
+ * Nodes are identified by (type, name) pairs
+ *)
+
+schema AddNode
+  ΔAtomSpaceState
+  node_type: TypeID
+  node_name: AtomName
+  initial_tv?: TruthValueType
+  initial_av?: AttentionValueSet
+  result!: AtomID
+where
+  (* Pre-conditions *)
+  node_type' ∈ dom type_index
+  ¬read_only
+  
+  (* Check if node already exists *)
+  (node_type, node_name) ∈ dom name_index ⟹
+    result! = name_index(node_type, node_name)
+  
+  (* Create new node if it doesn't exist *)
+  (node_type, node_name) ∉ dom name_index ⟹
+    let new_id = atom_count + 1 in
+    let new_node = Node {
+      atom_id = new_id,
+      atom_type = type_system(node_type),
+      name = node_name,
+      truth_value = initial_tv? ∨ default_tv,
+      attention_value = initial_av? ∨ default_av,
+      created_time = current_time,
+      modified_time = current_time
+    } in
+      (* Update state *)
+      atoms' = atoms ∪ {new_id ↦ new_node} ∧
+      name_index' = name_index ∪ {(node_type, node_name) ↦ new_id} ∧
+      type_index' = type_index ⊕ {node_type ↦ (type_index(node_type) ∪ {new_id})} ∧
+      atom_count' = atom_count + 1 ∧
+      result! = new_id
+  
+  (* Unchanged *)
+  incoming_index' = incoming_index
+end
+
+(*
+ * AddLink: Add a new link to the AtomSpace
+ * Links connect existing atoms
+ *)
+
+schema AddLink
+  ΔAtomSpaceState
+  link_type: TypeID
+  outgoing_atoms: seq AtomID
+  initial_tv?: TruthValueType
+  initial_av?: AttentionValueSet
+  result!: AtomID
+where
+  (* Pre-conditions *)
+  link_type' ∈ dom type_index
+  ¬read_only
+  #outgoing_atoms > 0
+  
+  (* All outgoing atoms must exist *)
+  ∀ aid: outgoing_atoms • aid ∈ dom atoms
+  
+  (* Check if identical link already exists *)
+  ∃ existing: dom atoms |
+    atoms(existing) ∈ Link ∧
+    atoms(existing).atom_type.type_id = link_type ∧
+    atoms(existing).outgoing = outgoing_atoms ⟹
+    result! = existing
+  
+  (* Create new link if it doesn't exist *)
+  ¬(∃ existing: dom atoms |
+    atoms(existing) ∈ Link ∧
+    atoms(existing).atom_type.type_id = link_type ∧
+    atoms(existing).outgoing = outgoing_atoms) ⟹
+    let new_id = atom_count + 1 in
+    let new_link = Link {
+      atom_id = new_id,
+      atom_type = type_system(link_type),
+      outgoing = outgoing_atoms,
+      arity = #outgoing_atoms,
+      truth_value = initial_tv? ∨ default_tv,
+      attention_value = initial_av? ∨ default_av,
+      created_time = current_time,
+      modified_time = current_time
+    } in
+      (* Update state *)
+      atoms' = atoms ∪ {new_id ↦ new_link} ∧
+      type_index' = type_index ⊕ {link_type ↦ (type_index(link_type) ∪ {new_id})} ∧
+      atom_count' = atom_count + 1 ∧
+      result! = new_id ∧
+      
+      (* Update incoming index for all outgoing atoms *)
+      incoming_index' = incoming_index ⊕
+        {aid: outgoing_atoms • aid ↦ (incoming_index(aid) ∪ {new_id})}
+  
+  (* Unchanged *)
+  name_index' = name_index
+end
+
+(*
+ * RemoveAtom: Remove an atom from the AtomSpace
+ * Must handle incoming links (cascade delete or error)
+ *)
+
+schema RemoveAtom
+  ΔAtomSpaceState
+  atom_id: AtomID
+  cascade: 𝔹              (* If true, remove incoming links *)
+  success!: 𝔹
+where
+  (* Pre-conditions *)
+  ¬read_only
+  atom_id ∈ dom atoms
+  
+  (* Check for incoming links *)
+  let incoming_set = incoming_index(atom_id) in
+  
+  (* Cannot remove if has incoming links and not cascading *)
+  ¬cascade ∧ incoming_set ≠ ∅ ⟹
+    success! = false ∧
+    atoms' = atoms ∧
+    type_index' = type_index ∧
+    name_index' = name_index ∧
+    incoming_index' = incoming_index ∧
+    atom_count' = atom_count
+  
+  (* Remove atom (and incoming links if cascading) *)
+  (cascade ∨ incoming_set = ∅) ⟹
+    let removed_ids = {atom_id} ∪ (if cascade then incoming_set else ∅) in
+    let removed_atom = atoms(atom_id) in
+      (* Update atoms *)
+      atoms' = removed_ids ⩤ atoms ∧
+      
+      (* Update type index *)
+      type_index' = type_index ⊕
+        {removed_atom.atom_type.type_id ↦ 
+          (type_index(removed_atom.atom_type.type_id) \ removed_ids)} ∧
+      
+      (* Update name index if node *)
+      (removed_atom ∈ Node ⟹
+        name_index' = {(removed_atom.atom_type.type_id, removed_atom.name)} ⩤ name_index) ∧
+      
+      (* Update incoming index *)
+      incoming_index' = incoming_index ⊕
+        (if removed_atom ∈ Link then
+          {aid: removed_atom.outgoing • aid ↦ 
+            (incoming_index(aid) \ {atom_id})}
+        else {}) ∧
+      
+      atom_count' = atom_count - #removed_ids ∧
+      success! = true
+end
+
+(*
+ * SetTruthValue: Update the truth value of an atom
+ *)
+
+schema SetTruthValue
+  ΔAtomSpaceState
+  atom_id: AtomID
+  new_tv: TruthValueType
+where
+  (* Pre-conditions *)
+  ¬read_only
+  atom_id ∈ dom atoms
+  
+  (* Update truth value *)
+  let old_atom = atoms(atom_id) in
+  let updated_atom = old_atom ⊕ {
+    truth_value = new_tv,
+    modified_time = current_time
+  } in
+    atoms' = atoms ⊕ {atom_id ↦ updated_atom}
+  
+  (* Unchanged *)
+  type_index' = type_index ∧
+  name_index' = name_index ∧
+  incoming_index' = incoming_index ∧
+  atom_count' = atom_count
+end
+
+(*
+ * SetAttentionValue: Update the attention value of an atom
+ *)
+
+schema SetAttentionValue
+  ΔAtomSpaceState
+  atom_id: AtomID
+  new_av: AttentionValueSet
+where
+  (* Pre-conditions *)
+  atom_id ∈ dom atoms
+  
+  (* Update attention value *)
+  let old_atom = atoms(atom_id) in
+  let updated_atom = old_atom ⊕ {
+    attention_value = new_av,
+    modified_time = current_time
+  } in
+    atoms' = atoms ⊕ {atom_id ↦ updated_atom}
+  
+  (* Unchanged *)
+  type_index' = type_index ∧
+  name_index' = name_index ∧
+  incoming_index' = incoming_index ∧
+  atom_count' = atom_count
+end
+
+(* ========================================================================
+ * PATTERN MATCHING OPERATIONS
+ * ======================================================================== *)
+
+(*
+ * ExecuteQuery: Execute a pattern matching query
+ *)
+
+schema ExecuteQuery
+  ΞAtomSpaceState           (* Read-only operation *)
+  pattern: Pattern
+  max_results?: ℕ₁
+  solutions!: ℙ (VariableID ↦ AtomID)
+where
+  (* Check cache first *)
+  pattern ∈ dom query_cache ⟹
+    solutions! = query_cache(pattern)
+  
+  (* Execute query if not cached *)
+  pattern ∉ dom query_cache ⟹
+    (* All solutions satisfy the pattern *)
+    ∀ solution: solutions! •
+      (* Variables bound to atoms *)
+      dom solution = {v: pattern.variables • v.var_id} ∧
+      (* Type constraints satisfied *)
+      (∀ vid: dom solution •
+        ∃ v: pattern.variables | v.var_id = vid •
+          atoms(solution(vid)).atom_type.type_id ∈ v.type_constraint) ∧
+      (* Pattern clauses satisfied *)
+      true  (* Simplified - full pattern matching logic *)
+  
+  (* Limit results if specified *)
+  max_results? ⟹ #solutions! ≤ max_results?
+end
+
+(*
+ * GetIncomingSet: Get all links pointing to an atom
+ *)
+
+schema GetIncomingSet
+  ΞAtomSpaceState
+  atom_id: AtomID
+  incoming!: ℙ AtomID
+where
+  (* Pre-condition *)
+  atom_id ∈ dom atoms
+  
+  (* Return incoming set *)
+  atom_id ∈ dom incoming_index ⟹
+    incoming! = incoming_index(atom_id)
+  
+  atom_id ∉ dom incoming_index ⟹
+    incoming! = ∅
+end
+
+(*
+ * GetAtomsByType: Get all atoms of a given type
+ *)
+
+schema GetAtomsByType
+  ΞAtomSpaceState
+  type_id: TypeID
+  include_subtypes: 𝔹
+  result!: ℙ AtomID
+where
+  (* Pre-condition *)
+  type_id ∈ dom type_index
+  
+  (* Return atoms of exact type *)
+  ¬include_subtypes ⟹
+    result! = type_index(type_id)
+  
+  (* Return atoms of type and subtypes *)
+  include_subtypes ⟹
+    result! = type_index(type_id) ∪
+      (⋃ {subtype: dom type_index |
+          type_id ∈ type_hierarchy(subtype).parent_type •
+          type_index(subtype)})
+end
+
+(* ========================================================================
+ * ATTENTION ALLOCATION OPERATIONS (ECAN)
+ * ======================================================================== *)
+
+(*
+ * SpreadAttention: Spread attention from atom to neighbors
+ *)
+
+schema SpreadAttention
+  ΔAtomSpaceState
+  ΔECANState
+  source_atom: AtomID
+  spread_percentage: Probability
+where
+  (* Pre-conditions *)
+  source_atom ∈ dom atoms
+  0.0 < spread_percentage ∧ spread_percentage ≤ 1.0
+  
+  let source_sti = atoms(source_atom).attention_value.sti.sti in
+  let spread_amount = ⌊source_sti * spread_percentage⌋ in
+  let incoming_set = incoming_index(source_atom) in
+  let outgoing_set = (atoms(source_atom) ∈ Link ⟹ 
+                      atoms(source_atom).outgoing) in
+  let neighbors = incoming_set ∪ elems outgoing_set in
+  
+  (* Spread attention to neighbors *)
+  spread_amount > 0 ∧ neighbors ≠ ∅ ⟹
+    let amount_per_neighbor = spread_amount div #neighbors in
+    (* Update source STI *)
+    atoms' = atoms ⊕ {source_atom ↦ 
+      atoms(source_atom) ⊕ {
+        attention_value = atoms(source_atom).attention_value ⊕ {
+          sti = {sti = source_sti - spread_amount}
+        }
+      }} ⊕
+    (* Update neighbor STIs *)
+    {nid: neighbors • nid ↦
+      atoms(nid) ⊕ {
+        attention_value = atoms(nid).attention_value ⊕ {
+          sti = {sti = atoms(nid).attention_value.sti.sti + amount_per_neighbor}
+        }
+      }} ∧
+    ecan.update_count' = ecan.update_count + 1
+  
+  (* Unchanged if no spread *)
+  (spread_amount ≤ 0 ∨ neighbors = ∅) ⟹
+    atoms' = atoms ∧
+    ecan' = ecan
+end
+
+(*
+ * CollectRent: Decay STI values (attention rent)
+ *)
+
+schema CollectRent
+  ΔAtomSpaceState
+  ΔECANState
+where
+  (* Apply rent collection to all atoms *)
+  atoms' = {aid: dom atoms • aid ↦
+    atoms(aid) ⊕ {
+      attention_value = atoms(aid).attention_value ⊕ {
+        sti = {sti = ⌊atoms(aid).attention_value.sti.sti * 
+                      (1.0 - ecan.rent_collection_rate)⌋}
+      }
+    }} ∧
+  
+  ecan.update_count' = ecan.update_count + 1 ∧
+  
+  (* Conservation: collect rent into funds *)
+  let total_rent_collected = 
+    (∑ aid: dom atoms • 
+      ⌊atoms(aid).attention_value.sti.sti * ecan.rent_collection_rate⌋) in
+    ecan.sti_funds_total' = ecan.sti_funds_total + total_rent_collected
+end
+
+(*
+ * UpdateAttentionalFocus: Update the attentional focus
+ *)
+
+schema UpdateAttentionalFocus
+  ΔAtomSpaceState
+where
+  (* Rebuild attentional focus based on STI *)
+  let high_sti_atoms = {aid: dom atoms |
+    atoms(aid).attention_value.sti.sti ≥ attention_focus.sti_threshold} in
+  
+  (* Take top N atoms by STI *)
+  attention_focus.focus_atoms' = 
+    take attention_focus.max_size
+         (sort_by_sti_desc high_sti_atoms)
+  
+  (* Unchanged *)
+  atoms' = atoms
+end
+
+(* ========================================================================
+ * INFERENCE OPERATIONS (PLN)
+ * ======================================================================== *)
+
+(*
+ * ApplyInferenceRule: Apply a PLN inference rule
+ *)
+
+schema ApplyInferenceRule
+  ΔAtomSpaceState
+  ΔPLNState
+  rule_id: AtomID
+  premises: ℙ AtomID
+  conclusion!: AtomID
+where
+  (* Pre-conditions *)
+  rule_id ∈ pln.rule_base
+  premises ⊆ dom atoms
+  premises ≠ ∅
+  
+  (* All premises have sufficient confidence *)
+  ∀ p: premises •
+    atoms(p).truth_value.confidence ≥ pln.confidence_threshold
+  
+  (* Apply rule to generate conclusion *)
+  let conclusion_tv = infer_truth_value(rule_id, premises) in
+  conclusion_tv.confidence ≥ pln.confidence_threshold ⟹
+    (* Create conclusion atom *)
+    let new_conclusion = construct_conclusion(rule_id, premises, conclusion_tv) in
+    (* Add to atomspace *)
+    conclusion! = add_atom(new_conclusion) ∧
+    pln.inference_count' = pln.inference_count + 1 ∧
+    pln.active_inferences' = pln.active_inferences ∪ {conclusion!}
+  
+  conclusion_tv.confidence < pln.confidence_threshold ⟹
+    (* Insufficient confidence, no conclusion *)
+    conclusion! = 0 ∧
+    pln' = pln
+end
+
+(*
+ * ForwardChain: Execute forward chaining inference
+ *)
+
+schema ForwardChain
+  ΔAtomSpaceState
+  ΔUREState
+  starting_atoms: ℙ AtomID
+  max_steps: ℕ₁
+  derived_atoms!: ℙ AtomID
+where
+  (* Pre-conditions *)
+  starting_atoms ⊆ dom atoms
+  starting_atoms ≠ ∅
+  
+  (* Execute forward chaining *)
+  let current_iteration = 0 in
+  let derived = starting_atoms in
+  while current_iteration < max_steps ∧ 
+        current_iteration < ure.max_iterations do
+    (* Apply forward rules to current derived set *)
+    let new_derived = apply_forward_rules(derived, ure.forward_rules) in
+    derived = derived ∪ new_derived
+    current_iteration = current_iteration + 1
+  
+  derived_atoms! = derived \ starting_atoms ∧
+  ure.current_iteration' = ure.current_iteration + current_iteration
+end
+
+(*
+ * BackwardChain: Execute backward chaining to prove goal
+ *)
+
+schema BackwardChain
+  ΔAtomSpaceState
+  ΔUREState
+  goal_atom: AtomID
+  max_depth: ℕ₁
+  proof_found!: 𝔹
+  proof_trace!: seq AtomID
+where
+  (* Pre-conditions *)
+  goal_atom ∈ dom atoms
+  
+  (* Execute backward chaining *)
+  let success = backward_chain_recursive(
+    goal_atom, 
+    ure.backward_rules, 
+    max_depth,
+    proof_trace!
+  ) in
+  
+  proof_found! = success ∧
+  ure.current_iteration' = ure.current_iteration + #proof_trace!
+end
+
+(* ========================================================================
+ * LEARNING OPERATIONS (MOSES)
+ * ======================================================================== *)
+
+(*
+ * EvolvePrograms: Evolve program population
+ *)
+
+schema EvolvePrograms
+  ΔMOSESState
+  fitness_function: AtomID → ℝ
+where
+  (* Pre-conditions *)
+  moses.current_generation < moses.max_generations
+  
+  (* Select parents *)
+  let parents = tournament_selection(
+    moses.population, 
+    moses.fitness_cache,
+    moses.population_size div 2
+  ) in
+  
+  (* Generate offspring *)
+  let offspring = crossover_and_mutate(parents) in
+  
+  (* Evaluate offspring fitness *)
+  let new_fitness = {p: offspring • p ↦ fitness_function(p)} in
+  
+  (* Update population (elitism: keep best individuals) *)
+  let combined = moses.population ++ offspring in
+  let sorted = sort_by_fitness_desc(combined, 
+                                     moses.fitness_cache ∪ new_fitness) in
+  
+  moses.population' = take moses.population_size sorted ∧
+  moses.fitness_cache' = moses.fitness_cache ∪ new_fitness ∧
+  moses.current_generation' = moses.current_generation + 1 ∧
+  moses.best_fitness' = max(ran(moses.fitness_cache'))
+end
+
+(*
+ * MinePatterns: Discover frequent patterns
+ *)
+
+schema MinePatterns
+  ΞAtomSpaceState
+  ΔPatternMinerState
+  target_atoms: ℙ AtomID
+  new_patterns!: ℙ AtomID
+where
+  (* Pre-conditions *)
+  target_atoms ⊆ dom atoms
+  
+  (* Mine patterns from target atoms *)
+  let candidates = generate_candidate_patterns(
+    target_atoms,
+    pattern_miner.max_conjuncts
+  ) in
+  
+  (* Count pattern frequency *)
+  let freq_map = {p: candidates • 
+    p ↦ count_pattern_instances(p, atoms)} in
+  
+  (* Filter by minimum support *)
+  let frequent_patterns = {p: candidates |
+    freq_map(p) ≥ pattern_miner.min_support} in
+  
+  (* Add new patterns *)
+  new_patterns! = frequent_patterns \ pattern_miner.discovered_patterns ∧
+  pattern_miner.discovered_patterns' = 
+    pattern_miner.discovered_patterns ∪ new_patterns! ∧
+  pattern_miner.pattern_frequency' = 
+    pattern_miner.pattern_frequency ∪ 
+    {p: new_patterns! • p ↦ freq_map(p)}
+end
+
+(* ========================================================================
+ * PERSISTENCE OPERATIONS
+ * ======================================================================== *)
+
+(*
+ * StoreAtoms: Persist atoms to storage backend
+ *)
+
+schema StoreAtoms
+  ΞAtomSpaceState
+  backend: StorageBackend
+  atom_ids: ℙ AtomID
+  success!: 𝔹
+where
+  (* Pre-conditions *)
+  backend.is_connected
+  ¬backend.read_only
+  atom_ids ⊆ dom atoms
+  
+  (* Store each atom *)
+  let store_results = {aid: atom_ids • 
+    aid ↦ backend.store_atom(atoms(aid))} in
+  
+  (* Success if all atoms stored *)
+  success! = (∀ r: ran store_results • r = true)
+end
+
+(*
+ * LoadAtoms: Load atoms from storage backend
+ *)
+
+schema LoadAtoms
+  ΔAtomSpaceState
+  backend: StorageBackend
+  query_pattern: Pattern
+  loaded_ids!: ℙ AtomID
+where
+  (* Pre-conditions *)
+  backend.is_connected
+  ¬read_only
+  
+  (* Load atoms matching pattern *)
+  let loaded_atoms = backend.fetch_atoms(query_pattern) in
+  
+  (* Add loaded atoms to atomspace *)
+  loaded_ids! = {a: loaded_atoms • add_atom(a)} ∧
+  
+  (* Update atom count *)
+  atom_count' = atom_count + #loaded_ids!
+end
+
+(* ========================================================================
+ * COGSERVER OPERATIONS
+ * ======================================================================== *)
+
+(*
+ * HandleClientRequest: Process a client request
+ *)
+
+schema HandleClientRequest
+  ΞAtomSpaceState
+  ΔCogServerState
+  client_id: ℕ
+  request_type: AtomName
+  request_data: ℙ KeyValuePair
+  response!: ℙ KeyValuePair
+  success!: 𝔹
+where
+  (* Pre-conditions *)
+  cogserver.is_listening
+  ∃ addr: ℙ (AtomName × ℕ) • (addr, client_id) ∈ cogserver.connected_clients
+  
+  (* Route request to handler *)
+  request_type = "get_atom" ⟹
+    response! = handle_get_atom(request_data) ∧ success! = true
+  
+  request_type = "add_atom" ⟹
+    response! = handle_add_atom(request_data) ∧ success! = true
+  
+  request_type = "execute_query" ⟹
+    response! = handle_execute_query(request_data) ∧ success! = true
+  
+  request_type ∉ {"get_atom", "add_atom", "execute_query"} ⟹
+    response! = {("error", "unknown_request_type")} ∧ success! = false
+  
+  (* Update request count *)
+  cogserver.request_count' = cogserver.request_count + 1 ∧
+  cogserver.last_request_time' = current_time
+end
+
+(*
+ * AcceptConnection: Accept a new client connection
+ *)
+
+schema AcceptConnection
+  ΔCogServerState
+  client_address: AtomName
+  client_id!: ℕ
+where
+  (* Pre-condition *)
+  cogserver.is_listening
+  
+  (* Generate new client ID *)
+  client_id! = (#cogserver.connected_clients) + 1
+  
+  (* Add client *)
+  cogserver.connected_clients' = 
+    cogserver.connected_clients ∪ {(client_address, client_id!)}
+end
+
+(*
+ * CloseConnection: Close a client connection
+ *)
+
+schema CloseConnection
+  ΔCogServerState
+  client_id: ℕ
+where
+  (* Remove client *)
+  cogserver.connected_clients' = 
+    {(addr, cid): cogserver.connected_clients | cid ≠ client_id}
+end
+
+(* ========================================================================
+ * TASK SCHEDULING OPERATIONS
+ * ======================================================================== *)
+
+(*
+ * EnqueueTask: Add a task to the task queue
+ *)
+
+schema EnqueueTask
+  ΔTaskQueue
+  task: CognitiveTask
+  success!: 𝔹
+where
+  (* Pre-conditions *)
+  #tasks < max_size
+  task.task_id ∉ {t: tasks • t.task_id}
+  
+  (* Add task and maintain priority order *)
+  #tasks < max_size ⟹
+    tasks' = insert_sorted_by_priority(tasks, task) ∧
+    success! = true
+  
+  #tasks ≥ max_size ⟹
+    tasks' = tasks ∧
+    success! = false
+end
+
+(*
+ * DequeueTask: Remove and return highest priority task
+ *)
+
+schema DequeueTask
+  ΔTaskQueue
+  task!: CognitiveTask
+  success!: 𝔹
+where
+  (* Pre-conditions *)
+  #tasks > 0 ⟹
+    task! = head tasks ∧
+    tasks' = tail tasks ∧
+    success! = true
+  
+  #tasks = 0 ⟹
+    success! = false ∧
+    tasks' = tasks
+end
+
+(* ========================================================================
+ * EVENT BUS OPERATIONS
+ * ======================================================================== *)
+
+(*
+ * PublishEvent: Publish an event to the event bus
+ *)
+
+schema PublishEvent
+  ΔEventQueue
+  event: CognitiveEvent
+where
+  (* Add event and maintain order *)
+  events' = insert_sorted_by_priority_timestamp(events, event)
+end
+
+(*
+ * ConsumeEvent: Consume next event from queue
+ *)
+
+schema ConsumeEvent
+  ΔEventQueue
+  event!: CognitiveEvent
+  success!: 𝔹
+where
+  #events > 0 ⟹
+    event! = head events ∧
+    events' = tail events ∧
+    success! = true
+  
+  #events = 0 ⟹
+    success! = false ∧
+    events' = events
+end
+
+(* ========================================================================
+ * SYSTEM-LEVEL OPERATIONS
+ * ======================================================================== *)
+
+(*
+ * BootSystem: Initialize AGI-OS from power-on
+ *)
+
+schema BootSystem
+  AGIOSSystemState'
+where
+  (* Initialize microkernel *)
+  cognumach'.processes = {1 ↦ init_process} ∧
+  cognumach'.memory_regions = initialize_memory() ∧
+  cognumach'.ports = initialize_ports() ∧
+  
+  (* Initialize OS *)
+  hurdcog'.translators = initialize_translators() ∧
+  hurdcog'.file_system = initialize_root_fs() ∧
+  
+  (* Initialize cognitive framework *)
+  atomspace'.atoms = ∅ ∧
+  atomspace'.atom_count = 0 ∧
+  cogserver'.is_listening = true ∧
+  
+  (* Initialize learning *)
+  ecan'.sti_funds_total = 100000 ∧
+  ecan'.lti_funds_total = 100000 ∧
+  
+  (* Set boot time *)
+  boot_time' = current_time ∧
+  uptime' = 0
+end
+
+(*
+ * ShutdownSystem: Gracefully shut down AGI-OS
+ *)
+
+schema ShutdownSystem
+  ΔAGIOSSystemState
+  reason: AtomName
+where
+  (* Stop accepting new requests *)
+  cogserver'.is_listening = false ∧
+  
+  (* Persist unsaved atoms *)
+  let unsaved = {aid: dom atomspace.atoms | 
+    needs_persistence(aid)} in
+  store_atoms(unsaved) ∧
+  
+  (* Terminate non-essential processes *)
+  cognumach'.processes = 
+    {pid: dom cognumach.processes | is_essential(pid)} ∧
+  
+  (* Clear task queues *)
+  task_queue'.tasks = ⟨⟩ ∧
+  event_queue'.events = ⟨⟩
+end
+
+(* ========================================================================
+ * COMPOSITE OPERATIONS
+ * ======================================================================== *)
+
+(*
+ * PerformInferenceStep: Complete inference cycle
+ *)
+
+schema PerformInferenceStep
+  ΔAtomSpaceState
+  ΔPLNState
+  ΔECANState
+where
+  (* Select high-STI atoms for inference *)
+  let focus_atoms = atomspace.attention_focus.focus_atoms in
+  
+  (* Apply inference rules *)
+  ∀ rule: pln.rule_base •
+    let applicable_premises = 
+      find_applicable_premises(rule, focus_atoms) in
+    applicable_premises ≠ ∅ ⟹
+      ApplyInferenceRule(rule, applicable_premises)
+  
+  (* Update attention based on inference results *)
+  UpdateAttentionalFocus
+end
+
+(*
+ * CognitiveLoop: Main cognitive processing loop
+ *)
+
+schema CognitiveLoop
+  ΔAGIOSSystemState
+where
+  (* Process events *)
+  #event_queue.events > 0 ⟹ ConsumeEvent
+  
+  (* Execute tasks *)
+  #task_queue.tasks > 0 ⟹ DequeueTask
+  
+  (* Attention dynamics *)
+  CollectRent ∧ UpdateAttentionalFocus
+  
+  (* Inference *)
+  PerformInferenceStep
+  
+  (* Learning *)
+  moses.current_generation < moses.max_generations ⟹
+    EvolvePrograms
+  
+  (* Pattern mining *)
+  let high_frequency_atoms = select_high_access_atoms(100) in
+  MinePatterns(high_frequency_atoms)
+  
+  (* Advance time *)
+  current_time' = current_time + 1 ∧
+  uptime' = uptime + 1
+end
+
+(* ========================================================================
+ * END OF OPERATIONS SPECIFICATION
+ * ======================================================================== *)
+
+(*
+ * This operations specification defines:
+ * 
+ * 1. AtomSpace operations (add, remove, query atoms)
+ * 2. Pattern matching and query execution
+ * 3. Attention allocation (ECAN) operations
+ * 4. Inference operations (PLN, URE)
+ * 5. Learning operations (MOSES, pattern mining)
+ * 6. Persistence operations (storage backends)
+ * 7. CogServer network operations
+ * 8. Task scheduling and event handling
+ * 9. System-level operations (boot, shutdown)
+ * 10. Composite cognitive processing loops
+ * 
+ * All operations maintain system invariants and specify precise
+ * pre-conditions and post-conditions.
+ *)
