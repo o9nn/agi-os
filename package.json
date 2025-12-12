@@ -1,6 +1,0 @@
-{
-  "name": "occ",
-  "dependencies": {
-    "fs-extra": "^11.2.0"
-  }
-}
