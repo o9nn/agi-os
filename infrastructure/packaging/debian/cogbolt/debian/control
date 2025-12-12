@@ -1,0 +1,61 @@
+Source: cogbolt
+Section: devel
+Priority: optional
+Maintainer: AGI-OS Development Team <dev@agi-os.org>
+Build-Depends: debhelper-compat (= 13),
+               cmake (>= 3.15),
+               g++ (>= 10),
+               libstdc++-10-dev,
+               libcurl4-openssl-dev,
+               libjsoncpp-dev,
+               libglfw3-dev,
+               libgl1-mesa-dev,
+               libimgui-dev,
+               zlib1g-dev
+Standards-Version: 4.6.0
+Homepage: https://github.com/o9nn/agi-os
+Vcs-Browser: https://github.com/o9nn/agi-os
+Vcs-Git: https://github.com/o9nn/agi-os.git
+
+Package: cogbolt
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: libcurl4,
+            libjsoncpp25,
+            libglfw3,
+            libimgui-dev,
+            cognitive-grip,
+            atomspace
+Suggests: cogserver,
+          opencog-pln,
+          opencog-ure
+Description: AI-Powered IDE Core for AGI-OS
+ CogBolt is a modern C++ implementation of an AI-powered IDE core with
+ cognitive integration capabilities. It provides:
+  * GGML integration for AI model inference
+  * RWKV implementation for RNN capabilities
+  * Multi-cursor editing and advanced editor features
+  * Real-time collaborative editing via WebSocket
+  * Integration with OpenCog cognitive framework
+  * Code analysis using PLN reasoning
+  * Pattern mining for codebase optimization
+  * AI-assisted code completion
+ .
+ CogBolt is designed to integrate seamlessly with the AGI-OS cognitive
+ operating system, providing a unified development environment that
+ leverages cognitive capabilities at every layer.
+
+Package: cogbolt-dev
+Architecture: any
+Depends: cogbolt (= ${binary:Version}),
+         ${misc:Depends}
+Description: Development files for CogBolt
+ This package contains the header files and static libraries needed
+ to develop applications that use CogBolt.
+
+Package: cogbolt-doc
+Architecture: all
+Depends: ${misc:Depends}
+Description: Documentation for CogBolt
+ This package contains the documentation for CogBolt, including
+ API documentation, tutorials, and integration guides.

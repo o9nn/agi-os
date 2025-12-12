@@ -25,6 +25,7 @@ set(SOURCES
     src/machspace_bridge.cpp
     src/hurdcog_bridge.cpp
     src/cognumach_bridge.cpp
+    src/cogbolt_bridge.cpp
     src/unified_config.cpp
 )
 

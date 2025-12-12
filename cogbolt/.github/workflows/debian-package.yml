@@ -1,0 +1,136 @@
+name: Debian Package Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-deb:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ubuntu_version: ['22.04', '24.04']
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Set up build environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          cmake \
+          pkg-config \
+          libssl-dev \
+          libcurl4-openssl-dev \
+          libglfw3-dev \
+          libgl1-mesa-dev \
+          libglu1-mesa-dev \
+          zlib1g-dev \
+          libjsoncpp-dev \
+          git \
+          debhelper \
+          devscripts \
+          dh-make
+    
+    - name: Install vcpkg
+      run: |
+        git clone https://github.com/microsoft/vcpkg.git vcpkg_tool
+        ./vcpkg_tool/bootstrap-vcpkg.sh
+        ./vcpkg_tool/vcpkg install
+    
+    - name: Build project
+      run: |
+        mkdir -p build
+        cd build
+        cmake -DCMAKE_TOOLCHAIN_FILE=../vcpkg_tool/scripts/buildsystems/vcpkg.cmake \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_INSTALL_PREFIX=/usr ..
+        make -j$(nproc)
+    
+    - name: Create Debian package structure
+      run: |
+        VERSION=$(git describe --tags --always | sed 's/^v//')
+        PACKAGE_NAME="bolt-cppml"
+        ARCH="amd64"
+        
+        mkdir -p debian-package/DEBIAN
+        mkdir -p debian-package/usr/bin
+        mkdir -p debian-package/usr/lib
+        mkdir -p debian-package/usr/share/applications
+        mkdir -p debian-package/usr/share/doc/${PACKAGE_NAME}
+        mkdir -p debian-package/usr/share/pixmaps
+        
+        # Copy binaries
+        cp build/bolt debian-package/usr/bin/
+        cp build/libbolt_lib.so debian-package/usr/lib/
+        
+        # Create control file
+        cat > debian-package/DEBIAN/control << EOF
+        Package: ${PACKAGE_NAME}
+        Version: ${VERSION}
+        Section: devel
+        Priority: optional
+        Architecture: ${ARCH}
+        Depends: libssl3 | libssl1.1, libcurl4, libglfw3, libgl1, libglu1-mesa, zlib1g, libjsoncpp25
+        Maintainer: Bolt C++ Team <team@bolt-cppml.org>
+        Description: Modern C++ implementation of Bolt IDE with AI integration
+         Bolt C++ is a modern C++ implementation of the Bolt IDE core components
+         with AI integration and real-time collaborative features.
+         .
+         Features include:
+          - GGML integration for AI model inference
+          - RWKV implementation for RNN capabilities
+          - Multi-cursor support and syntax highlighting
+          - Integrated debugger
+          - WebSocket server for real-time collaboration
+        Homepage: https://github.com/cogpy/bolt-cppml
+        EOF
+        
+        # Create desktop entry
+        cat > debian-package/usr/share/applications/bolt-cppml.desktop << EOF
+        [Desktop Entry]
+        Type=Application
+        Name=Bolt C++
+        Comment=Modern C++ IDE with AI integration
+        Exec=/usr/bin/bolt
+        Icon=bolt-cppml
+        Terminal=false
+        Categories=Development;IDE;
+        EOF
+        
+        # Copy documentation
+        cp README.md debian-package/usr/share/doc/${PACKAGE_NAME}/
+        cp LICENSE debian-package/usr/share/doc/${PACKAGE_NAME}/copyright
+        
+        # Copy icon if exists
+        if [ -f generated-icon.png ]; then
+          cp generated-icon.png debian-package/usr/share/pixmaps/bolt-cppml.png
+        fi
+        
+        # Set permissions
+        chmod 755 debian-package/DEBIAN
+        chmod 755 debian-package/usr/bin/bolt
+        chmod 644 debian-package/usr/lib/libbolt_lib.so
+        
+        # Build .deb package
+        dpkg-deb --build debian-package ${PACKAGE_NAME}_${VERSION}_${ARCH}.deb
+    
+    - name: Upload Debian package
+      uses: actions/upload-artifact@v4
+      with:
+        name: debian-package-ubuntu-${{ matrix.ubuntu_version }}
+        path: '*.deb'
+    
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: '*.deb'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

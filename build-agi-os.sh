@@ -44,6 +44,7 @@ log_error() {
 BUILD_COGNUMACH=0
 BUILD_HURDCOG=0
 BUILD_OCC=1
+BUILD_COGBOLT=1
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -60,12 +61,14 @@ while [[ $# -gt 0 ]]; do
             BUILD_COGNUMACH=1
             BUILD_HURDCOG=1
             BUILD_OCC=1
+            BUILD_COGBOLT=1
             shift
             ;;
         --occ-only)
             BUILD_COGNUMACH=0
             BUILD_HURDCOG=0
             BUILD_OCC=1
+            BUILD_COGBOLT=0
             shift
             ;;
         --prefix)
@@ -91,6 +94,7 @@ log_info "  Parallel jobs: $PARALLEL_JOBS"
 log_info "  Build Cognumach: $BUILD_COGNUMACH"
 log_info "  Build HurdCog: $BUILD_HURDCOG"
 log_info "  Build OCC: $BUILD_OCC"
+log_info "  Build CogBolt: $BUILD_COGBOLT"
 log_info ""
 
 # Layer 0: Build Tools - MIG (Mach Interface Generator)
@@ -238,6 +242,42 @@ if [ $BUILD_OCC -eq 1 ]; then
     cd ../..
 fi
 
+# Layer 4: CogBolt AI-Powered IDE Core
+if [ $BUILD_COGBOLT -eq 1 ]; then
+    log_info "Layer 4: Building CogBolt AI-Powered IDE Core..."
+    
+    if [ ! -d "cogbolt" ]; then
+        log_error "CogBolt directory not found at cogbolt/"
+        exit 1
+    fi
+    
+    mkdir -p "$BUILD_DIR/cogbolt-build"
+    cd "$BUILD_DIR/cogbolt-build"
+    
+    log_info "  Configuring CogBolt..."
+    cmake "$BUILD_DIR/../cogbolt" \
+           -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE" \
+           -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX" || {
+        log_error "CogBolt CMake configuration failed"
+        exit 1
+    }
+    
+    log_info "  Building CogBolt..."
+    make -j$PARALLEL_JOBS || {
+        log_error "CogBolt build failed"
+        exit 1
+    }
+    
+    log_info "  Installing CogBolt..."
+    make install || {
+        log_error "CogBolt install failed"
+        exit 1
+    }
+    
+    log_success "CogBolt built and installed"
+    cd ../..
+fi
+
 # Summary
 log_success "AGI-OS build completed successfully!"
 log_info ""
@@ -245,6 +285,7 @@ log_info "Installation summary:"
 log_info "  Cognumach: $BUILD_COGNUMACH"
 log_info "  HurdCog: $BUILD_HURDCOG"
 log_info "  OpenCog Collection: $BUILD_OCC"
+log_info "  CogBolt IDE Core: $BUILD_COGBOLT"
 log_info "  Install prefix: $INSTALL_PREFIX"
 log_info ""
 log_info "To use the installed components, add to your environment:"

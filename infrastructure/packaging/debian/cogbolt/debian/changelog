@@ -1,0 +1,17 @@
+cogbolt (1.0.0-1) unstable; urgency=medium
+
+  * Initial release of CogBolt AI-Powered IDE Core
+  * Integration with AGI-OS cognitive operating system
+  * GGML integration for AI model inference
+  * RWKV implementation for RNN capabilities
+  * Multi-cursor editing and advanced editor features
+  * Real-time collaborative editing via WebSocket
+  * Integration with OpenCog AtomSpace
+  * Code analysis using PLN reasoning
+  * Pattern mining for codebase optimization
+  * AI-assisted code completion
+  * Cognitive-Grip integration for unified cognitive access
+  * Support for C++20 standard
+  * Optional dependencies for flexible deployment
+
+ -- AGI-OS Development Team <dev@agi-os.org>  Thu, 12 Dec 2025 14:30:00 +0200

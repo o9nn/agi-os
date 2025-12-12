@@ -54,6 +54,9 @@ OPTION(BUILD_ATOMSPACE_EXTENSIONS "Build AtomSpace language extensions" ON)
 OPTION(BUILD_ATOMSPACE_ACCELERATOR "Build AtomSpace accelerator inference engine" ON)
 OPTION(BUILD_AGENTIC_CHATBOTS "Build agentic chatbots integration" ON)
 
+# Layer 4: AI-Powered Development Tools
+OPTION(BUILD_COGBOLT "Build CogBolt AI-Powered IDE Core" ON)
+
 # ============================================================================
 # Layer 0: Build Tools - MIG (Mach Interface Generator)
 # ============================================================================
@@ -241,6 +244,20 @@ IF(BUILD_AGENTIC_CHATBOTS AND BUILD_ATOMSPACE)
 ENDIF()
 
 # ============================================================================
+# Layer 4: CogBolt AI-Powered IDE Core
+# ============================================================================
+
+IF(BUILD_COGBOLT)
+    MESSAGE(STATUS "Building Layer 4: CogBolt AI-Powered IDE Core...")
+    IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/cogbolt/CMakeLists.txt")
+        add_subdirectory(cogbolt)
+        MESSAGE(STATUS "  CogBolt found and configured")
+    ELSE()
+        MESSAGE(WARNING "  CogBolt not found at cogbolt/")
+    ENDIF()
+ENDIF()
+
+# ============================================================================
 # Integration Layer
 # ============================================================================
 
@@ -285,6 +302,9 @@ MESSAGE(STATUS "    AtomSpace Accelerator: ${BUILD_ATOMSPACE_ACCELERATOR}")
 MESSAGE(STATUS "    Agentic Chatbots: ${BUILD_AGENTIC_CHATBOTS}")
 MESSAGE(STATUS "")
 MESSAGE(STATUS "Integration Layer: ${BUILD_INTEGRATION_LAYER}")
+MESSAGE(STATUS "")
+MESSAGE(STATUS "Layer 4 - AI Development Tools:")
+MESSAGE(STATUS "  CogBolt IDE Core: ${BUILD_COGBOLT}")
 MESSAGE(STATUS "")
 MESSAGE(STATUS "CRITICAL DEPENDENCY NOTES:")
 MESSAGE(STATUS "  - CogServer REQUIRES AtomSpace Storage")
