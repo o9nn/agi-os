@@ -42,8 +42,9 @@ log_info() {
 STAGE_0_PACKAGES=()  # Microkernel (optional)
 STAGE_1_PACKAGES=("cogutil")  # Foundation
 STAGE_2_PACKAGES=("atomspace")  # Core AtomSpace
+STAGE_2_5_PACKAGES=("atomspace-storage")  # CRITICAL: I/O foundation (must be before cogserver)
 STAGE_3_PACKAGES=("atomspace-cog" "atomspace-rocks" "atomspace-pgres")  # Storage backends
-STAGE_4_PACKAGES=("cogserver" "ure")  # Core services
+STAGE_4_PACKAGES=("cogserver" "ure")  # Core services (cogserver now has atomspace-storage available)
 STAGE_5_PACKAGES=("attention" "pln" "miner" "unify" "spacetime")  # Cognitive components
 STAGE_6_PACKAGES=("learn" "generate")  # Learning and generation
 STAGE_7_PACKAGES=("lg-atomese" "relex")  # NLP components
@@ -201,10 +202,11 @@ log_info "Build AGI-OS: $BUILD_AGI_OS"
 log_info "Log directory: $LOG_DIR"
 echo ""
 
-# Calculate total packages
+# Calculate total packages (including Stage 2.5)
 TOTAL_PACKAGES=$((
     ${#STAGE_1_PACKAGES[@]} +
     ${#STAGE_2_PACKAGES[@]} +
+    ${#STAGE_2_5_PACKAGES[@]} +
     ${#STAGE_3_PACKAGES[@]} +
     ${#STAGE_4_PACKAGES[@]} +
     ${#STAGE_5_PACKAGES[@]} +
@@ -236,6 +238,9 @@ build_stage_sequential "1" "${STAGE_1_PACKAGES[@]}" || { log_error "Stage 1 fail
 
 # Build Stage 2 (Core AtomSpace)
 build_stage_sequential "2" "${STAGE_2_PACKAGES[@]}" || { log_error "Stage 2 failed"; exit 1; }
+
+# Build Stage 2.5 (CRITICAL: AtomSpace Storage - MUST be before cogserver)
+build_stage_sequential "2.5" "${STAGE_2_5_PACKAGES[@]}" || { log_error "Stage 2.5 (atomspace-storage) failed"; exit 1; }
 
 # Build Stage 3 (Storage backends) - can be parallel
 build_stage_parallel "3" "${STAGE_3_PACKAGES[@]}" || log_warn "Some Stage 3 packages failed"

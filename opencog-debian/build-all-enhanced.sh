@@ -175,10 +175,13 @@ main() {
     # Stage 2: Core AtomSpace
     build_package "atomspace" "2" || exit 1
     
+    # Stage 2.5: CRITICAL - AtomSpace Storage (MUST be before cogserver)
+    build_package "atomspace-storage" "2.5" || exit 1
+    
     # Stage 3: Storage Backends (parallel)
     build_parallel "3" "atomspace-cog" "atomspace-rocks" "atomspace-pgres" || exit 1
     
-    # Stage 4: Core Services (parallel)
+    # Stage 4: Core Services (parallel) - cogserver now has atomspace-storage available
     build_parallel "4" "cogserver" "ure" || exit 1
     
     # Stage 4.5: Cognitive OS Layer (optional)

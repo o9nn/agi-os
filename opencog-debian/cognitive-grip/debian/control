@@ -1,0 +1,38 @@
+Source: cognitive-grip
+Section: devel
+Priority: optional
+Maintainer: OpenCog Developers <opencog@googlegroups.com>
+Build-Depends: debhelper (>= 11), build-essential, cmake, libboost-dev, libboost-system-dev, libcogutil-dev, opencog-atomspace, atomspace-storage, python3-dev, guile-3.0-dev
+Standards-Version: 4.6.2
+Homepage: https://opencog.org
+Vcs-Git: https://github.com/opencog/agi-os.git
+Vcs-Browser: https://github.com/opencog/agi-os
+
+Package: cognitive-grip
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libcogutil-dev, opencog-atomspace, atomspace-storage
+Description: Cognitive-Grip: Unified Abstraction Layer for AGI-OS
+ Cognitive-Grip provides seamless integration between CogNumach, HurdCog,
+ and OpenCog components. It serves as the central coordination point for
+ cognitive synergy across all layers of the AGI Operating System.
+ .
+ Key features:
+  - Unified AtomSpace access
+  - Microkernel interface abstraction
+  - Operating system service integration
+  - Cognitive component registration and invocation
+  - Storage backend coordination
+  - Knowledge graph persistence
+ .
+ This package is essential for AGI-OS integration and must be installed
+ after atomspace-storage and before higher-level cognitive components.
+
+Package: cognitive-grip-dev
+Architecture: any
+Depends: ${misc:Depends}, cognitive-grip (= ${binary:Version}), libcogutil-dev, opencog-atomspace
+Description: Development files for Cognitive-Grip
+ This package contains the header files and development libraries for
+ building applications and components that use the Cognitive-Grip API.
+ .
+ Install this package if you need to develop cognitive components for
+ the AGI-OS framework.
