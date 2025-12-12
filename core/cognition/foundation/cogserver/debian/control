@@ -1,0 +1,66 @@
+Source: cogserver
+Section: net
+Priority: optional
+Maintainer: OpenCog Developers <opencog@googlegroups.com>
+Build-Depends: debhelper (>= 13),
+               cmake (>= 3.22),
+               g++ (>= 11),
+               libatomspace-dev (>= 5.0.5),
+               libatomspace-storage-dev (>= 5.0.5),
+               libcogutil-dev (>= 1.0.0),
+               libboost-dev,
+               libboost-filesystem-dev,
+               libboost-program-options-dev,
+               libboost-system-dev,
+               libboost-thread-dev,
+               libboost-regex-dev,
+               libzmq3-dev,
+               python3-dev
+Standards-Version: 4.6.2
+Homepage: https://opencog.org
+Vcs-Git: https://github.com/cogpy/occ.git
+Vcs-Browser: https://github.com/cogpy/occ
+
+Package: cogserver
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         libatomspace (>= 5.0.5),
+         libatomspace-storage (>= 5.0.5),
+         libcogutil (>= 1.0.0),
+         libzmq3
+Description: OpenCog CogServer networking and server (executable)
+ CogServer provides the networking and server infrastructure for the
+ OpenCog cognitive architecture, enabling distributed reasoning and
+ remote access to AtomSpace.
+ .
+ This package contains the CogServer executable and utilities.
+
+Package: libcogserver
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         libatomspace (>= 5.0.5),
+         libatomspace-storage (>= 5.0.5),
+         libcogutil (>= 1.0.0)
+Description: OpenCog CogServer library (runtime)
+ CogServer provides the networking and server infrastructure for the
+ OpenCog cognitive architecture, enabling distributed reasoning and
+ remote access to AtomSpace.
+ .
+ This package contains the shared libraries for runtime use.
+
+Package: libcogserver-dev
+Section: libdevel
+Architecture: any
+Depends: libcogserver (= ${binary:Version}),
+         libatomspace-dev (>= 5.0.5),
+         libatomspace-storage-dev (>= 5.0.5),
+         libcogutil-dev (>= 1.0.0),
+         ${misc:Depends}
+Description: OpenCog CogServer library (development files)
+ CogServer provides the networking and server infrastructure for the
+ OpenCog cognitive architecture, enabling distributed reasoning and
+ remote access to AtomSpace.
+ .
+ This package contains the header files and development libraries.

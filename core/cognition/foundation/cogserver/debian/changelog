@@ -1,0 +1,7 @@
+cogserver (5.0.5-1) unstable; urgency=medium
+
+  * Initial packaging for CogServer
+  * Requires AtomSpace Storage for s-expression parsing
+  * Networking and server infrastructure for OpenCog
+
+ -- OpenCog Developers <opencog@googlegroups.com>  Thu, 12 Dec 2024 00:00:00 +0000

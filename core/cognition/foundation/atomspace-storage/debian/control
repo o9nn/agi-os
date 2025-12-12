@@ -1,0 +1,46 @@
+Source: atomspace-storage
+Section: libs
+Priority: optional
+Maintainer: OpenCog Developers <opencog@googlegroups.com>
+Build-Depends: debhelper (>= 13),
+               cmake (>= 3.22),
+               g++ (>= 11),
+               libatomspace-dev (>= 5.0.5),
+               libcogutil-dev (>= 1.0.0),
+               libboost-dev,
+               libboost-filesystem-dev,
+               libboost-system-dev,
+               libboost-thread-dev,
+               libpq-dev,
+               librocksdb-dev
+Standards-Version: 4.6.2
+Homepage: https://opencog.org
+Vcs-Git: https://github.com/cogpy/occ.git
+Vcs-Browser: https://github.com/cogpy/occ
+
+Package: libatomspace-storage
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         libatomspace (>= 5.0.5),
+         libcogutil (>= 1.0.0)
+Description: OpenCog AtomSpace storage backends (runtime)
+ AtomSpace Storage provides pluggable backend storage for the AtomSpace
+ hypergraph database, including support for RocksDB, PostgreSQL, and
+ other storage engines.
+ .
+ This package contains the shared libraries for runtime use.
+
+Package: libatomspace-storage-dev
+Section: libdevel
+Architecture: any
+Depends: libatomspace-storage (= ${binary:Version}),
+         libatomspace-dev (>= 5.0.5),
+         libcogutil-dev (>= 1.0.0),
+         ${misc:Depends}
+Description: OpenCog AtomSpace storage backends (development files)
+ AtomSpace Storage provides pluggable backend storage for the AtomSpace
+ hypergraph database, including support for RocksDB, PostgreSQL, and
+ other storage engines.
+ .
+ This package contains the header files and development libraries.

@@ -1,0 +1,7 @@
+atomspace-storage (5.0.5-1) unstable; urgency=medium
+
+  * Initial packaging for AtomSpace Storage
+  * Support for RocksDB, PostgreSQL, and other backends
+  * Integration with AtomSpace 5.0.5+
+
+ -- OpenCog Developers <opencog@googlegroups.com>  Thu, 12 Dec 2024 00:00:00 +0000
