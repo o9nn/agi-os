@@ -114,6 +114,14 @@ IF(BUILD_VORTEX_MORPHULE_EGREGORE)
     ELSE()
         MESSAGE(WARNING "  Egregore not found at core/inferno-kernel/egregore/")
     ENDIF()
+    
+    # Deep Tree Echo Integration Bridge
+    IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/avatar/deep-tree-echo/bridge/CMakeLists.txt")
+        add_subdirectory(core/avatar/deep-tree-echo/bridge)
+        MESSAGE(STATUS "  Deep Tree Echo integration bridge configured")
+    ELSE()
+        MESSAGE(WARNING "  Deep Tree Echo bridge not found at core/avatar/deep-tree-echo/bridge/")
+    ENDIF()
 ENDIF()
 
 # ============================================================================

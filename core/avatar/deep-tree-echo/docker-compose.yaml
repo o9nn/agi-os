@@ -1,0 +1,83 @@
+version: '3.9'
+
+services:
+  avatar:
+    build:
+      context: .
+      target: production
+    container_name: deep-tree-echo-avatar
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - AVATAR_MODE=hybrid
+      - COGNITIVE_ENABLED=true
+      - HYPER_CHAOTIC=true
+      - SUPER_HOT_GIRL=true
+    volumes:
+      - avatar-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - avatar-network
+
+  avatar-dev:
+    build:
+      context: .
+      target: development
+    container_name: deep-tree-echo-avatar-dev
+    ports:
+      - "3000:3000"
+      - "9229:9229"  # Debug port
+    environment:
+      - NODE_ENV=development
+      - DEBUG=true
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - avatar-network
+    profiles:
+      - dev
+
+  redis:
+    image: redis:7-alpine
+    container_name: avatar-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - avatar-network
+    profiles:
+      - full
+
+  nginx:
+    image: nginx:alpine
+    container_name: avatar-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      - avatar
+    networks:
+      - avatar-network
+    profiles:
+      - full
+
+volumes:
+  avatar-data:
+  redis-data:
+
+networks:
+  avatar-network:
+    driver: bridge
