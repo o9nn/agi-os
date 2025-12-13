@@ -1,0 +1,63 @@
+Source: opencog-atomspace-9p
+Section: science
+Priority: optional
+Maintainer: AGI-OS Development Team <dev@agi-os.org>
+Build-Depends: debhelper (>= 11),
+               cmake (>= 3.12),
+               g++ (>= 7.0),
+               libinferno-kernel-dev,
+               libcogutil-dev,
+               libatomspace-dev
+Standards-Version: 4.5.0
+Homepage: https://github.com/o9nn/agi-os
+Vcs-Git: https://github.com/o9nn/agi-os.git
+Vcs-Browser: https://github.com/o9nn/agi-os
+
+Package: libatomspace-9p1
+Architecture: any
+Multi-Arch: same
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         libinferno-kernel1,
+         libcogutil,
+         libatomspace
+Description: AtomSpace hypergraph exposed as 9P file servers
+ This package exposes the OpenCog AtomSpace hypergraph database
+ as 9P file servers, enabling:
+  - Atoms as filesystem directories
+  - Truth values as file attributes
+  - Links as directory structures
+  - Pattern matching as namespace walks
+  - Distributed access via 9P protocol
+ .
+ This makes cognitive operations accessible via standard Unix
+ file operations and enables transparent network access.
+
+Package: libatomspace-9p-dev
+Section: libdevel
+Architecture: any
+Multi-Arch: same
+Depends: libatomspace-9p1 (= ${binary:Version}),
+         ${misc:Depends},
+         libinferno-kernel-dev,
+         libcogutil-dev,
+         libatomspace-dev
+Description: Development files for AtomSpace-9P
+ This package contains the development files (headers and static
+ libraries) for AtomSpace-9P.
+ .
+ Install this package if you want to develop applications that
+ access AtomSpace via 9P protocol.
+
+Package: atomspace-9p-tools
+Architecture: any
+Depends: libatomspace-9p1 (= ${binary:Version}),
+         ${shlibs:Depends},
+         ${misc:Depends}
+Description: Tools and utilities for AtomSpace-9P
+ This package provides command-line tools and utilities for
+ working with AtomSpace via 9P protocol:
+  - Mount/unmount AtomSpace namespaces
+  - Query atoms via filesystem operations
+  - Monitor attention values
+  - Manage distributed AtomSpace instances

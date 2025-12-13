@@ -30,6 +30,9 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # AGI-OS Build Configuration Options
 # ============================================================================
 
+# Layer 0: Inferno Kernel
+OPTION(BUILD_INFERNO_KERNEL "Build Inferno Kernel components" ON)
+
 # Layer 0: Build Tools
 OPTION(BUILD_MIG "Build MIG (Mach Interface Generator) - Build Tool" OFF)
 
@@ -54,8 +57,28 @@ OPTION(BUILD_ATOMSPACE_EXTENSIONS "Build AtomSpace language extensions" ON)
 OPTION(BUILD_ATOMSPACE_ACCELERATOR "Build AtomSpace accelerator inference engine" ON)
 OPTION(BUILD_AGENTIC_CHATBOTS "Build agentic chatbots integration" ON)
 
+# Layer 3.6: 9P-Enabled Cognitive Components
+OPTION(BUILD_ATOMSPACE_9P "Build AtomSpace 9P file servers" ON)
+OPTION(BUILD_PLN_9P "Build PLN reasoning via 9P" ON)
+OPTION(BUILD_ECAN_9P "Build ECAN attention via 9P" ON)
+OPTION(BUILD_DISTRIBUTED_COGNITION "Build distributed cognition" ON)
+
 # Layer 4: AI-Powered Development Tools
 OPTION(BUILD_COGBOLT "Build CogBolt AI-Powered IDE Core" ON)
+
+# ============================================================================
+# Layer 0: Inferno Kernel
+# ============================================================================
+
+IF(BUILD_INFERNO_KERNEL)
+    MESSAGE(STATUS "Building Layer 0: Inferno Kernel...")
+    IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/inferno-kernel/CMakeLists.txt")
+        add_subdirectory(core/inferno-kernel)
+        MESSAGE(STATUS "  Inferno Kernel configured")
+    ELSE()
+        MESSAGE(WARNING "  Inferno Kernel not found at core/inferno-kernel/")
+    ENDIF()
+ENDIF()
 
 # ============================================================================
 # Layer 0: Build Tools - MIG (Mach Interface Generator)
@@ -244,6 +267,50 @@ IF(BUILD_AGENTIC_CHATBOTS AND BUILD_ATOMSPACE)
 ENDIF()
 
 # ============================================================================
+# Layer 3.6: 9P-Enabled Cognitive Components
+# ============================================================================
+
+IF(BUILD_ATOMSPACE_9P AND BUILD_INFERNO_KERNEL AND BUILD_ATOMSPACE)
+    MESSAGE(STATUS "Building AtomSpace-9P (AtomSpace as 9P file servers)...")
+    IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/cognition/foundation/atomspace-9p/CMakeLists.txt")
+        add_subdirectory(core/cognition/foundation/atomspace-9p)
+        MESSAGE(STATUS "  AtomSpace-9P configured")
+    ELSE()
+        MESSAGE(WARNING "  AtomSpace-9P not found at core/cognition/foundation/atomspace-9p/")
+    ENDIF()
+ENDIF()
+
+IF(BUILD_PLN_9P AND BUILD_ATOMSPACE_9P)
+    MESSAGE(STATUS "Building PLN-9P (PLN reasoning via 9P)...")
+    IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/cognition/reasoning/pln-9p/CMakeLists.txt")
+        add_subdirectory(core/cognition/reasoning/pln-9p)
+        MESSAGE(STATUS "  PLN-9P configured")
+    ELSE()
+        MESSAGE(WARNING "  PLN-9P not found at core/cognition/reasoning/pln-9p/")
+    ENDIF()
+ENDIF()
+
+IF(BUILD_ECAN_9P AND BUILD_ATOMSPACE_9P)
+    MESSAGE(STATUS "Building ECAN-9P (ECAN attention via 9P)...")
+    IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/cognition/attention/ecan-9p/CMakeLists.txt")
+        add_subdirectory(core/cognition/attention/ecan-9p)
+        MESSAGE(STATUS "  ECAN-9P configured")
+    ELSE()
+        MESSAGE(WARNING "  ECAN-9P not found at core/cognition/attention/ecan-9p/")
+    ENDIF()
+ENDIF()
+
+IF(BUILD_DISTRIBUTED_COGNITION AND BUILD_ATOMSPACE_9P)
+    MESSAGE(STATUS "Building Distributed Cognition...")
+    IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/cognition/distributed/CMakeLists.txt")
+        add_subdirectory(core/cognition/distributed)
+        MESSAGE(STATUS "  Distributed Cognition configured")
+    ELSE()
+        MESSAGE(WARNING "  Distributed Cognition not found at core/cognition/distributed/")
+    ENDIF()
+ENDIF()
+
+# ============================================================================
 # Layer 4: CogBolt AI-Powered IDE Core
 # ============================================================================
 
@@ -279,6 +346,7 @@ MESSAGE(STATUS "========================================")
 MESSAGE(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 MESSAGE(STATUS "")
 MESSAGE(STATUS "AGI-OS Stack:")
+MESSAGE(STATUS "Layer 0 - Inferno Kernel: ${BUILD_INFERNO_KERNEL}")
 MESSAGE(STATUS "Layer 0 - MIG (Build Tool): ${BUILD_MIG}")
 MESSAGE(STATUS "Layer 1 - Cognumach (Microkernel): ${BUILD_COGNUMACH}")
 MESSAGE(STATUS "Layer 2 - HurdCog (OS + Cognitive): ${BUILD_HURDCOG}")

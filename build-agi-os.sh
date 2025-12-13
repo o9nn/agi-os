@@ -48,6 +48,27 @@ BUILD_COGBOLT=1
 
 while [[ $# -gt 0 ]]; do
     case $1 in
+        --help)
+            echo "AGI-OS Build Script"
+            echo ""
+            echo "Usage: ./build-agi-os.sh [OPTIONS]"
+            echo ""
+            echo "Options:"
+            echo "  --cognumach       Build Cognumach microkernel"
+            echo "  --hurdcog         Build HurdCog OS (implies --cognumach)"
+            echo "  --all             Build all components"
+            echo "  --occ-only        Build only OpenCog Collection"
+            echo "  --prefix PATH     Set installation prefix (default: /usr/local)"
+            echo "  --jobs N          Set parallel jobs (default: nproc)"
+            echo "  --help            Display this help message"
+            echo ""
+            echo "Examples:"
+            echo "  ./build-agi-os.sh                    # Build OpenCog and CogBolt"
+            echo "  ./build-agi-os.sh --all              # Build everything"
+            echo "  ./build-agi-os.sh --occ-only         # Build only OpenCog"
+            echo "  ./build-agi-os.sh --prefix /opt/agi  # Custom install location"
+            exit 0
+            ;;
         --cognumach)
             BUILD_COGNUMACH=1
             shift
