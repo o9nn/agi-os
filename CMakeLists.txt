@@ -32,6 +32,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Layer 0: Inferno Kernel
 OPTION(BUILD_INFERNO_KERNEL "Build Inferno Kernel components" ON)
+OPTION(BUILD_VORTEX_MORPHULE_EGREGORE "Build Vortex-Morphule-Egregore architecture" ON)
 
 # Layer 0: Build Tools
 OPTION(BUILD_MIG "Build MIG (Mach Interface Generator) - Build Tool" OFF)
@@ -83,6 +84,35 @@ IF(BUILD_INFERNO_KERNEL)
         ENDIF()
     ELSE()
         MESSAGE(WARNING "  Inferno Kernel not found at core/inferno-kernel/")
+    ENDIF()
+ENDIF()
+
+# Vortex-Morphule-Egregore Architecture
+IF(BUILD_VORTEX_MORPHULE_EGREGORE)
+    MESSAGE(STATUS "Building Vortex-Morphule-Egregore Architecture...")
+    
+    # Vortex (Matula numbers + vorticity)
+    IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/inferno-kernel/vortex/CMakeLists.txt")
+        add_subdirectory(core/inferno-kernel/vortex)
+        MESSAGE(STATUS "  Vortex (Matula + A000081) configured")
+    ELSE()
+        MESSAGE(WARNING "  Vortex not found at core/inferno-kernel/vortex/")
+    ENDIF()
+    
+    # Morphule (agentic functions)
+    IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/inferno-kernel/morphule/CMakeLists.txt")
+        add_subdirectory(core/inferno-kernel/morphule)
+        MESSAGE(STATUS "  Morphule (Transform Quirk) configured")
+    ELSE()
+        MESSAGE(WARNING "  Morphule not found at core/inferno-kernel/morphule/")
+    ENDIF()
+    
+    # Egregore (daemon constellations)
+    IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/inferno-kernel/egregore/CMakeLists.txt")
+        add_subdirectory(core/inferno-kernel/egregore)
+        MESSAGE(STATUS "  Egregore (stigmergic coordination) configured")
+    ELSE()
+        MESSAGE(WARNING "  Egregore not found at core/inferno-kernel/egregore/")
     ENDIF()
 ENDIF()
 
