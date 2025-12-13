@@ -1,0 +1,680 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║                    CogPilot.jl - Data Model Specification                    ║
+║                           Z++ Formal Specification                           ║
+║                                                                              ║
+║  This specification formalizes the data layer of the CogPilot.jl system,    ║
+║  focusing on the fundamental data structures that represent rooted trees,   ║
+║  B-series genomes, reservoir states, and membrane configurations.           ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 1. BASIC TYPES AND CONSTANTS                                               │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ A000081 Sequence Definition ]───────────────────────────────────────────────
+
+The OEIS A000081 sequence is the mathematical foundation of the entire system.
+It counts the number of unlabeled rooted trees with n nodes.
+
+A000081 : ℕ → ℕ
+  where
+    A000081(1) = 1
+    A000081(2) = 1
+    A000081(3) = 2
+    A000081(4) = 4
+    A000081(5) = 9
+    A000081(6) = 20
+    A000081(7) = 48
+    A000081(8) = 115
+    A000081(9) = 286
+    A000081(10) = 719
+    ...
+  
+  invariant: ∀n ∈ ℕ, n ≥ 1 ⇒ A000081(n) > 0
+  invariant: ∀n ∈ ℕ, n ≥ 2 ⇒ A000081(n) > A000081(n-1)  // Strictly monotonically increasing
+
+──[ Node Identifier Type ]──────────────────────────────────────────────────────
+
+NodeID ≙ ℕ₁  // Natural numbers starting from 1
+
+──[ Order Type ]────────────────────────────────────────────────────────────────
+
+Order ≙ ℕ₁  // Tree order (number of nodes), positive natural number
+
+──[ Coefficient Type ]──────────────────────────────────────────────────────────
+
+Coefficient ≙ ℝ  // Real-valued coefficients for B-series
+
+──[ Fitness Type ]──────────────────────────────────────────────────────────────
+
+Fitness ≙ { f : ℝ | 0.0 ≤ f ≤ 1.0 }  // Normalized fitness in [0,1]
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 2. ROOTED TREE REPRESENTATION                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Level Sequence ]─────────────────────────────────────────────────────────────
+
+A rooted tree is represented by a level sequence, which is a compact encoding
+of the tree structure as a sequence of natural numbers representing the depth
+of each node in a breadth-first traversal.
+
+schema LevelSequence
+  sequence : seq ℕ
+  
+  where
+    // Level sequence must be non-empty
+    #sequence ≥ 1
+    
+    // First element is always 0 (root at level 0)
+    sequence[1] = 0
+    
+    // Each level can increase by at most 1 from previous
+    ∀i : 2..#sequence • sequence[i] ≤ sequence[i-1] + 1
+    
+    // Valid tree structure (connected)
+    ∀i : 2..#sequence • 
+      sequence[i] ≤ max({sequence[j] | j ∈ 1..(i-1)}) + 1
+end
+
+Examples:
+  • [0]         → Single node tree (order 1)
+  • [0, 1]      → Root with one child (order 2)
+  • [0, 1, 1]   → Root with two children (order 3)
+  • [0, 1, 2]   → Linear chain of 3 nodes (order 3)
+
+──[ Rooted Tree ]────────────────────────────────────────────────────────────────
+
+schema RootedTree
+  level_sequence : LevelSequence
+  order : Order
+  symmetry_factor : ℕ₁
+  id : NodeID
+  
+  where
+    // Order equals length of level sequence
+    order = #level_sequence.sequence
+    
+    // Symmetry factor divides order! (factorial)
+    ∃k : ℕ • k × symmetry_factor ≤ factorial(order)
+    
+    // Trees of order n must satisfy A000081 count
+    // (This is a global constraint checked at collection level)
+    symmetry_factor ≥ 1
+end
+
+──[ Tree Collection ]─────────────────────────────────────────────────────────────
+
+For each order n, the number of distinct rooted trees must equal A000081(n).
+
+schema TreeCollection
+  trees_by_order : Order ⇸ seq RootedTree  // Partial function from order to trees
+  max_order : Order
+  
+  where
+    // Domain is contiguous from 1 to max_order
+    dom trees_by_order = 1..max_order
+    
+    // For each order, the count must match A000081
+    ∀o : dom trees_by_order •
+      #(trees_by_order(o)) = A000081(o)
+    
+    // All trees of order o actually have order o
+    ∀o : dom trees_by_order •
+      ∀t : trees_by_order(o) • t.order = o
+    
+    // No duplicate trees within an order (up to isomorphism)
+    ∀o : dom trees_by_order •
+      ∀t₁, t₂ : trees_by_order(o) • 
+        t₁ ≠ t₂ ⇒ t₁.level_sequence ≠ t₂.level_sequence
+    
+    // Tree IDs are unique across all orders
+    ∀o₁, o₂ : dom trees_by_order •
+      ∀t₁ : trees_by_order(o₁), t₂ : trees_by_order(o₂) •
+        t₁.id = t₂.id ⇒ t₁ = t₂
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 3. B-SERIES GENOME                                                         │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Tree-Coefficient Mapping ]───────────────────────────────────────────────────
+
+The B-series genome maps rooted trees to their coefficients, representing
+the "genetic material" of a computational kernel.
+
+schema GenomeMapping
+  coefficients : LevelSequence ⇸ Coefficient
+  
+  where
+    // At least one tree must be mapped
+    #(dom coefficients) ≥ 1
+    
+    // All coefficients are finite real numbers
+    ∀t : dom coefficients • 
+      isFinite(coefficients(t))
+end
+
+──[ Kernel Genome ]───────────────────────────────────────────────────────────────
+
+schema KernelGenome
+  mapping : GenomeMapping
+  max_order : Order
+  diversity : ℝ≥0  // Non-negative diversity measure
+  
+  where
+    // All mapped trees have order ≤ max_order
+    ∀t : dom mapping.coefficients •
+      #(t.sequence) ≤ max_order
+    
+    // Diversity is standard deviation of coefficients
+    let coeff_vals = ran mapping.coefficients in
+      #coeff_vals > 0 ⇒
+        diversity = sqrt(
+          (Σ{c : coeff_vals • (c - mean(coeff_vals))²}) / #coeff_vals
+        )
+    
+    // Zero diversity only if all coefficients equal or empty
+    diversity = 0 ⇔ 
+      (#(ran mapping.coefficients) ≤ 1 ∨
+       ∀c₁, c₂ : ran mapping.coefficients • c₁ = c₂)
+end
+
+──[ B-Series Expression ]─────────────────────────────────────────────────────────
+
+The B-series expansion for numerical integration:
+  y_{n+1} = y_n + h Σ_{τ∈T} b(τ)/σ(τ) · F(τ)(y_n)
+
+schema BSeriesExpression
+  genome : KernelGenome
+  trees : TreeCollection
+  step_size : ℝ>0  // Positive step size h
+  
+  where
+    // All trees in genome exist in tree collection
+    ∀t : dom genome.mapping.coefficients •
+      ∃o : dom trees.trees_by_order •
+        ∃τ : trees.trees_by_order(o) •
+          τ.level_sequence = t
+    
+    // Step size must be small enough for stability
+    step_size < 1.0  // Heuristic stability bound
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 4. RESERVOIR STATE                                                         │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Reservoir Configuration ]─────────────────────────────────────────────────────
+
+schema ReservoirConfig
+  size : ℕ₁  // Number of reservoir nodes
+  input_dim : ℕ₁  // Input dimension
+  output_dim : ℕ₁  // Output dimension
+  spectral_radius : ℝ  // Spectral radius of weight matrix
+  sparsity : Fitness  // Connection sparsity (0 = sparse, 1 = dense)
+  
+  where
+    // Size must be derived from A000081 (cumulative sum)
+    ∃n : Order • size = Σ{i : 1..n • A000081(i)}
+    
+    // Spectral radius must be < 1 for echo state property
+    0 < spectral_radius < 1.0
+    
+    // Sparsity in valid range
+    0.0 ≤ sparsity ≤ 1.0
+    
+    // Dimensions must be positive
+    input_dim ≥ 1 ∧ output_dim ≥ 1
+end
+
+──[ Reservoir Weights ]───────────────────────────────────────────────────────────
+
+schema ReservoirWeights
+  W_in : Matrix[input_dim × size]      // Input weights
+  W_res : Matrix[size × size]          // Reservoir weights (recurrent)
+  W_out : Matrix[output_dim × size]    // Output weights (trained)
+  config : ReservoirConfig
+  
+  where
+    // Reservoir weight matrix has correct spectral radius
+    spectral_radius(W_res) ≈ config.spectral_radius
+    
+    // Reservoir sparsity constraint
+    let density = count_nonzero(W_res) / (size × size) in
+      density ≈ config.sparsity
+    
+    // Input weights bounded
+    ∀i,j • |W_in[i,j]| ≤ 1.0
+    
+    // Output weights initially zero (trained later)
+    initially: ∀i,j • W_out[i,j] = 0.0
+end
+
+──[ Reservoir State ]─────────────────────────────────────────────────────────────
+
+schema ReservoirState
+  state_vector : Vector[size]  // Current reservoir state
+  config : ReservoirConfig
+  weights : ReservoirWeights
+  time_step : ℕ  // Current time step
+  
+  where
+    // State vector has correct dimension
+    dim(state_vector) = config.size
+    
+    // State bounded (due to tanh activation)
+    ∀i : 1..config.size • |state_vector[i]| ≤ 1.0
+    
+    // Time step is non-negative
+    time_step ≥ 0
+    
+    // Echo state property: fading memory
+    // (Informally: past inputs have exponentially decaying influence)
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 5. MEMBRANE COMPUTING STRUCTURES                                           │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Membrane Identifier ]─────────────────────────────────────────────────────────
+
+MembraneID ≙ ℕ₁  // Unique membrane identifier
+
+──[ Multiset ]────────────────────────────────────────────────────────────────────
+
+A multiset is a collection where elements can appear multiple times.
+
+schema Multiset[X]
+  elements : X ⇸ ℕ₁  // Element to multiplicity mapping
+  
+  where
+    // All multiplicities are positive
+    ∀x : dom elements • elements(x) ≥ 1
+end
+
+──[ Symbol Alphabet ]─────────────────────────────────────────────────────────────
+
+schema SymbolAlphabet
+  symbols : seq String  // Ordered sequence of symbols
+  
+  where
+    // At least one symbol
+    #symbols ≥ 1
+    
+    // No duplicate symbols
+    ∀i, j : 1..#symbols • i ≠ j ⇒ symbols[i] ≠ symbols[j]
+    
+    // Symbols are non-empty strings
+    ∀s : ran symbols • #s ≥ 1
+end
+
+──[ Membrane Structure ]──────────────────────────────────────────────────────────
+
+schema Membrane
+  id : MembraneID
+  parent : MembraneID ∪ {null}  // null for root membrane
+  children : set MembraneID
+  contents : Multiset[String]  // Symbolic multiset
+  level : ℕ  // Nesting level (0 for root)
+  
+  where
+    // Root membrane has no parent
+    parent = null ⇔ level = 0
+    
+    // Non-root membranes have parent
+    parent ≠ null ⇒ level ≥ 1
+    
+    // Membrane not its own parent or child
+    parent ≠ id
+    id ∉ children
+    
+    // All symbols in contents come from alphabet
+    // (Enforced at system level)
+end
+
+──[ Evolution Rule ]──────────────────────────────────────────────────────────────
+
+Membrane evolution rules: u → v (in membrane m)
+
+schema EvolutionRule
+  membrane_id : MembraneID
+  lhs : Multiset[String]  // Left-hand side (consumed)
+  rhs : Multiset[String]  // Right-hand side (produced)
+  priority : ℕ  // Rule priority (higher = applied first)
+  
+  where
+    // Priority is non-negative
+    priority ≥ 0
+    
+    // Both sides non-empty (no creation/annihilation from nothing)
+    #(dom lhs.elements) ≥ 1
+    #(dom rhs.elements) ≥ 1
+end
+
+──[ P-System Configuration ]──────────────────────────────────────────────────────
+
+schema PSystemConfiguration
+  membranes : set Membrane
+  alphabet : SymbolAlphabet
+  rules : seq EvolutionRule
+  root_membrane : MembraneID
+  
+  where
+    // At least one membrane (the root)
+    #membranes ≥ 1
+    
+    // Root membrane exists
+    ∃m : membranes • m.id = root_membrane ∧ m.level = 0
+    
+    // Membrane IDs are unique
+    ∀m₁, m₂ : membranes • m₁.id = m₂.id ⇒ m₁ = m₂
+    
+    // Parent-child relationships are consistent
+    ∀m : membranes • m.parent ≠ null ⇒
+      ∃p : membranes • p.id = m.parent ∧ m.id ∈ p.children
+    
+    // Tree structure: no cycles
+    ∀m : membranes • ¬(m.id ∈ reachable_ancestors(m, membranes))
+    
+    // Number of membranes aligns with A000081
+    ∃k : Order • #membranes = A000081(k)
+    
+    // All rule symbols in alphabet
+    ∀r : rules •
+      (dom r.lhs.elements ∪ dom r.rhs.elements) ⊆ ran alphabet.symbols
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 6. MEMBRANE GARDEN                                                         │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Tree Location ]───────────────────────────────────────────────────────────────
+
+schema TreeLocation
+  tree_id : NodeID
+  membrane_id : MembraneID
+  planted_at : ℕ  // Generation when planted
+  
+  where
+    planted_at ≥ 0
+end
+
+──[ Tree Fitness ]────────────────────────────────────────────────────────────────
+
+schema TreeFitness
+  tree_id : NodeID
+  fitness : Fitness
+  age : ℕ  // Age in generations
+  
+  where
+    age ≥ 0
+    
+    // Fitness degrades with excessive age (senescence)
+    age > 100 ⇒ fitness < 0.5
+end
+
+──[ Membrane Garden ]─────────────────────────────────────────────────────────────
+
+A garden cultivates trees within membranes, tracking their locations and fitness.
+
+schema MembraneGarden
+  trees : TreeCollection
+  locations : set TreeLocation
+  fitness_map : NodeID ⇸ TreeFitness
+  membranes : PSystemConfiguration
+  generation : ℕ
+  growth_rate : ℝ>0
+  
+  where
+    // Growth rate must be A000081-derived
+    ∃n : Order • growth_rate ≈ A000081(n+1) / A000081(n)
+    
+    // All located trees exist in tree collection
+    ∀loc : locations •
+      ∃o : dom trees.trees_by_order •
+        ∃t : trees.trees_by_order(o) • t.id = loc.tree_id
+    
+    // All located membranes exist
+    ∀loc : locations •
+      ∃m : membranes.membranes • m.id = loc.membrane_id
+    
+    // Fitness tracked for all located trees
+    dom fitness_map = {loc.tree_id | loc ∈ locations}
+    
+    // Generation is non-negative
+    generation ≥ 0
+    
+    // Each tree planted in at most one membrane
+    ∀loc₁, loc₂ : locations •
+      loc₁.tree_id = loc₂.tree_id ⇒ loc₁.membrane_id = loc₂.membrane_id
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 7. J-SURFACE REACTOR STATE                                                 │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ J-Surface Configuration ]─────────────────────────────────────────────────────
+
+schema JSurfaceConfig
+  dimension : ℕ₁  // State space dimension
+  symplectic : 𝔹  // Whether structure is symplectic
+  
+  where
+    // Symplectic dimension must be even
+    symplectic ⇒ dimension mod 2 = 0
+    
+    // Dimension derived from A000081
+    ∃n : Order • dimension = Σ{i : 1..n • A000081(i)}
+end
+
+──[ J-Matrix ]────────────────────────────────────────────────────────────────────
+
+The J-matrix encodes the geometric structure (symplectic or Poisson).
+
+schema JMatrix
+  matrix : Matrix[dimension × dimension]
+  config : JSurfaceConfig
+  
+  where
+    // For symplectic: J is skew-symmetric and J² = -I
+    config.symplectic ⇒
+      (matrix = -transpose(matrix) ∧
+       matrix × matrix = -identity(dimension))
+    
+    // For Poisson: J is skew-symmetric (Poisson tensor)
+    ¬config.symplectic ⇒
+      matrix = -transpose(matrix)
+    
+    // Non-degeneracy: det(J) ≠ 0 for symplectic
+    config.symplectic ⇒ det(matrix) ≠ 0
+end
+
+──[ Hamiltonian Function ]────────────────────────────────────────────────────────
+
+schema Hamiltonian
+  dimension : ℕ₁
+  energy : Vector[dimension] → ℝ  // Energy function H(ψ)
+  gradient : Vector[dimension] → Vector[dimension]  // ∇H(ψ)
+  
+  where
+    // Energy must be continuous
+    ∀ψ : Vector[dimension] • isFinite(energy(ψ))
+    
+    // Gradient must exist everywhere
+    ∀ψ : Vector[dimension] • isDefined(gradient(ψ))
+end
+
+──[ J-Surface State ]─────────────────────────────────────────────────────────────
+
+schema JSurfaceState
+  state : Vector[dimension]  // Current state ψ
+  energy : ℝ  // Current energy H(ψ)
+  config : JSurfaceConfig
+  j_matrix : JMatrix
+  hamiltonian : Hamiltonian
+  time : ℝ≥0
+  
+  where
+    // State has correct dimension
+    dim(state) = config.dimension
+    
+    // Energy matches Hamiltonian evaluation
+    energy = hamiltonian.energy(state)
+    
+    // Time is non-negative
+    time ≥ 0.0
+    
+    // State bounded (for numerical stability)
+    ∀i : 1..config.dimension • |state[i]| < 10⁶
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 8. KERNEL LIFECYCLE                                                        │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Lifecycle Stage ]─────────────────────────────────────────────────────────────
+
+LifecycleStage ::= embryonic | juvenile | mature | senescent
+
+──[ Kernel Lifecycle State ]──────────────────────────────────────────────────────
+
+schema KernelLifecycle
+  stage : LifecycleStage
+  maturity : Fitness  // 0.0 to 1.0
+  age : ℕ  // Age in generations
+  generation : ℕ  // Generation number
+  
+  where
+    // Age and generation non-negative
+    age ≥ 0 ∧ generation ≥ 0
+    
+    // Maturity aligned with stage
+    stage = embryonic ⇒ maturity < 0.3
+    stage = juvenile ⇒ 0.3 ≤ maturity < 0.7
+    stage = mature ⇒ 0.7 ≤ maturity ≤ 1.0
+    stage = senescent ⇒ maturity > 1.0  // Over-mature
+    
+    // Age increases with generation
+    age ≤ generation
+end
+
+──[ Ontogenetic Kernel ]──────────────────────────────────────────────────────────
+
+schema OntogeneticKernel
+  genome : KernelGenome
+  lifecycle : KernelLifecycle
+  lineage : seq String  // Parent kernel IDs
+  id : String  // Unique kernel ID
+  
+  // Fitness components
+  fitness : Fitness
+  grip : Fitness      // Domain fit quality
+  stability : Fitness  // Numerical stability
+  efficiency : Fitness // Computational efficiency
+  novelty : Fitness    // Genetic diversity
+  
+  where
+    // ID is non-empty
+    #id ≥ 1
+    
+    // Overall fitness is combination of components
+    fitness = (grip + stability + efficiency + novelty) / 4.0
+    
+    // All fitness components in valid range
+    0.0 ≤ grip ≤ 1.0 ∧
+    0.0 ≤ stability ≤ 1.0 ∧
+    0.0 ≤ efficiency ≤ 1.0 ∧
+    0.0 ≤ novelty ≤ 1.0
+    
+    // Lineage consistency
+    #lineage ≤ 2  // At most two parents (crossover)
+    
+    // Embryonic kernels have no lineage
+    lifecycle.stage = embryonic ⇒ #lineage = 0
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 9. INVARIANTS AND GLOBAL CONSTRAINTS                                       │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ A000081 Consistency ]─────────────────────────────────────────────────────────
+
+Global invariant ensuring all system components respect A000081 structure.
+
+invariant A000081_Alignment
+  ∀ system : DeepTreeEchoSystem •
+    // Tree collection respects A000081
+    (∀o : dom system.trees.trees_by_order •
+      #(system.trees.trees_by_order(o)) = A000081(o)) ∧
+    
+    // Reservoir size is cumulative tree count
+    (∃n : Order • 
+      system.reservoir.config.size = Σ{i : 1..n • A000081(i)}) ∧
+    
+    // Number of membranes matches A000081 value
+    (∃k : Order • 
+      #(system.psystem.membranes) = A000081(k)) ∧
+    
+    // Growth rate is A000081 ratio
+    (∃n : Order • 
+      system.garden.growth_rate ≈ A000081(n+1) / A000081(n))
+end
+
+──[ Energy Conservation (Symplectic Systems) ]────────────────────────────────────
+
+invariant Energy_Conservation
+  ∀ jsurface : JSurfaceState •
+    jsurface.config.symplectic ⇒
+      // Energy approximately conserved over time
+      ∀t₁, t₂ : ℝ≥0 •
+        |energy_at(jsurface, t₂) - energy_at(jsurface, t₁)| < ε
+  where
+    ε = 1e-6  // Numerical tolerance
+end
+
+──[ Echo State Property ]─────────────────────────────────────────────────────────
+
+invariant Echo_State_Property
+  ∀ reservoir : ReservoirState •
+    // Spectral radius < 1 ensures fading memory
+    spectral_radius(reservoir.weights.W_res) < 1.0 ⇒
+      // Past inputs have exponentially decaying influence
+      ∀t₁ < t₂ • influence(input_at(t₁), state_at(t₂)) < 
+                  influence(input_at(t₁), state_at(t₁)) × λᵗ²⁻ᵗ¹
+  where
+    λ = spectral_radius(reservoir.weights.W_res)
+end
+
+──[ Membrane Tree Structure ]─────────────────────────────────────────────────────
+
+invariant Membrane_Hierarchy
+  ∀ psystem : PSystemConfiguration •
+    // Membrane hierarchy is a tree (connected, acyclic)
+    is_tree(psystem.membranes) ∧
+    
+    // Unique root
+    (∃! m : psystem.membranes • m.level = 0) ∧
+    
+    // All membranes reachable from root
+    (∀m : psystem.membranes • 
+      reachable_from(psystem.root_membrane, m.id, psystem.membranes))
+end
+
+──────────────────────────────────────────────────────────────────────────────────
+End of Data Model Specification
+──────────────────────────────────────────────────────────────────────────────────
+
+This specification defines the core data structures of CogPilot.jl. The next
+specification file (system_state.zpp) will formalize how these components
+compose into the overall system state.

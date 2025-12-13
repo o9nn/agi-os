@@ -1,0 +1,942 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║                    CogPilot.jl - Operations Specification                    ║
+║                           Z++ Formal Specification                           ║
+║                                                                              ║
+║  This specification formalizes the core operations that transform the       ║
+║  system state, including initialization, evolution, processing, and         ║
+║  adaptation operations.                                                      ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Imports: data_model.zpp, system_state.zpp
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 1. INITIALIZATION OPERATIONS                                               │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Create System ]───────────────────────────────────────────────────────────────
+
+Create a new Deep Tree Echo system with A000081-derived parameters.
+
+schema CreateDeepTreeEchoSystem
+  ΔDeepTreeEchoSystemState
+  base_order? : Order  // Input parameter
+  
+  where
+    // Pre-condition: system does not exist (implicit in Δ schema)
+    
+    // Post-condition: system created with configuration
+    config'.base_order = base_order?
+    config'.max_tree_order = base_order? + 3
+    config'.reservoir_size = Σ{i : 1..base_order? • A000081(i)}
+    
+    // Derive other parameters from A000081
+    ∃k : Order • k ≤ base_order? ∧ 
+      config'.num_membranes = A000081(k)
+    
+    ∃n : Order • n ≤ base_order? + 1 ∧
+      config'.growth_rate ≈ A000081(n+1) / A000081(n)
+    
+    ∃m : Order • m ≤ base_order? ∧
+      config'.mutation_rate ≈ 1.0 / A000081(m)
+    
+    // Not yet initialized (requires explicit initialization)
+    ¬initialized'
+    generation' = 0
+    #kernels' = 0
+end
+
+──[ Initialize System ]───────────────────────────────────────────────────────────
+
+Initialize system with seed trees and create initial kernel population.
+
+schema InitializeDeepTreeEchoSystem
+  ΔDeepTreeEchoSystemState
+  seed_trees? : ℕ₁  // Input: number of seed trees
+  
+  where
+    // Pre-condition: system created but not initialized
+    ¬initialized ∧ generation = 0
+    
+    // Seed trees must be A000081 value
+    ∃n : Order • seed_trees? = A000081(n)
+    
+    // Post-condition: system initialized
+    initialized'
+    generation' = 0
+    
+    // Generate trees up to max order
+    engine'.trees.max_order = config.max_tree_order
+    ∀o : 1..config.max_tree_order •
+      #(engine'.trees.trees_by_order(o)) = A000081(o)
+    
+    // Create initial kernel population
+    #kernels' = seed_trees?
+    ∀k : kernels' •
+      k.lifecycle.stage = embryonic ∧
+      k.lifecycle.generation = 0 ∧
+      k.genome.max_order ≤ config.max_tree_order
+    
+    // Initialize reservoirs
+    reservoir'.reservoir.config.size = config.reservoir_size
+    reservoir'.reservoir.config.spectral_radius < 1.0
+    ¬reservoir'.is_trained
+    
+    // Initialize P-system
+    #(psystem'.configuration.membranes) = config.num_membranes
+    psystem'.current_step = 0
+    ¬psystem'.halted
+    
+    // Initialize J-surface reactor
+    reactor'.surface.config.dimension = config.reservoir_size
+    reactor'.surface.config.symplectic = config.symplectic
+    reactor'.surface.time = 0.0
+    
+    // Initialize garden with empty locations
+    garden'.garden.generation = 0
+    #(garden'.garden.locations) = 0
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 2. INPUT PROCESSING OPERATIONS                                             │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Process Reservoir Input ]─────────────────────────────────────────────────────
+
+Process input through echo state reservoir network.
+
+schema ProcessReservoirInput
+  ΔEchoStateReservoirState
+  input? : Vector[input_dim]  // Input vector
+  output! : Vector[output_dim]  // Output vector
+  
+  where
+    // Pre-condition: system initialized and reservoir trained
+    is_trained
+    
+    // Input dimension matches
+    dim(input?) = reservoir.config.input_dim
+    
+    // Update reservoir state
+    // x[t+1] = tanh(W_in × u[t] + W_res × x[t])
+    reservoir'.state_vector = 
+      tanh(reservoir.weights.W_in × input? + 
+           reservoir.weights.W_res × reservoir.state_vector)
+    
+    // Generate output
+    // y[t] = W_out · x[t]
+    output! = reservoir'.weights.W_out × reservoir'.state_vector
+    
+    // Record in history
+    input_history' = input_history ⌢ ⟨input?⟩
+    output_history' = output_history ⌢ ⟨output!⟩
+    
+    // Time step advances
+    reservoir'.time_step = reservoir.time_step + 1
+    
+    // Post-condition: output dimension matches
+    dim(output!) = reservoir.config.output_dim
+end
+
+──[ Train Reservoir ]─────────────────────────────────────────────────────────────
+
+Train reservoir output weights using ridge regression.
+
+schema TrainReservoir
+  ΔEchoStateReservoirState
+  train_input? : seq Vector[input_dim]
+  train_target? : seq Vector[output_dim]
+  regularization? : ℝ≥0
+  
+  where
+    // Pre-condition: training data provided
+    #train_input? = #train_target?
+    #train_input? ≥ reservoir.config.size  // Sufficient data
+    
+    // Pre-condition: not already trained (or retraining)
+    
+    // Collect reservoir states for all training inputs
+    let X = collect_states(reservoir, train_input?) in
+      // Solve ridge regression: W_out = (X·Xᵀ + λI)⁻¹·X·Y
+      reservoir'.weights.W_out = 
+        ridge_regression(X, train_target?, regularization?)
+    
+    // Post-condition: trained
+    is_trained'
+    
+    // Store training data
+    training_data' = zip(train_input?, train_target?)
+end
+
+──[ Process System Input ]────────────────────────────────────────────────────────
+
+Process input through complete system (reservoir + B-series integration).
+
+schema ProcessSystemInput
+  ΔDeepTreeEchoSystemState
+  input? : Vector[input_dim]
+  output! : Vector[output_dim]
+  
+  where
+    // Pre-condition: initialized and reservoir trained
+    initialized ∧ reservoir.is_trained
+    
+    // Process through reservoir
+    reservoir'.reservoir.state_vector = 
+      update_reservoir(reservoir.reservoir, input?)
+    
+    // Apply B-series integration step
+    ∀ridge : ridges •
+      ridge'.current_order ≤ ridge.expression.genome.max_order
+    
+    // Update J-surface via gradient flow
+    reactor'.surface.state = 
+      reactor.surface.state + 
+      reactor.surface.j_matrix × 
+      reactor.surface.hamiltonian.gradient(reactor.surface.state)
+    
+    // Update energy history
+    reactor'.energy_history = 
+      reactor.energy_history ⌢ 
+      ⟨(reactor.surface.time, reactor'.surface.energy)⟩
+    
+    // Generate output from reservoir
+    output! = reservoir'.reservoir.weights.W_out × 
+              reservoir'.reservoir.state_vector
+    
+    // Generation unchanged (not evolution, just processing)
+    generation' = generation
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 3. EVOLUTION OPERATIONS                                                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Gradient Flow Step ]──────────────────────────────────────────────────────────
+
+Perform one gradient flow step on J-surface.
+
+schema GradientFlowStep
+  ΔJSurfaceReactorState
+  dt? : ℝ>0  // Time step size
+  
+  where
+    // Pre-condition: valid state
+    surface.config.dimension > 0
+    
+    // Compute gradient
+    let ∇H = surface.hamiltonian.gradient(surface.state) in
+      // Update state: dψ/dt = J(ψ) · ∇H(ψ)
+      surface'.state = surface.state + dt? × (surface.j_matrix.matrix × ∇H)
+    
+    // For symplectic systems, use symplectic integrator
+    surface.config.symplectic ⇒
+      surface'.state = symplectic_integrate(surface, dt?)
+    
+    // Update energy
+    surface'.energy = surface.hamiltonian.energy(surface'.state)
+    
+    // Update time
+    surface'.time = surface.time + dt?
+    
+    // Compute gradient norm
+    gradient_norm' = norm(surface.hamiltonian.gradient(surface'.state))
+    
+    // Record energy history
+    energy_history' = 
+      energy_history ⌢ ⟨(surface'.time, surface'.energy)⟩
+end
+
+──[ Evaluate Kernel Fitness ]─────────────────────────────────────────────────────
+
+Evaluate fitness of a kernel based on its performance and genetic diversity.
+
+schema EvaluateKernelFitness
+  ΞDeepTreeEchoSystemState  // Read-only system state
+  kernel : OntogeneticKernel
+  kernel' : OntogeneticKernel  // Updated kernel
+  population? : seq OntogeneticKernel  // Current population
+  
+  where
+    // Kernel ID unchanged
+    kernel'.id = kernel.id
+    kernel'.genome = kernel.genome
+    
+    // Compute grip (domain fit quality)
+    kernel'.grip = compute_grip(kernel, system_state)
+    
+    // Compute stability (numerical stability)
+    kernel'.stability = compute_stability(kernel, system_state)
+    
+    // Compute efficiency (inverse computational cost)
+    kernel'.efficiency = compute_efficiency(kernel)
+    
+    // Compute novelty (genetic diversity from population)
+    kernel'.novelty = 
+      if #population? > 0 then
+        avg_genetic_distance(kernel, population?)
+      else
+        0.5  // Default novelty for first generation
+    
+    // Overall fitness is weighted combination
+    kernel'.fitness = 
+      (kernel'.grip + kernel'.stability + 
+       kernel'.efficiency + kernel'.novelty) / 4.0
+    
+    // Post-condition: fitness in valid range
+    0.0 ≤ kernel'.fitness ≤ 1.0
+end
+
+──[ Select Kernels ]──────────────────────────────────────────────────────────────
+
+Select high-fitness kernels for survival and reproduction.
+
+schema SelectKernels
+  ΞDeepTreeEchoSystemState
+  selected! : seq OntogeneticKernel
+  elitism_rate? : Fitness  // Fraction of top kernels to keep
+  
+  where
+    // Pre-condition: population exists
+    #kernels ≥ 1
+    0.0 < elitism_rate? ≤ 1.0
+    
+    // Sort kernels by fitness
+    let sorted = sort_by_fitness(kernels) in
+      // Select top elitism_rate fraction
+      let num_elite = ⌈elitism_rate? × #kernels⌉ in
+        selected! = take(sorted, num_elite)
+    
+    // Post-condition: selected subset of population
+    selected! ⊆ kernels
+    
+    // Post-condition: all selected have above-average fitness
+    let avg_fit = avg_kernel_fitness(system_state) in
+      ∀k : selected! • k.fitness ≥ avg_fit
+end
+
+──[ Crossover Kernels ]───────────────────────────────────────────────────────────
+
+Perform genetic crossover between two parent kernels.
+
+schema CrossoverKernels
+  parent1? : OntogeneticKernel
+  parent2? : OntogeneticKernel
+  offspring! : OntogeneticKernel
+  crossover_point? : ℕ  // Crossover point in genome
+  
+  where
+    // Pre-condition: parents are mature
+    parent1?.lifecycle.stage ∈ {juvenile, mature}
+    parent2?.lifecycle.stage ∈ {juvenile, mature}
+    
+    // Genomes have compatible max_order
+    parent1?.genome.max_order = parent2?.genome.max_order
+    
+    // Create offspring genome by combining parents
+    let trees1 = dom parent1?.genome.mapping.coefficients;
+        trees2 = dom parent2?.genome.mapping.coefficients;
+        // Take first crossover_point? trees from parent1
+        trees_p1 = take_n(trees1, crossover_point?);
+        // Take remaining trees from parent2
+        trees_p2 = drop_n(trees2, crossover_point?) in
+          offspring!.genome.mapping.coefficients = 
+            {t → parent1?.genome.mapping.coefficients(t) | t ∈ trees_p1} ∪
+            {t → parent2?.genome.mapping.coefficients(t) | t ∈ trees_p2}
+    
+    // Offspring starts as embryonic
+    offspring!.lifecycle.stage = embryonic
+    offspring!.lifecycle.maturity = 0.0
+    offspring!.lifecycle.age = 0
+    
+    // Record lineage
+    offspring!.lineage = ⟨parent1?.id, parent2?.id⟩
+    
+    // Generate new ID
+    offspring!.id ≠ parent1?.id ∧ offspring!.id ≠ parent2?.id
+end
+
+──[ Mutate Kernel ]───────────────────────────────────────────────────────────────
+
+Apply random mutation to kernel genome.
+
+schema MutateKernel
+  kernel : OntogeneticKernel
+  kernel' : OntogeneticKernel
+  mutation_rate? : Fitness
+  mutation_strength? : ℝ>0
+  
+  where
+    // Pre-condition: valid mutation rate
+    0.0 < mutation_rate? < 1.0
+    
+    // ID and lineage unchanged
+    kernel'.id = kernel.id
+    kernel'.lineage = kernel.lineage
+    
+    // Mutate each coefficient with probability mutation_rate?
+    ∀t : dom kernel.genome.mapping.coefficients •
+      kernel'.genome.mapping.coefficients(t) = 
+        if random() < mutation_rate? then
+          kernel.genome.mapping.coefficients(t) + 
+          gaussian(0, mutation_strength?)
+        else
+          kernel.genome.mapping.coefficients(t)
+    
+    // Lifecycle stage may regress to juvenile
+    kernel'.lifecycle.stage = 
+      if significantly_mutated(kernel, kernel') then
+        juvenile
+      else
+        kernel.lifecycle.stage
+    
+    // Age increases
+    kernel'.lifecycle.age = kernel.lifecycle.age + 1
+end
+
+──[ Evolve Generation ]───────────────────────────────────────────────────────────
+
+Complete evolution cycle for one generation.
+
+schema EvolveGeneration
+  ΔDeepTreeEchoSystemState
+  elitism_rate? : Fitness
+  crossover_rate? : Fitness
+  mutation_rate? : Fitness
+  
+  where
+    // Pre-condition: initialized
+    initialized
+    
+    // 1. Evaluate fitness of all kernels
+    ∀k : kernels •
+      evaluate_fitness(k, kernels)
+    
+    // 2. Select elite kernels
+    let elite = select_kernels(kernels, elitism_rate?) in
+      
+      // 3. Generate offspring via crossover
+      let offspring_cross = 
+        if random() < crossover_rate? then
+          generate_offspring_crossover(elite, 
+                                      #kernels - #elite)
+        else
+          ∅ in
+        
+        // 4. Generate offspring via mutation
+        let offspring_mut = 
+          generate_offspring_mutation(elite, 
+                                     #kernels - #elite - #offspring_cross,
+                                     mutation_rate?) in
+          
+          // 5. New population = elite + offspring
+          kernels' = elite ∪ offspring_cross ∪ offspring_mut
+    
+    // 6. Advance generation
+    generation' = generation + 1
+    engine'.generation = generation'
+    
+    // 7. Grow trees in garden
+    grow_garden_trees(garden, garden.garden.growth_rate)
+    
+    // 8. Evolve membranes
+    evolve_membranes(psystem, 1)
+    
+    // 9. Gradient flow on J-surface
+    gradient_flow_step(reactor, 0.01)
+    
+    // Post-condition: population size unchanged
+    #kernels' = #kernels
+    
+    // Post-condition: generation advanced
+    generation' = generation + 1
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 4. MEMBRANE OPERATIONS                                                     │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Apply Evolution Rule ]────────────────────────────────────────────────────────
+
+Apply one membrane evolution rule.
+
+schema ApplyEvolutionRule
+  ΔMembrane
+  rule? : EvolutionRule
+  
+  where
+    // Pre-condition: rule applies to this membrane
+    rule?.membrane_id = id
+    
+    // Pre-condition: LHS present in membrane
+    ∀s : dom rule?.lhs.elements •
+      s ∈ dom contents.elements ∧
+      contents.elements(s) ≥ rule?.lhs.elements(s)
+    
+    // Remove LHS multiset
+    contents' = 
+      {s → contents.elements(s) - rule?.lhs.elements(s) 
+       | s ∈ dom rule?.lhs.elements} ∪
+      {s → contents.elements(s) 
+       | s ∈ dom contents.elements ∧ s ∉ dom rule?.lhs.elements}
+    
+    // Add RHS multiset
+    contents' = contents' ∪
+      {s → contents'.elements(s) + rule?.rhs.elements(s)
+       | s ∈ dom rule?.rhs.elements}
+    
+    // Other attributes unchanged
+    id' = id
+    parent' = parent
+    children' = children
+    level' = level
+end
+
+──[ Evolve Membranes ]────────────────────────────────────────────────────────────
+
+Evolve all membranes by applying evolution rules.
+
+schema EvolveMembranes
+  ΔPSystemMembraneState
+  steps? : ℕ₁
+  
+  where
+    // Pre-condition: not halted
+    ¬halted
+    
+    // Apply rules for steps? iterations
+    let final_config = 
+      iterate(configuration, steps?, apply_rules) in
+        configuration' = final_config
+    
+    // Update step counter
+    current_step' = current_step + steps?
+    
+    // Record in history
+    evolution_history' = evolution_history ⌢ ⟨configuration'⟩
+    
+    // Check if halted (no applicable rules)
+    halted' = no_applicable_rules(configuration')
+end
+
+──[ Plant Tree in Garden ]────────────────────────────────────────────────────────
+
+Plant a rooted tree in a specific membrane.
+
+schema PlantTreeInGarden
+  ΔMembraneGarden
+  tree? : RootedTree
+  membrane_id? : MembraneID
+  tree_id! : NodeID  // Newly assigned tree ID
+  
+  where
+    // Pre-condition: membrane exists
+    ∃m : garden.membranes.membranes • m.id = membrane_id?
+    
+    // Pre-condition: tree from tree collection
+    ∃o : dom garden.trees.trees_by_order •
+      tree? ∈ garden.trees.trees_by_order(o)
+    
+    // Assign new tree ID
+    tree_id! = next_tree_id(garden)
+    
+    // Create location record
+    let loc = TreeLocation where
+      loc.tree_id = tree_id!,
+      loc.membrane_id = membrane_id?,
+      loc.planted_at = garden.generation in
+        garden'.locations = garden.locations ∪ {loc}
+    
+    // Initialize fitness
+    let fit = TreeFitness where
+      fit.tree_id = tree_id!,
+      fit.fitness = 0.5,  // Initial neutral fitness
+      fit.age = 0 in
+        garden'.fitness_map = garden.fitness_map ∪ {tree_id! → fit}
+end
+
+──[ Cross-Pollinate Membranes ]───────────────────────────────────────────────────
+
+Exchange genetic material between trees in different membranes.
+
+schema CrossPollinateMembranes
+  ΔMembraneGarden
+  membrane1? : MembraneID
+  membrane2? : MembraneID
+  count? : ℕ₁  // Number of trees to exchange
+  
+  where
+    // Pre-condition: both membranes exist
+    ∃m1 : garden.membranes.membranes • m1.id = membrane1?
+    ∃m2 : garden.membranes.membranes • m2.id = membrane2?
+    
+    // Pre-condition: membranes are different
+    membrane1? ≠ membrane2?
+    
+    // Select count? high-fitness trees from each membrane
+    let trees1 = select_top_trees(garden, membrane1?, count?);
+        trees2 = select_top_trees(garden, membrane2?, count?) in
+      
+      // Exchange: move trees1 to membrane2, trees2 to membrane1
+      ∀t : trees1 •
+        update_location(garden', t, membrane2?)
+      ∀t : trees2 •
+        update_location(garden', t, membrane1?)
+    
+    // Record crossbreeding event
+    let event = CrossbreedingEvent where
+      event.generation = garden.generation,
+      event.membrane1 = membrane1?,
+      event.membrane2 = membrane2?,
+      event.offspring_count = count? × 2 in
+        crossbreeding_events' = crossbreeding_events ⌢ ⟨event⟩
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 5. ADAPTATION OPERATIONS                                                   │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Add Membrane ]────────────────────────────────────────────────────────────────
+
+Dynamically add a new membrane to the P-system.
+
+schema AddMembrane
+  ΔPSystemConfiguration
+  parent_id? : MembraneID
+  new_membrane! : Membrane
+  
+  where
+    // Pre-condition: parent membrane exists
+    ∃m : membranes • m.id = parent_id?
+    
+    // Create new membrane
+    new_membrane!.id ∉ {m.id | m ∈ membranes}  // Fresh ID
+    new_membrane!.parent = parent_id?
+    new_membrane!.children = ∅
+    new_membrane!.level = 
+      (select m from membranes where m.id = parent_id?).level + 1
+    new_membrane!.contents = empty_multiset()
+    
+    // Add to membrane set
+    membranes' = membranes ∪ {new_membrane!}
+    
+    // Update parent's children
+    ∀m : membranes' •
+      if m.id = parent_id? then
+        m.children' = m.children ∪ {new_membrane!.id}
+      else
+        m.children' = m.children
+    
+    // Post-condition: new membrane count aligns with A000081 if possible
+    ∃k : Order • #membranes' = A000081(k) ∨
+                  #membranes' = #membranes + 1
+end
+
+──[ Remove Membrane ]─────────────────────────────────────────────────────────────
+
+Remove a membrane from the P-system (must be leaf with no trees).
+
+schema RemoveMembrane
+  ΔPSystemConfiguration
+  membrane_id? : MembraneID
+  
+  where
+    // Pre-condition: membrane exists and is leaf
+    ∃m : membranes • 
+      m.id = membrane_id? ∧
+      m.children = ∅ ∧
+      m.contents = empty_multiset()
+    
+    // Pre-condition: not root membrane
+    membrane_id? ≠ root_membrane
+    
+    // Remove from membrane set
+    membranes' = membranes ∖ {m | m ∈ membranes ∧ m.id = membrane_id?}
+    
+    // Update parent's children
+    let parent_id = (select m from membranes where m.id = membrane_id?).parent in
+      ∀m : membranes' •
+        if m.id = parent_id then
+          m.children' = m.children ∖ {membrane_id?}
+        else
+          m.children' = m.children
+end
+
+──[ Adapt Topology ]──────────────────────────────────────────────────────────────
+
+Adapt system topology based on performance.
+
+schema AdaptTopology
+  ΔDeepTreeEchoSystemState
+  add_membrane? : 𝔹
+  prune_low_fitness? : 𝔹
+  
+  where
+    // Pre-condition: initialized
+    initialized
+    
+    // Add membrane if requested and beneficial
+    add_membrane? ⇒
+      (avg_kernel_fitness(system_state) > 0.6 ∧
+       #(psystem.configuration.membranes) < 2 × config.num_membranes)
+    
+    // Prune low-fitness trees if requested
+    prune_low_fitness? ⇒
+      let low_fitness_trees = 
+        {loc.tree_id | loc ∈ garden.garden.locations ∧
+         garden.garden.fitness_map(loc.tree_id).fitness < 0.3} in
+        garden'.garden.locations = 
+          {loc | loc ∈ garden.garden.locations ∧
+           loc.tree_id ∉ low_fitness_trees}
+    
+    // Generation unchanged (structural adaptation, not evolution)
+    generation' = generation
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 6. PERSISTENCE OPERATIONS                                                  │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Save System State ]───────────────────────────────────────────────────────────
+
+Serialize system state to storage.
+
+schema SaveSystemState
+  ΞDeepTreeEchoSystemState  // Read-only
+  filepath? : String
+  success! : 𝔹
+  
+  where
+    // Pre-condition: initialized
+    initialized
+    
+    // Serialize all component states
+    let serialized = serialize({
+      config: config,
+      generation: generation,
+      trees: engine.trees,
+      kernels: kernels,
+      reservoir: reservoir,
+      psystem: psystem,
+      garden: garden,
+      reactor: reactor
+    }) in
+      success! = write_to_file(filepath?, serialized)
+    
+    // Post-condition: state unchanged (read-only)
+end
+
+──[ Load System State ]───────────────────────────────────────────────────────────
+
+Deserialize system state from storage.
+
+schema LoadSystemState
+  ΔDeepTreeEchoSystemState
+  filepath? : String
+  success! : 𝔹
+  
+  where
+    // Pre-condition: file exists and is readable
+    file_exists(filepath?)
+    
+    // Deserialize from file
+    let data = read_from_file(filepath?) in
+      success! = is_valid_format(data) ∧
+      if success! then
+        config' = data.config ∧
+        generation' = data.generation ∧
+        engine'.trees = data.trees ∧
+        kernels' = data.kernels ∧
+        reservoir' = data.reservoir ∧
+        psystem' = data.psystem ∧
+        garden' = data.garden ∧
+        reactor' = data.reactor ∧
+        initialized' = true
+      else
+        // Failed to load, state unchanged
+        true
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 7. QUERY OPERATIONS (Read-Only)                                            │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Get System Status ]───────────────────────────────────────────────────────────
+
+Retrieve comprehensive system status.
+
+schema GetSystemStatus
+  ΞDeepTreeEchoSystemState  // Read-only
+  status! : SystemStatus
+  
+  where
+    // Populate status from system state
+    status!.system_state = system_state
+    status!.generation = generation
+    
+    // Compute population statistics
+    status!.population_stats.total_kernels = #kernels
+    status!.population_stats.avg_fitness = avg_kernel_fitness(system_state)
+    status!.population_stats.max_fitness = 
+      max{k.fitness | k ∈ kernels}
+    status!.population_stats.min_fitness = 
+      min{k.fitness | k ∈ kernels}
+    
+    // Compute tree statistics
+    status!.tree_stats.total_trees = total_trees(system_state)
+    
+    // Get reservoir performance
+    status!.reservoir_perf.spectral_radius = 
+      spectral_radius(reservoir.reservoir.weights.W_res)
+    status!.reservoir_perf.is_trained = reservoir.is_trained
+    
+    // Get energy metrics
+    status!.current_energy = reactor.surface.energy
+    status!.gradient_norm = reactor.gradient_norm
+    
+    // Compute diversity
+    status!.diversity = population_diversity(system_state)
+end
+
+──[ Get Kernel Lineage ]──────────────────────────────────────────────────────────
+
+Retrieve complete lineage tree for a kernel.
+
+schema GetKernelLineage
+  ΞDeepTreeEchoSystemState
+  kernel_id? : String
+  lineage_tree! : Tree[String]  // Tree of kernel IDs
+  
+  where
+    // Pre-condition: kernel exists
+    ∃k : kernels • k.id = kernel_id?
+    
+    // Build lineage tree recursively
+    let k = select_kernel(kernels, kernel_id?) in
+      lineage_tree! = build_lineage_tree(k, kernels)
+    
+    // Root of tree is requested kernel
+    root(lineage_tree!) = kernel_id?
+end
+
+──[ Get Best Kernels ]────────────────────────────────────────────────────────────
+
+Retrieve top N kernels by fitness.
+
+schema GetBestKernels
+  ΞDeepTreeEchoSystemState
+  n? : ℕ₁
+  best! : seq OntogeneticKernel
+  
+  where
+    // Pre-condition: population exists
+    #kernels ≥ 1
+    
+    // Sort and take top n
+    let sorted = sort_by_fitness(kernels) in
+      best! = take(sorted, min(n?, #kernels))
+    
+    // Post-condition: returned kernels sorted by fitness
+    ∀i : 1..#best!-1 • best![i].fitness ≥ best![i+1].fitness
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 8. COMPOSITE OPERATIONS                                                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Evolve System ]───────────────────────────────────────────────────────────────
+
+High-level operation to evolve system for multiple generations.
+
+schema EvolveSystem
+  ΔDeepTreeEchoSystemState
+  num_generations? : ℕ₁
+  verbose? : 𝔹
+  
+  where
+    // Pre-condition: initialized
+    initialized
+    
+    // Evolve for num_generations? generations
+    let final_state = 
+      iterate_n(system_state, num_generations?, evolve_generation) in
+        system_state' = final_state
+    
+    // Generation advances by num_generations?
+    generation' = generation + num_generations?
+    
+    // If verbose, log progress periodically
+    verbose? ⇒ 
+      ∀i : 1..num_generations? • 
+        log_generation_status(system_state_at(generation + i))
+end
+
+──[ Process Temporal Sequence ]───────────────────────────────────────────────────
+
+Process a sequence of inputs through the system.
+
+schema ProcessTemporalSequence
+  ΔDeepTreeEchoSystemState
+  input_sequence? : seq Vector[input_dim]
+  output_sequence! : seq Vector[output_dim]
+  
+  where
+    // Pre-condition: initialized and trained
+    initialized ∧ reservoir.is_trained
+    
+    // Process each input sequentially
+    output_sequence! = 
+      map(input_sequence?, λ inp • process_input(system_state, inp))
+    
+    // Output sequence has same length as input
+    #output_sequence! = #input_sequence?
+    
+    // Reservoir history updated
+    reservoir'.input_history = 
+      reservoir.input_history ⌢ input_sequence?
+    reservoir'.output_history = 
+      reservoir.output_history ⌢ output_sequence!
+end
+
+──[ Full System Cycle ]───────────────────────────────────────────────────────────
+
+Complete cycle: process input, evolve, adapt.
+
+schema FullSystemCycle
+  ΔDeepTreeEchoSystemState
+  input? : Vector[input_dim]
+  output! : Vector[output_dim]
+  evolve_steps? : ℕ₁
+  
+  where
+    // Pre-condition: initialized
+    initialized
+    
+    // Step 1: Process input
+    output! = process_input(system_state, input?)
+    
+    // Step 2: Evolve
+    evolve_system(system_state, evolve_steps?, false)
+    
+    // Step 3: Adapt topology if fitness is high
+    if avg_kernel_fitness(system_state) > 0.7 then
+      adapt_topology(system_state, true, false)
+    
+    // Generation advanced
+    generation' > generation
+end
+
+──────────────────────────────────────────────────────────────────────────────────
+End of Operations Specification
+──────────────────────────────────────────────────────────────────────────────────
+
+This specification defines all state-transforming operations. The next file
+(integrations.zpp) will formalize the external integration contracts.

@@ -1,0 +1,20 @@
+=== Unified Ontogenetic System State ===
+Generation: 50
+Tree Count: 5
+Hamiltonian: 44345.48698550678
+
+=== A000081 Parameters ===
+Base Order: 5
+Reservoir Size: 17
+Growth Rate: 2.2222222222222223
+Mutation Rate: 0.1111111111111111
+
+=== Tree Distribution ===
+Order 4: 2 trees (A000081[4] = 4)
+Order 5: 3 trees (A000081[5] = 9)
+
+=== Performance Metrics ===
+Echo State Performance: 0.0
+Membrane Efficiency: 0.0042150734181077
+Tree Diversity: 0.816496580927726
+Integration Quality: 0.02220210175882878

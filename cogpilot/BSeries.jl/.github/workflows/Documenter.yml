@@ -1,0 +1,101 @@
+name: Documentation
+
+on:
+  push:
+    branches:
+      - 'main'
+    tags: '*'
+    paths-ignore:
+      - '.zenodo.json'
+      - '.github/workflows/benchmark.yml'
+      - '.github/workflows/ci.yml'
+      - '.github/workflows/CompatHelper.yml'
+      - '.github/workflows/TagBot.yml'
+      - 'benchmark/**'
+      - 'utils/**'
+  pull_request:
+    paths-ignore:
+      - '.zenodo.json'
+      - '.github/workflows/benchmark.yml'
+      - '.github/workflows/ci.yml'
+      - '.github/workflows/CompatHelper.yml'
+      - '.github/workflows/TagBot.yml'
+      - 'benchmark/**'
+      - 'utils/**'
+  workflow_dispatch:
+
+# Cancel redundant CI tests automatically
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: '1'
+          show-versioninfo: true
+      - uses: julia-actions/cache@v2
+      - uses: julia-actions/julia-buildpkg@v1
+        env:
+          PYTHON: ""
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.9'
+      - name: Run Python benchmarks
+        run: |
+          # Install pybs and run benchmark
+          git clone https://github.com/henriksu/pybs.git python_pybs
+          cd python_pybs
+          git checkout 832f037cc342f5c3808c8f50a869b7b9ffb9b170
+          # We need to fix pybs due to CI failures, see
+          # https://github.com/ranocha/BSeries.jl/pull/32
+          # 1. We need to remove `pybs/__init__.py` due to circular dependencies
+          # 2. We need to install pybs using the `-e` switch
+          ls -R
+          rm pybs/__init__.py
+          pip install -e .
+          cd ..
+          pip list
+          python --version
+          python docs/src/benchmark_python_pybs.py
+          #
+          # Install BSeries & noedpy and run benchmark
+          git clone https://github.com/ketch/BSeries.git python_bseries
+          cd python_bseries
+          git checkout f0bfd9c74f155c9e4a7bc748255c5f6cc2948e9b
+          pip install .
+          pip install nodepy
+          cd ..
+          pip list
+          python --version
+          python docs/src/benchmark_python_bseries.py
+          #
+          # Install orderconditions and run benchmark
+          git clone https://gitlab.com/v_dallerit/orderconditions.git
+          cd orderconditions
+          git checkout 01af16fa823414f47e3bffdc2975ca02d3d115e6
+          python --version
+          cp ../docs/src/benchmark_python_orderconditions.py ./
+          pip install IPython
+          pip install graphviz
+          pip list
+          python benchmark_python_orderconditions.py
+          cp ./benchmark_python_orderconditions.txt ../docs/src/
+          ls -R
+          pwd
+          ls -R ../docs
+      - name: Install dependencies
+        run: julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+        env:
+          PYTHON: ""
+      - name: Build and deploy documentation
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # For authentication with GitHub Actions token
+          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }} # For authentication with SSH deploy key
+          GKSwstype: "100" # https://discourse.julialang.org/t/generation-of-documentation-fails-qt-qpa-xcb-could-not-connect-to-display/60988
+          PYTHON: ""
+        run: julia --project=docs --color=yes docs/make.jl

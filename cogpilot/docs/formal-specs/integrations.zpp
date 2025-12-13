@@ -1,0 +1,821 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║                 CogPilot.jl - Integration Contracts Specification            ║
+║                           Z++ Formal Specification                           ║
+║                                                                              ║
+║  This specification formalizes the external integration contracts for       ║
+║  CogPilot.jl with the SciML ecosystem and other external systems.           ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Imports: data_model.zpp, system_state.zpp, operations.zpp
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 1. SCIML ECOSYSTEM INTEGRATIONS                                            │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ ModelingToolkit Integration ]─────────────────────────────────────────────────
+
+Integration with ModelingToolkit.jl for symbolic-numeric computation.
+
+schema ModelingToolkitSystem
+  symbolic_system : ODESystem  // ModelingToolkit ODESystem
+  state_variables : seq Symbol  // Symbolic variables
+  parameters : seq Symbol  // Symbolic parameters
+  equations : seq Equation  // Differential equations
+  
+  where
+    // State variables non-empty
+    #state_variables ≥ 1
+    
+    // Equations match state variables
+    #equations = #state_variables
+    
+    // All variables appear in equations
+    ∀v : state_variables •
+      ∃eq : equations • variable_appears_in(v, eq)
+end
+
+schema ConvertToModelingToolkit
+  ΞOntogeneticKernel  // Read-only kernel
+  mtk_system! : ModelingToolkitSystem
+  
+  where
+    // Convert B-series genome to symbolic system
+    let trees = dom kernel.genome.mapping.coefficients in
+      // Each tree becomes a symbolic equation component
+      ∀t : trees •
+        ∃eq : mtk_system!.equations •
+          represents_tree(eq, t, kernel.genome.mapping.coefficients(t))
+    
+    // System dimension matches kernel max order
+    #mtk_system!.state_variables = kernel.genome.max_order
+end
+
+schema OptimizeWithModelingToolkit
+  kernel : OntogeneticKernel
+  kernel' : OntogeneticKernel
+  mtk_system? : ModelingToolkitSystem
+  
+  where
+    // Apply symbolic simplification
+    let simplified = structural_simplify(mtk_system?) in
+      // Extract optimized coefficients
+      kernel'.genome = extract_genome(simplified)
+    
+    // Efficiency improved
+    kernel'.efficiency ≥ kernel.efficiency
+    
+    // Other attributes preserved
+    kernel'.id = kernel.id
+    kernel'.lineage = kernel.lineage
+end
+
+──[ DifferentialEquations Integration ]───────────────────────────────────────────
+
+Integration with DifferentialEquations.jl for ODE solving.
+
+schema ODEProblem
+  f : (Vector[n], Vector[n], Vector[p], ℝ) → Vector[n]  // RHS function
+  u0 : Vector[n]  // Initial condition
+  tspan : (ℝ, ℝ)  // Time span
+  params : Vector[p]  // Parameters
+  
+  where
+    // Time span valid
+    tspan.1 < tspan.2
+    
+    // Initial condition finite
+    ∀i : 1..n • isFinite(u0[i])
+end
+
+schema SolveWithDifferentialEquations
+  ΞBSeriesRidgeState  // Read-only ridge
+  problem? : ODEProblem
+  solution! : ODESolution
+  method : MethodType  // Numerical method to use
+  
+  where
+    // Use B-series coefficients to define method
+    let bseries_method = 
+      construct_method(expression.genome, method) in
+        solution! = solve(problem?, bseries_method)
+    
+    // Solution exists for entire time span
+    solution!.t[1] = problem?.tspan.1
+    solution!.t[#solution!.t] = problem?.tspan.2
+end
+
+──[ RootedTrees Integration ]─────────────────────────────────────────────────────
+
+Integration with RootedTrees.jl for tree operations.
+
+schema RootedTreesEnumeration
+  order : Order
+  trees! : seq RootedTree
+  
+  where
+    // Enumerate all rooted trees of given order
+    trees! = enumerate_rooted_trees(order)
+    
+    // Count matches A000081
+    #trees! = A000081(order)
+    
+    // All trees have correct order
+    ∀t : trees! • t.order = order
+end
+
+schema ConvertToRootedTreesFormat
+  tree? : RootedTree  // Internal representation
+  rt_tree! : RootedTreesJL.RootedTree  // RootedTrees.jl format
+  
+  where
+    // Convert level sequence to RootedTrees.jl format
+    rt_tree! = level_sequence_to_rooted_tree(tree?.level_sequence)
+    
+    // Order preserved
+    order(rt_tree!) = tree?.order
+    
+    // Symmetry factor preserved
+    symmetry(rt_tree!) = tree?.symmetry_factor
+end
+
+schema ButcherProductIntegration
+  tree1? : RootedTree
+  tree2? : RootedTree
+  product! : RootedTree
+  
+  where
+    // Compute Butcher product using RootedTrees.jl
+    let rt1 = convert_to_rt_format(tree1?);
+        rt2 = convert_to_rt_format(tree2?) in
+          product! = convert_from_rt_format(butcher_product(rt1, rt2))
+    
+    // Product order is sum of orders
+    product!.order = tree1?.order + tree2?.order
+end
+
+──[ BSeries Integration ]─────────────────────────────────────────────────────────
+
+Integration with BSeries.jl for B-series computations.
+
+schema BSeriesCoefficients
+  method_name : MethodType
+  order : Order
+  coefficients! : RootedTree ⇸ ℝ
+  
+  where
+    // Get B-series coefficients for standard method
+    coefficients! = bseries_coefficients(method_name, order)
+    
+    // All trees up to order have coefficients
+    ∀o : 1..order •
+      ∀t : enumerate_trees(o) •
+        t ∈ dom coefficients!
+end
+
+schema ComputeElementaryDifferentials
+  tree? : RootedTree
+  vector_field? : Vector[n] → Vector[n]
+  state? : Vector[n]
+  differential! : Vector[n]
+  
+  where
+    // Compute elementary differential F(τ)(y) using BSeries.jl
+    differential! = elementary_differential(tree?, vector_field?, state?)
+    
+    // Dimension preserved
+    dim(differential!) = dim(state?)
+end
+
+schema VerifyOrderConditions
+  genome? : KernelGenome
+  target_order? : Order
+  satisfied! : 𝔹
+  defect! : ℝ≥0
+  
+  where
+    // Verify B-series order conditions using BSeries.jl
+    let conditions = order_conditions(target_order?) in
+      satisfied! = ∀cond : conditions • 
+        check_condition(genome?, cond)
+    
+    // Compute order defect (how far from satisfying)
+    defect! = 
+      if satisfied! then
+        0.0
+      else
+        max{|residual(genome?, cond)| | cond ∈ conditions}
+end
+
+──[ ReservoirComputing Integration ]──────────────────────────────────────────────
+
+Integration with ReservoirComputing.jl for echo state networks.
+
+schema ReservoirComputingESN
+  input_dim : ℕ₁
+  reservoir_size : ℕ₁
+  output_dim : ℕ₁
+  spectral_radius : ℝ
+  sparsity : Fitness
+  
+  where
+    // Parameters match ReservoirComputing.jl format
+    0.0 < spectral_radius < 1.0
+    0.0 ≤ sparsity ≤ 1.0
+end
+
+schema CreateESNFromConfig
+  config? : ReservoirConfig
+  esn! : ReservoirComputingESN
+  
+  where
+    // Map internal config to ReservoirComputing.jl
+    esn!.input_dim = config?.input_dim
+    esn!.reservoir_size = config?.size
+    esn!.output_dim = config?.output_dim
+    esn!.spectral_radius = config?.spectral_radius
+    esn!.sparsity = config?.sparsity
+end
+
+schema TrainESNReservoir
+  ΔReservoirState
+  esn? : ReservoirComputingESN
+  train_data? : seq (Vector[input_dim] × Vector[output_dim])
+  
+  where
+    // Use ReservoirComputing.jl training
+    let trained_esn = train(esn?, train_data?) in
+      // Extract weights
+      weights'.W_out = output_weights(trained_esn)
+    
+    // Echo state property maintained
+    spectral_radius(weights'.W_res) < 1.0
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 2. ADVANCED SCIML INTEGRATIONS                                             │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ NeuralPDE Integration ]───────────────────────────────────────────────────────
+
+Integration with NeuralPDE.jl for physics-informed neural networks.
+
+schema PINNConfiguration
+  pde_system : PDESystem  // Partial differential equations
+  boundary_conditions : seq BoundaryCondition
+  domain : Domain  // Spatial-temporal domain
+  neural_network : NeuralNetwork  // Neural architecture
+  
+  where
+    // Domain non-empty
+    measure(domain) > 0
+    
+    // Boundary conditions compatible with domain
+    ∀bc : boundary_conditions •
+      bc.domain ⊆ boundary(domain)
+end
+
+schema KernelToPINN
+  kernel? : OntogeneticKernel
+  pinn_config! : PINNConfiguration
+  
+  where
+    // Convert kernel genome to PINN architecture
+    let complexity = kernel?.genome.max_order in
+      pinn_config!.neural_network = 
+        create_network(
+          layers = complexity,
+          neurons_per_layer = 16
+        )
+    
+    // Use B-series structure to inform PDE
+    pinn_config!.pde_system = 
+      genome_to_pde(kernel?.genome)
+end
+
+schema TrainPINNKernel
+  kernel : OntogeneticKernel
+  kernel' : OntogeneticKernel
+  pinn_config? : PINNConfiguration
+  training_data? : seq DataPoint
+  
+  where
+    // Train PINN with physics loss
+    let trained_pinn = 
+      train_physics_informed(
+        pinn_config?, 
+        training_data?
+      ) in
+        // Extract optimized genome
+        kernel'.genome = pinn_to_genome(trained_pinn)
+    
+    // Grip (domain fit) improved
+    kernel'.grip ≥ kernel.grip
+end
+
+──[ DataDrivenDiffEq Integration ]────────────────────────────────────────────────
+
+Integration with DataDrivenDiffEq.jl for equation discovery.
+
+schema SINDyConfiguration
+  candidate_functions : seq Function
+  threshold : ℝ≥0
+  optimizer : Optimizer
+  
+  where
+    // At least one candidate function
+    #candidate_functions ≥ 1
+    
+    // Sparsity threshold non-negative
+    threshold ≥ 0.0
+end
+
+schema DiscoverEquationsFromKernel
+  kernel? : OntogeneticKernel
+  training_data? : seq (Vector[n] × Vector[n])  // (state, derivative)
+  discovered_eqs! : seq Equation
+  
+  where
+    // Use SINDy to discover sparse equations
+    let candidates = generate_candidates(kernel?.genome);
+        sindy_config = SINDyConfiguration where
+          sindy_config.candidate_functions = candidates in
+            discovered_eqs! = sindy(training_data?, sindy_config)
+    
+    // Discovered equations are sparse
+    ∀eq : discovered_eqs! •
+      num_nonzero_terms(eq) ≤ 5
+end
+
+schema RefineKernelFromDiscovery
+  kernel : OntogeneticKernel
+  kernel' : OntogeneticKernel
+  equations? : seq Equation
+  
+  where
+    // Incorporate discovered equations into genome
+    kernel'.genome = equations_to_genome(equations?)
+    
+    // Preserve kernel identity
+    kernel'.id = kernel.id
+    
+    // Stability potentially improved
+    kernel'.stability ≥ kernel.stability
+end
+
+──[ Catalyst Integration ]────────────────────────────────────────────────────────
+
+Integration with Catalyst.jl for reaction network modeling.
+
+schema ReactionNetwork
+  species : seq Symbol
+  reactions : seq Reaction
+  parameters : seq Symbol
+  
+  where
+    // At least one species and reaction
+    #species ≥ 1
+    #reactions ≥ 1
+    
+    // All reactions involve defined species
+    ∀r : reactions •
+      (r.reactants ∪ r.products) ⊆ species
+end
+
+schema ReactionToKernelGenome
+  rn? : ReactionNetwork
+  genome! : KernelGenome
+  
+  where
+    // Convert reaction network to B-series genome
+    // Each reaction becomes a tree structure
+    ∀r : rn?.reactions •
+      ∃t : dom genome!.mapping.coefficients •
+        reaction_to_tree(r) = t
+    
+    // Reaction rates become coefficients
+    ∀r : rn?.reactions •
+      let t = reaction_to_tree(r) in
+        genome!.mapping.coefficients(t) = r.rate
+end
+
+schema GenerateReactionKernel
+  rn? : ReactionNetwork
+  order? : Order
+  kernel! : OntogeneticKernel
+  
+  where
+    // Create kernel optimized for reaction network
+    kernel!.genome = reaction_to_genome(rn?)
+    kernel!.genome.max_order = order?
+    
+    // Start as embryonic
+    kernel!.lifecycle.stage = embryonic
+    
+    // Initialize with domain-specific fitness
+    kernel!.grip = evaluate_reaction_fit(kernel!, rn?)
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 3. EXTERNAL SYSTEM INTEGRATIONS                                            │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ JAX Bridge (Python Interop) ]─────────────────────────────────────────────────
+
+Optional integration with JAX for Python interoperability.
+
+schema JAXArray
+  shape : seq ℕ₁
+  dtype : DataType
+  data : Array
+  
+  where
+    // Shape matches data dimensions
+    #shape = ndims(data)
+    ∀i : 1..#shape • size(data, i) = shape[i]
+end
+
+schema ConvertToJAX
+  julia_array? : Vector[n]
+  jax_array! : JAXArray
+  
+  where
+    // Convert Julia array to JAX format
+    jax_array!.shape = ⟨n⟩
+    jax_array!.dtype = Float64
+    jax_array!.data = python_array(julia_array?)
+end
+
+schema ConvertFromJAX
+  jax_array? : JAXArray
+  julia_array! : Vector[n]
+  
+  where
+    // Convert JAX array to Julia format
+    n = product(jax_array?.shape)
+    julia_array! = julia_array_from_python(jax_array?.data)
+    
+    // Dimension matches
+    dim(julia_array!) = n
+end
+
+schema EvaluateKernelInJAX
+  kernel? : OntogeneticKernel
+  jax_function! : JAXFunction
+  
+  where
+    // Export kernel as JAX-compatible function
+    jax_function! = compile_to_jax(
+      kernel?.genome,
+      differentiation = "autodiff"
+    )
+    
+    // Function signature: f(x, params) → x_next
+end
+
+──[ ONNX Model Export ]───────────────────────────────────────────────────────────
+
+Export trained kernels to ONNX format for model interchange.
+
+schema ONNXModel
+  graph : ONNXGraph
+  inputs : seq ONNXTensor
+  outputs : seq ONNXTensor
+  opset_version : ℕ₁
+  
+  where
+    // Valid ONNX graph
+    is_valid_onnx_graph(graph)
+    
+    // Inputs and outputs non-empty
+    #inputs ≥ 1
+    #outputs ≥ 1
+end
+
+schema ExportKernelToONNX
+  kernel? : OntogeneticKernel
+  onnx_model! : ONNXModel
+  
+  where
+    // Convert kernel to ONNX computational graph
+    onnx_model!.graph = kernel_to_onnx_graph(kernel?.genome)
+    
+    // Input dimension from genome
+    onnx_model!.inputs = ⟨create_tensor("input", [kernel?.genome.max_order])⟩
+    
+    // Output dimension same as input (integration step)
+    onnx_model!.outputs = ⟨create_tensor("output", [kernel?.genome.max_order])⟩
+    
+    // Use latest stable opset
+    onnx_model!.opset_version ≥ 13
+end
+
+──[ HDF5 State Persistence ]──────────────────────────────────────────────────────
+
+Persist system state to HDF5 format for checkpointing and restart.
+
+schema HDF5Group
+  name : String
+  attributes : String ⇸ Value
+  datasets : String ⇸ Array
+  subgroups : String ⇸ HDF5Group
+  
+  where
+    // Name non-empty
+    #name ≥ 1
+end
+
+schema SaveStateToHDF5
+  ΞDeepTreeEchoSystemState
+  filepath? : String
+  root_group! : HDF5Group
+  
+  where
+    // Create hierarchical HDF5 structure
+    root_group!.name = "cogpilot_state"
+    
+    // Store configuration
+    root_group!.subgroups("config") = config_to_hdf5(config)
+    
+    // Store component states
+    root_group!.subgroups("engine") = engine_to_hdf5(engine)
+    root_group!.subgroups("reservoir") = reservoir_to_hdf5(reservoir)
+    root_group!.subgroups("psystem") = psystem_to_hdf5(psystem)
+    root_group!.subgroups("garden") = garden_to_hdf5(garden)
+    root_group!.subgroups("reactor") = reactor_to_hdf5(reactor)
+    
+    // Store kernels
+    root_group!.subgroups("kernels") = kernels_to_hdf5(kernels)
+    
+    // Store metadata
+    root_group!.attributes("generation") = generation
+    root_group!.attributes("timestamp") = current_time()
+    root_group!.attributes("version") = "1.0.0"
+end
+
+schema LoadStateFromHDF5
+  ΔDeepTreeEchoSystemState
+  filepath? : String
+  
+  where
+    // Read HDF5 file
+    let root = read_hdf5(filepath?) in
+      // Restore configuration
+      config' = hdf5_to_config(root.subgroups("config"))
+      
+      // Restore component states
+      engine' = hdf5_to_engine(root.subgroups("engine"))
+      reservoir' = hdf5_to_reservoir(root.subgroups("reservoir"))
+      psystem' = hdf5_to_psystem(root.subgroups("psystem"))
+      garden' = hdf5_to_garden(root.subgroups("garden"))
+      reactor' = hdf5_to_reactor(root.subgroups("reactor"))
+      
+      // Restore kernels
+      kernels' = hdf5_to_kernels(root.subgroups("kernels"))
+      
+      // Restore metadata
+      generation' = root.attributes("generation")
+      initialized' = true
+    
+    // Validate restored state
+    is_valid_state(system_state')
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 4. PARALLEL EXECUTION INTEGRATIONS                                         │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Taskflow Integration ]────────────────────────────────────────────────────────
+
+Integration for parallel task graph execution.
+
+schema TaskNode
+  id : ℕ₁
+  operation : Operation  // Operation to execute
+  dependencies : set ℕ₁  // IDs of predecessor tasks
+  
+  where
+    // Task not dependent on itself
+    id ∉ dependencies
+end
+
+schema TaskGraph
+  nodes : seq TaskNode
+  num_threads : ℕ₁
+  
+  where
+    // At least one task
+    #nodes ≥ 1
+    
+    // Task IDs are unique
+    ∀n₁, n₂ : nodes • n₁.id = n₂.id ⇒ n₁ = n₂
+    
+    // Dependencies refer to existing tasks
+    ∀n : nodes •
+      n.dependencies ⊆ {m.id | m ∈ nodes}
+    
+    // No cycles (DAG property)
+    ¬has_cycles(nodes)
+    
+    // Reasonable thread count
+    1 ≤ num_threads ≤ 64
+end
+
+schema ParallelEvolveGeneration
+  ΔDeepTreeEchoSystemState
+  task_graph? : TaskGraph
+  
+  where
+    // Create task graph for parallel evolution
+    let tasks = [
+      TaskNode(1, "evaluate_fitness", ∅),
+      TaskNode(2, "select_elite", {1}),
+      TaskNode(3, "crossover", {2}),
+      TaskNode(4, "mutate", {2}),
+      TaskNode(5, "grow_trees", ∅),
+      TaskNode(6, "evolve_membranes", ∅),
+      TaskNode(7, "gradient_flow", ∅),
+      TaskNode(8, "merge_populations", {3, 4})
+    ] in
+      task_graph? = TaskGraph where
+        task_graph?.nodes = tasks
+    
+    // Execute task graph in parallel
+    execute_parallel(task_graph?)
+    
+    // Generation advances
+    generation' = generation + 1
+end
+
+──[ MPI Distributed Computing ]───────────────────────────────────────────────────
+
+Integration with MPI.jl for multi-node distributed evolution.
+
+schema MPIConfiguration
+  world_size : ℕ₁  // Number of MPI processes
+  rank : ℕ  // Current process rank (0 to world_size-1)
+  root : ℕ  // Root process for gathering
+  
+  where
+    // Valid rank
+    0 ≤ rank < world_size
+    
+    // Valid root
+    0 ≤ root < world_size
+end
+
+schema DistributedEvolve
+  ΔDeepTreeEchoSystemState
+  mpi_config? : MPIConfiguration
+  
+  where
+    // Each MPI rank evolves a sub-population
+    let local_kernels = 
+      partition(kernels, mpi_config?.world_size)[mpi_config?.rank] in
+        // Local evolution
+        local_kernels' = evolve_local(local_kernels)
+    
+    // Synchronization: gather all evolved kernels to root
+    if mpi_config?.rank = mpi_config?.root then
+      kernels' = mpi_gather(local_kernels', mpi_config?.root)
+      
+      // Root selects best kernels
+      kernels' = select_best(kernels', #kernels)
+    
+    // Broadcast selected kernels to all ranks
+    kernels' = mpi_broadcast(kernels', mpi_config?.root)
+    
+    // Generation synchronized
+    generation' = generation + 1
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 5. VISUALIZATION AND MONITORING                                            │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Visualization Data ]───────────────────────────────────────────────────────────
+
+schema VisualizationSnapshot
+  timestamp : ℝ≥0
+  generation : ℕ
+  energy : ℝ
+  avg_fitness : Fitness
+  population_size : ℕ
+  tree_count : ℕ
+  
+  where
+    // Valid snapshot data
+    generation ≥ 0
+    population_size ≥ 0
+    tree_count ≥ 0
+end
+
+schema PlotEnergyLandscape
+  ΞJSurfaceReactorState
+  plot_data! : Array2D  // 2D array for visualization
+  resolution? : ℕ₁
+  
+  where
+    // Generate grid of energy values
+    let grid = generate_grid(surface.config.dimension, resolution?) in
+      plot_data! = 
+        [[surface.hamiltonian.energy(point) | point ∈ row] | row ∈ grid]
+    
+    // Resolution determines grid size
+    shape(plot_data!) = (resolution?, resolution?)
+end
+
+schema PlotFitnessEvolution
+  ΞDeepTreeEchoSystemState
+  generations? : seq ℕ
+  fitness_trace! : seq ℝ
+  
+  where
+    // Extract average fitness for each generation
+    fitness_trace! = 
+      [avg_fitness_at_gen(system_state, g) | g ∈ generations?]
+    
+    // Trace length matches generation count
+    #fitness_trace! = #generations?
+end
+
+schema VisualizeMembraneHierarchy
+  ΞPSystemConfiguration
+  tree_structure! : TreeVisualization
+  
+  where
+    // Create tree visualization from membrane hierarchy
+    tree_structure! = membranes_to_tree(membranes, root_membrane)
+    
+    // Root is top-level
+    tree_structure!.root.id = root_membrane
+    
+    // All membranes represented
+    #(tree_structure!.nodes) = #membranes
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 6. INTEGRATION INVARIANTS                                                  │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ SciML Ecosystem Consistency ]─────────────────────────────────────────────────
+
+invariant SciMLConsistency
+  ∀ system : DeepTreeEchoSystemState •
+    // Tree enumeration consistent with RootedTrees.jl
+    (∀o : dom system.engine.trees.trees_by_order •
+      verify_with_rooted_trees_jl(system.engine.trees.trees_by_order(o))) ∧
+    
+    // B-series coefficients consistent with BSeries.jl
+    (∀ridge : system.ridges •
+      verify_bseries_coefficients(ridge.expression.genome)) ∧
+    
+    // Reservoir consistent with ReservoirComputing.jl
+    verify_echo_state_property(system.reservoir.reservoir)
+end
+
+──[ Format Conversion Correctness ]───────────────────────────────────────────────
+
+invariant ConversionCorrectness
+  // Round-trip conversions preserve semantics
+  (∀ kernel : OntogeneticKernel •
+    let mtk = convert_to_mtk(kernel);
+        kernel' = convert_from_mtk(mtk) in
+          semantically_equivalent(kernel, kernel')) ∧
+  
+  (∀ state : DeepTreeEchoSystemState •
+    let hdf5 = save_to_hdf5(state);
+        state' = load_from_hdf5(hdf5) in
+          state' = state) ∧
+  
+  (∀ array : Vector[n] •
+    let jax = convert_to_jax(array);
+        array' = convert_from_jax(jax) in
+          array' ≈ array)  // Approximate equality for floating point
+end
+
+──[ Parallel Execution Safety ]───────────────────────────────────────────────────
+
+invariant ParallelSafety
+  // Parallel operations produce same results as sequential (up to ordering)
+  ∀ system : DeepTreeEchoSystemState, n : ℕ₁ •
+    let seq_result = evolve_sequential(system, n);
+        par_result = evolve_parallel(system, n) in
+          equivalent_up_to_ordering(seq_result, par_result) ∧
+          seq_result.generation = par_result.generation
+end
+
+──────────────────────────────────────────────────────────────────────────────────
+End of Integration Contracts Specification
+──────────────────────────────────────────────────────────────────────────────────
+
+This specification defines external integration contracts for CogPilot.jl
+with the SciML ecosystem and other systems. Together with the data model,
+system state, and operations specifications, this completes the formal
+specification of the CogPilot.jl architecture.

@@ -1,0 +1,17 @@
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+Manifest.toml
+
+# Vim files
+*.swp
+
+# vscode stuff
+.vscode
+.vscode/*
+
+LocalPreferences.toml
+
+# claude
+.claude
+.claude/*

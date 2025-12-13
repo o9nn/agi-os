@@ -1,0 +1,684 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║                   CogPilot.jl - System State Specification                   ║
+║                           Z++ Formal Specification                           ║
+║                                                                              ║
+║  This specification formalizes the complete system state of CogPilot.jl,    ║
+║  integrating all data model components into a unified computational state.  ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Imports: data_model.zpp
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 1. COMPONENT STATES                                                        │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Ontogenetic Engine State ]────────────────────────────────────────────────────
+
+The ontogenetic engine maintains the tree collection and generation state.
+
+schema OntogeneticEngineState
+  trees : TreeCollection
+  generator_cache : Order ⇸ seq RootedTree
+  max_order : Order
+  generation : ℕ
+  
+  where
+    // Cache contains only trees up to max_order
+    dom generator_cache ⊆ 1..max_order
+    
+    // Cached trees match tree collection
+    ∀o : dom generator_cache •
+      o ∈ dom trees.trees_by_order ⇒
+        generator_cache(o) = trees.trees_by_order(o)
+    
+    // Generation counter non-negative
+    generation ≥ 0
+    
+    // Tree collection max order matches engine max order
+    trees.max_order = max_order
+end
+
+──[ B-Series Ridge State ]────────────────────────────────────────────────────────
+
+B-series computational ridges for numerical integration.
+
+schema BSeriesRidgeState
+  expression : BSeriesExpression
+  method : MethodType  // e.g., :rk4, :dormand_prince
+  current_order : Order
+  optimization_iterations : ℕ
+  
+  where
+    // Current order within genome max order
+    current_order ≤ expression.genome.max_order
+    
+    // Optimization iterations non-negative
+    optimization_iterations ≥ 0
+end
+
+where
+  MethodType ::= rk4 | dormand_prince | bogacki_shampine | 
+                 tsit5 | vern7 | vern9 | custom
+
+──[ Echo State Reservoir State ]──────────────────────────────────────────────────
+
+Complete state of the echo state reservoir network.
+
+schema EchoStateReservoirState
+  reservoir : ReservoirState
+  input_history : seq Vector[input_dim]
+  output_history : seq Vector[output_dim]
+  training_data : seq (Vector[input_dim] × Vector[output_dim])
+  is_trained : 𝔹
+  
+  where
+    // Histories have matching lengths
+    #input_history = #output_history
+    
+    // All inputs have correct dimension
+    ∀inp : input_history • 
+      dim(inp) = reservoir.config.input_dim
+    
+    // All outputs have correct dimension
+    ∀out : output_history • 
+      dim(out) = reservoir.config.output_dim
+    
+    // Training data well-formed
+    ∀(inp, out) : training_data •
+      dim(inp) = reservoir.config.input_dim ∧
+      dim(out) = reservoir.config.output_dim
+    
+    // Can only be trained if training data exists
+    is_trained ⇒ #training_data > 0
+end
+
+──[ P-System Membrane State ]─────────────────────────────────────────────────────
+
+P-system membrane computing state with evolution history.
+
+schema PSystemMembraneState
+  configuration : PSystemConfiguration
+  current_step : ℕ
+  evolution_history : seq PSystemConfiguration
+  halted : 𝔹
+  
+  where
+    // Current step non-negative
+    current_step ≥ 0
+    
+    // History length matches current step
+    #evolution_history = current_step
+    
+    // History preserves membrane structure
+    ∀i : 1..#evolution_history •
+      same_structure(evolution_history[i], configuration)
+    
+    // Halted only after at least one step
+    halted ⇒ current_step > 0
+end
+
+where
+  // Two configurations have same structure if membrane IDs and hierarchy match
+  same_structure : PSystemConfiguration × PSystemConfiguration → 𝔹
+
+──[ Membrane Garden State ]───────────────────────────────────────────────────────
+
+Membrane garden state tracking tree cultivation.
+
+schema MembraneGardenState
+  garden : MembraneGarden
+  growth_history : seq (ℕ × ℕ)  // (generation, total_trees)
+  crossbreeding_events : seq CrossbreedingEvent
+  harvest_log : seq HarvestEvent
+  
+  where
+    // Growth history matches generation
+    #growth_history = garden.generation + 1
+    
+    // Growth history is monotonic in generation
+    ∀i : 1..#growth_history-1 •
+      growth_history[i].1 < growth_history[i+1].1
+    
+    // All crossbreeding events reference existing membranes
+    ∀event : crossbreeding_events •
+      (∃m : garden.membranes.membranes • m.id = event.membrane1) ∧
+      (∃m : garden.membranes.membranes • m.id = event.membrane2)
+end
+
+where
+  schema CrossbreedingEvent
+    generation : ℕ
+    membrane1 : MembraneID
+    membrane2 : MembraneID
+    offspring_count : ℕ₁
+  end
+  
+  schema HarvestEvent
+    generation : ℕ
+    membrane_id : MembraneID
+    tree_ids : set NodeID
+    total_fitness : ℝ≥0
+  end
+
+──[ J-Surface Reactor State ]─────────────────────────────────────────────────────
+
+J-surface reactor state with energy tracking.
+
+schema JSurfaceReactorState
+  surface : JSurfaceState
+  energy_history : seq (ℝ≥0 × ℝ)  // (time, energy)
+  gradient_norm : ℝ≥0
+  evolution_mode : EvolutionMode
+  
+  where
+    // Energy history ordered by time
+    ∀i : 1..#energy_history-1 •
+      energy_history[i].1 < energy_history[i+1].1
+    
+    // Current energy matches surface energy
+    #energy_history > 0 ⇒
+      energy_history[#energy_history].2 = surface.energy
+    
+    // Gradient norm non-negative
+    gradient_norm ≥ 0.0
+end
+
+where
+  EvolutionMode ::= gradient_flow | evolutionary | hybrid
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 2. UNIFIED SYSTEM STATE                                                    │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ System Configuration ]─────────────────────────────────────────────────────────
+
+Immutable system configuration parameters (A000081-derived).
+
+schema SystemConfiguration
+  base_order : Order
+  max_tree_order : Order
+  reservoir_size : ℕ₁
+  num_membranes : ℕ₁
+  growth_rate : ℝ>0
+  mutation_rate : Fitness
+  symplectic : 𝔹
+  
+  where
+    // Base order determines reservoir size (A000081-aligned)
+    // Note: This is the recommended derivation; alternative alignments
+    // are acceptable as long as they maintain A000081 relationship
+    reservoir_size = Σ{i : 1..base_order • A000081(i)}
+    
+    // Max tree order greater than base
+    max_tree_order ≥ base_order
+    
+    // Number of membranes from A000081
+    ∃k : Order • num_membranes = A000081(k)
+    
+    // Growth rate is A000081 ratio
+    ∃n : Order • growth_rate ≈ A000081(n+1) / A000081(n)
+    
+    // Mutation rate inversely proportional to complexity
+    ∃n : Order • mutation_rate ≈ 1.0 / A000081(n)
+    
+    // Mutation rate must be reasonable
+    0.0 < mutation_rate < 1.0
+end
+
+──[ Deep Tree Echo System State ]─────────────────────────────────────────────────
+
+Complete unified system state integrating all components.
+
+schema DeepTreeEchoSystemState
+  config : SystemConfiguration
+  
+  // Component states
+  engine : OntogeneticEngineState
+  ridges : seq BSeriesRidgeState
+  reservoir : EchoStateReservoirState
+  psystem : PSystemMembraneState
+  garden : MembraneGardenState
+  reactor : JSurfaceReactorState
+  
+  // Kernel population
+  kernels : seq OntogeneticKernel
+  
+  // Global state
+  generation : ℕ
+  initialized : 𝔹
+  
+  where
+    // Generation synchronized across components
+    generation = engine.generation
+    generation = garden.garden.generation
+    
+    // Ridges non-empty
+    #ridges ≥ 1
+    
+    // All ridges use trees from engine
+    ∀ridge : ridges •
+      ridge.expression.trees = engine.trees
+    
+    // Reservoir configuration matches system config
+    reservoir.reservoir.config.size = config.reservoir_size
+    
+    // P-system membranes match config
+    #(psystem.configuration.membranes) = config.num_membranes
+    
+    // Garden membranes match P-system
+    garden.garden.membranes = psystem.configuration
+    
+    // Reactor dimension matches reservoir size
+    reactor.surface.config.dimension = config.reservoir_size
+    
+    // Reactor symplectic setting matches config
+    reactor.surface.config.symplectic = config.symplectic
+    
+    // Kernels reference trees from engine
+    ∀kernel : kernels •
+      ∀t : dom kernel.genome.mapping.coefficients •
+        ∃o : dom engine.trees.trees_by_order •
+          ∃τ : engine.trees.trees_by_order(o) •
+            τ.level_sequence = t
+    
+    // Kernel lifecycles synchronized with generation
+    ∀kernel : kernels •
+      kernel.lifecycle.generation ≤ generation
+    
+    // Cannot perform operations until initialized
+    ¬initialized ⇒ (generation = 0 ∧ #kernels = 0)
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 3. SYSTEM STATUS AND METRICS                                               │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Population Statistics ]───────────────────────────────────────────────────────
+
+schema PopulationStatistics
+  total_kernels : ℕ
+  avg_fitness : Fitness
+  max_fitness : Fitness
+  min_fitness : Fitness
+  fitness_variance : ℝ≥0
+  stage_distribution : LifecycleStage ⇸ ℕ
+  
+  where
+    // At least one kernel to compute statistics
+    total_kernels ≥ 1
+    
+    // Fitness bounds
+    min_fitness ≤ avg_fitness ≤ max_fitness
+    0.0 ≤ min_fitness ≤ 1.0
+    0.0 ≤ max_fitness ≤ 1.0
+    
+    // Stage distribution sums to total
+    Σ{s : dom stage_distribution • stage_distribution(s)} = total_kernels
+    
+    // All stages represented in distribution
+    dom stage_distribution = {embryonic, juvenile, mature, senescent}
+end
+
+──[ Tree Statistics ]─────────────────────────────────────────────────────────────
+
+schema TreeStatistics
+  total_trees : ℕ
+  trees_by_order : Order ⇸ ℕ
+  avg_tree_order : ℝ>0
+  planted_trees : ℕ
+  avg_tree_fitness : Fitness
+  
+  where
+    // Total matches sum by order
+    total_trees = Σ{o : dom trees_by_order • trees_by_order(o)}
+    
+    // Trees by order matches A000081
+    ∀o : dom trees_by_order • trees_by_order(o) = A000081(o)
+    
+    // Average order computed correctly
+    avg_tree_order = 
+      (Σ{o : dom trees_by_order • o × trees_by_order(o)}) / total_trees
+    
+    // Planted trees subset of total
+    planted_trees ≤ total_trees
+end
+
+──[ Reservoir Performance ]───────────────────────────────────────────────────────
+
+schema ReservoirPerformance
+  prediction_error : ℝ≥0
+  training_error : ℝ≥0
+  spectral_radius : ℝ
+  memory_capacity : ℝ≥0
+  is_trained : 𝔹
+  
+  where
+    // Spectral radius for echo state property
+    0.0 < spectral_radius < 1.0
+    
+    // Training error ≤ prediction error (training is best case)
+    is_trained ⇒ training_error ≤ prediction_error
+    
+    // Memory capacity non-negative
+    memory_capacity ≥ 0.0
+end
+
+──[ System Status ]───────────────────────────────────────────────────────────────
+
+Complete system status snapshot.
+
+schema SystemStatus
+  system_state : DeepTreeEchoSystemState
+  
+  // Computed metrics
+  population_stats : PopulationStatistics
+  tree_stats : TreeStatistics
+  reservoir_perf : ReservoirPerformance
+  
+  // Energy and dynamics
+  current_energy : ℝ
+  energy_change_rate : ℝ
+  gradient_norm : ℝ≥0
+  
+  // Evolution metrics
+  generation : ℕ
+  evolution_rate : ℝ≥0  // Fitness improvement per generation
+  diversity : ℝ≥0  // Population genetic diversity
+  
+  where
+    // Generation matches system state
+    generation = system_state.generation
+    
+    // Energy from reactor
+    current_energy = system_state.reactor.surface.energy
+    
+    // Gradient norm from reactor
+    gradient_norm = system_state.reactor.gradient_norm
+    
+    // Population stats from kernels
+    population_stats.total_kernels = #(system_state.kernels)
+    
+    // Diversity is average kernel novelty
+    diversity = 
+      (Σ{k : system_state.kernels • k.novelty}) / 
+      max(1, #(system_state.kernels))
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 4. STATE TRANSITIONS AND INVARIANTS                                        │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ State Evolution ]─────────────────────────────────────────────────────────────
+
+The system evolves through discrete generations.
+
+schema ΔDeepTreeEchoSystemState
+  DeepTreeEchoSystemState
+  DeepTreeEchoSystemState'  // Prime notation for next state
+  
+  where
+    // Generation increases
+    generation' = generation + 1
+    
+    // Configuration immutable
+    config' = config
+    
+    // Trees may grow (more orders explored)
+    engine'.trees.max_order ≥ engine.trees.max_order
+    
+    // Reservoir remains trained once trained
+    reservoir.is_trained ⇒ reservoir'.is_trained
+    
+    // Membrane structure preserved (IDs don't change)
+    ∀m : psystem.configuration.membranes •
+      ∃m' : psystem'.configuration.membranes • m.id = m'.id
+end
+
+──[ Initialization ]──────────────────────────────────────────────────────────────
+
+System initialization from configuration.
+
+schema InitDeepTreeEchoSystem
+  ΔDeepTreeEchoSystemState
+  seed_trees : ℕ₁
+  
+  where
+    // Pre-condition: not initialized
+    ¬initialized
+    
+    // Post-condition: initialized
+    initialized'
+    
+    // Generation starts at 0
+    generation' = 0
+    
+    // Seed trees must align with A000081
+    ∃n : Order • seed_trees = A000081(n)
+    
+    // Generate initial tree collection
+    engine'.trees.max_order ≥ 4  // At least order 4
+    
+    // Create initial kernel population
+    #kernels' ≥ seed_trees
+    
+    // All kernels start as embryonic
+    ∀k : kernels' • k.lifecycle.stage = embryonic
+    
+    // Reservoir not yet trained
+    ¬reservoir'.is_trained
+    
+    // P-system at initial configuration
+    psystem'.current_step = 0
+end
+
+──[ Global System Invariants ]────────────────────────────────────────────────────
+
+invariant SystemCoherence
+  ∀ system : DeepTreeEchoSystemState •
+    system.initialized ⇒
+      // Tree collection consistency
+      (∀o : dom system.engine.trees.trees_by_order •
+        #(system.engine.trees.trees_by_order(o)) = A000081(o)) ∧
+      
+      // Dimension alignment
+      (system.reservoir.reservoir.config.size = 
+       system.reactor.surface.config.dimension) ∧
+      
+      // Membrane count alignment
+      (#(system.psystem.configuration.membranes) = 
+       system.config.num_membranes) ∧
+      
+      // Generation synchronization
+      (system.generation = system.engine.generation) ∧
+      (system.generation = system.garden.garden.generation)
+end
+
+invariant ComponentIntegrity
+  ∀ system : DeepTreeEchoSystemState •
+    system.initialized ⇒
+      // Reservoir echo state property
+      spectral_radius(system.reservoir.reservoir.weights.W_res) < 1.0 ∧
+      
+      // J-surface energy bounded
+      |system.reactor.surface.energy| < 10⁶ ∧
+      
+      // Membrane hierarchy is tree
+      is_tree(system.psystem.configuration.membranes) ∧
+      
+      // All kernels have valid fitness
+      (∀k : system.kernels • 0.0 ≤ k.fitness ≤ 1.0)
+end
+
+invariant A000081_Consistency
+  ∀ system : DeepTreeEchoSystemState •
+    system.initialized ⇒
+      // Reservoir size is cumulative A000081
+      (∃n : Order • 
+        system.config.reservoir_size = 
+        Σ{i : 1..n • A000081(i)}) ∧
+      
+      // Membrane count is A000081 value
+      (∃k : Order • 
+        system.config.num_membranes = A000081(k)) ∧
+      
+      // Growth rate is A000081 ratio
+      (∃m : Order • 
+        system.config.growth_rate ≈ A000081(m+1) / A000081(m)) ∧
+      
+      // Mutation rate inversely proportional
+      (∃p : Order • 
+        system.config.mutation_rate ≈ 1.0 / A000081(p))
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 5. CONCURRENT STATE MANAGEMENT                                             │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ Parallel Evolution State ]────────────────────────────────────────────────────
+
+For parallel/distributed execution (Taskflow integration).
+
+schema ParallelSystemState
+  base_state : DeepTreeEchoSystemState
+  worker_states : ℕ₁ ⇸ DeepTreeEchoSystemState  // Worker ID → state
+  num_workers : ℕ₁
+  synchronization_point : ℕ  // Last synchronized generation
+  
+  where
+    // Worker count matches
+    #(dom worker_states) = num_workers
+    
+    // All workers share same configuration
+    ∀w : dom worker_states •
+      worker_states(w).config = base_state.config
+    
+    // All workers at or past synchronization point
+    ∀w : dom worker_states •
+      worker_states(w).generation ≥ synchronization_point
+    
+    // Base state at synchronization point
+    base_state.generation = synchronization_point
+end
+
+──[ State Synchronization ]───────────────────────────────────────────────────────
+
+Merge worker states back to base state.
+
+schema SynchronizeParallelState
+  ΔParallelSystemState
+  
+  where
+    // Pre: workers ahead of base
+    ∃w : dom worker_states • 
+      worker_states(w).generation > base_state.generation
+    
+    // Post: synchronization point advances
+    synchronization_point' > synchronization_point
+    
+    // Post: base state updated to sync point
+    base_state'.generation = synchronization_point'
+    
+    // Merge kernel populations (union of all workers)
+    base_state'.kernels = 
+      ⋃{w : dom worker_states • worker_states(w).kernels}
+    
+    // Average reservoir states
+    // Energy histories concatenated
+    // (Details depend on specific merge strategy)
+end
+
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ § 6. AUXILIARY STATE FUNCTIONS                                               │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+──[ System State Queries ]────────────────────────────────────────────────────────
+
+// Get current total tree count
+total_trees : DeepTreeEchoSystemState → ℕ
+total_trees(system) ≙ 
+  Σ{o : dom system.engine.trees.trees_by_order • 
+    #(system.engine.trees.trees_by_order(o))}
+
+// Get current average kernel fitness
+avg_kernel_fitness : DeepTreeEchoSystemState → Fitness
+avg_kernel_fitness(system) ≙ 
+  if #(system.kernels) > 0 then
+    (Σ{k : system.kernels • k.fitness}) / #(system.kernels)
+  else
+    0.0
+
+// Check if system is in stable state
+is_stable : DeepTreeEchoSystemState → 𝔹
+is_stable(system) ≙
+  system.initialized ∧
+  system.reservoir.is_trained ∧
+  |system.reactor.gradient_norm| < 0.01 ∧
+  avg_kernel_fitness(system) > 0.5
+
+// Get diversity of kernel population
+population_diversity : DeepTreeEchoSystemState → ℝ≥0
+population_diversity(system) ≙
+  if #(system.kernels) > 0 then
+    (Σ{k : system.kernels • k.novelty}) / #(system.kernels)
+  else
+    0.0
+
+// Check if evolution should continue
+should_continue_evolution : DeepTreeEchoSystemState × ℕ → 𝔹
+should_continue_evolution(system, target_gen) ≙
+  system.generation < target_gen ∧
+  ¬system.psystem.halted ∧
+  #(system.kernels) > 0
+
+// Compute energy change rate
+energy_change_rate : JSurfaceReactorState → ℝ
+energy_change_rate(reactor) ≙
+  if #(reactor.energy_history) ≥ 2 then
+    let 
+      (t₁, e₁) = reactor.energy_history[#(reactor.energy_history) - 1];
+      (t₂, e₂) = reactor.energy_history[#(reactor.energy_history)]
+    in
+      (e₂ - e₁) / (t₂ - t₁)
+  else
+    0.0
+
+──[ State Validation ]────────────────────────────────────────────────────────────
+
+// Validate system state consistency
+is_valid_state : DeepTreeEchoSystemState → 𝔹
+is_valid_state(system) ≙
+  // Basic structural validity
+  system.initialized ∧
+  
+  // A000081 alignment
+  (∀o : dom system.engine.trees.trees_by_order •
+    #(system.engine.trees.trees_by_order(o)) = A000081(o)) ∧
+  
+  // Dimension consistency
+  system.reservoir.reservoir.config.size = 
+    system.reactor.surface.config.dimension ∧
+  
+  // Generation synchronization
+  system.generation = system.engine.generation ∧
+  system.generation = system.garden.garden.generation ∧
+  
+  // Fitness bounds
+  (∀k : system.kernels • 0.0 ≤ k.fitness ≤ 1.0) ∧
+  
+  // Echo state property
+  spectral_radius(system.reservoir.reservoir.weights.W_res) < 1.0
+
+──────────────────────────────────────────────────────────────────────────────────
+End of System State Specification
+──────────────────────────────────────────────────────────────────────────────────
+
+This specification defines the complete system state composition. The next
+specification file (operations.zpp) will formalize the operations that
+transform these states.

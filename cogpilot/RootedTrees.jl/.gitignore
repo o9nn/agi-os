@@ -1,0 +1,11 @@
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+*.jl.*.mem
+**/.ipynb_checkpoints/
+**/*.gif
+**/Manifest.toml
+**/LocalPreferences.toml
+docs/build
+docs/src/contributing.md
+docs/src/license.md

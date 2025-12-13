@@ -1,0 +1,51 @@
+name: E2E Deep Tree Echo
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *' # Run daily at midnight
+  workflow_dispatch:
+
+jobs:
+  e2e-test:
+    name: E2E Deep Tree Echo System
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+      
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: '1'
+          
+      - uses: julia-actions/cache@v2
+      
+      - uses: julia-actions/julia-buildpkg@v1
+      
+      - name: Instantiate Project
+        run: julia --project=. -e 'using Pkg; Pkg.instantiate()'
+        
+      - name: Run Unified Ontogenetic Demo
+        run: julia --project=. examples/unified_ontogenetic_demo.jl
+        
+      - name: Verify Output Artifacts
+        run: |
+          if [ -f "unified_ontogenetic_state.txt" ]; then
+            echo "✅ State file generated successfully"
+          else
+            echo "❌ State file missing"
+            exit 1
+          fi
+          
+      - name: Upload Test Artifacts
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: deep-tree-echo-results
+          path: |
+            unified_ontogenetic_state.txt
+            *.png
+            *.pdf
