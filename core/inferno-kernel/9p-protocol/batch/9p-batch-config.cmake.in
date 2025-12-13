@@ -1,0 +1,5 @@
+@PACKAGE_INIT@
+
+include("${CMAKE_CURRENT_LIST_DIR}/9p-batch-targets.cmake")
+
+check_required_components(9p-batch)

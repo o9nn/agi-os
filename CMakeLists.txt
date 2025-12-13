@@ -75,6 +75,12 @@ IF(BUILD_INFERNO_KERNEL)
     IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/inferno-kernel/CMakeLists.txt")
         add_subdirectory(core/inferno-kernel)
         MESSAGE(STATUS "  Inferno Kernel configured")
+        
+        # 9P Batch Protocol Extension
+        IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/inferno-kernel/9p-protocol/batch/CMakeLists.txt")
+            add_subdirectory(core/inferno-kernel/9p-protocol/batch)
+            MESSAGE(STATUS "  9P Batch Protocol configured")
+        ENDIF()
     ELSE()
         MESSAGE(WARNING "  Inferno Kernel not found at core/inferno-kernel/")
     ENDIF()
