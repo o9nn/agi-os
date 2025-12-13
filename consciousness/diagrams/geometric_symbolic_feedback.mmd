@@ -1,0 +1,51 @@
+graph LR
+    subgraph Symbolic["SYMBOLIC DOMAIN"]
+        T1["Thought Generated<br/>(Linguistic Content)"]
+        T2["LLM Context<br/>(Comprehensive State)"]
+        T3["Next Thought<br/>(Informed by Geometry)"]
+    end
+    
+    subgraph Bridge["GEOMETRIC-SYMBOLIC BRIDGE"]
+        B1["Feature Extraction<br/>(NLP Analysis)"]
+        B2["Action Tendency Mapping<br/>(Keywords → Agent)"]
+        B3["State Requirement Mapping<br/>(Characteristics → Arena)"]
+        B4["Context Assembly<br/>(AAR + Memory + Goals)"]
+    end
+    
+    subgraph Geometric["GEOMETRIC DOMAIN"]
+        G1["Agent Update<br/>(Urge-to-Act)"]
+        G2["Arena Update<br/>(Need-to-Be)"]
+        G3["Relation Emergence<br/>(Self)"]
+        G4["Coherence Calculation<br/>(Alignment)"]
+        G5["Narrative Evolution<br/>(Identity)"]
+    end
+    
+    T1 -->|"Extract"| B1
+    B1 --> B2
+    B1 --> B3
+    
+    B2 -->|"Update<br/>Action Tendencies"| G1
+    B3 -->|"Update<br/>State Space"| G2
+    
+    G1 -->|"Urge Intensity"| G3
+    G2 -->|"Need Intensity"| G3
+    
+    G3 --> G4
+    G4 -->|"High Importance<br/>Thoughts"| G5
+    
+    G4 -->|"AAR State"| B4
+    G5 -->|"Narrative"| B4
+    G1 -->|"Action Tendencies"| B4
+    G2 -->|"State Vector"| B4
+    
+    B4 -->|"Build Prompt"| T2
+    T2 -->|"Generate"| T3
+    
+    T3 -.->|"Continuous<br/>Feedback Loop"| T1
+    
+    style T1 fill:#FFE4B5
+    style T3 fill:#FFE4B5
+    style G3 fill:#90EE90
+    style G4 fill:#87CEEB
+    style G5 fill:#DDA0DD
+    style B4 fill:#FFD700

@@ -1,0 +1,41 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "deep_tree_echo.moc3",
+		"Textures": [
+			"deep_tree_echo.4096/texture_00.png"
+		],
+		"Physics": "deep_tree_echo.physics3.json",
+		"DisplayInfo": "deep_tree_echo.cdi3.json",
+		"Motions": {
+			"Idle": [
+				{
+					"File": "motion/Idle.motion3.json"
+				}
+			],
+			"Tap": [
+				{
+					"File": "motion/Tap.motion3.json"
+				}
+			],
+			"Flic": [
+				{
+					"File": "motion/Flic.motion3.json"
+				}
+			]
+		}
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": []
+		}
+	],
+	"HitAreas": []
+}

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo9 Live2D Avatar - Deep Tree Echo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem 2rem;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .header .status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4ade80;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        .avatar-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        #avatar-canvas {
+            width: 100%;
+            max-width: 600px;
+            height: 600px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .controls {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow-y: auto;
+            max-height: calc(100vh - 150px);
+        }
+        
+        .control-section {
+            margin-bottom: 2rem;
+        }
+        
+        .control-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #a0d8ff;
+        }
+        
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+        
+        .preset-btn {
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .preset-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .preset-btn.active {
+            background: rgba(78, 222, 128, 0.4);
+            border-color: #4ade80;
+        }
+        
+        .slider-control {
+            margin-bottom: 1rem;
+        }
+        
+        .slider-control label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .slider-control input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        .slider-value {
+            float: right;
+            color: #a0d8ff;
+        }
+        
+        .metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .metric {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+        
+        .metric-label {
+            color: #a0d8ff;
+            font-size: 0.75rem;
+        }
+        
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+        
+        .avatar-preview {
+            margin-top: 1rem;
+            text-align: center;
+            color: #a0d8ff;
+            font-size: 0.9rem;
+        }
+        
+        .echo-status {
+            background: rgba(78, 222, 128, 0.2);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(78, 222, 128, 0.4);
+            margin-top: 1rem;
+        }
+        
+        .echo-status h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .echo-status p {
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌳 Echo9 Live2D Avatar</h1>
+        <div class="status">
+            <div class="status-indicator"></div>
+            <span id="connection-status">Connected</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="avatar-container">
+            <canvas id="avatar-canvas"></canvas>
+            <div class="avatar-preview">
+                <p>Live2D Avatar Preview</p>
+                <p id="current-emotion">Current Emotion: Neutral</p>
+            </div>
+            
+            <div class="echo-status">
+                <h4>Deep Tree Echo Integration Active</h4>
+                <p>Avatar is synchronized with Echo9's cognitive and emotional states in real-time.</p>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="control-section">
+                <h3>🎭 Emotion Presets</h3>
+                <div class="preset-buttons">
+                    <button class="preset-btn active" onclick="setEmotion('neutral')">Neutral</button>
+                    <button class="preset-btn" onclick="setEmotion('happy')">Happy</button>
+                    <button class="preset-btn" onclick="setEmotion('sad')">Sad</button>
+                    <button class="preset-btn" onclick="setEmotion('curious')">Curious</button>
+                    <button class="preset-btn" onclick="setEmotion('confident')">Confident</button>
+                    <button class="preset-btn" onclick="setEmotion('contemplative')">Contemplative</button>
+                    <button class="preset-btn" onclick="setEmotion('excited')">Excited</button>
+                </div>
+            </div>
+            
+            <div class="control-section">
+                <h3>😊 Emotional State</h3>
+                
+                <div class="slider-control">
+                    <label>
+                        Valence (Positive/Negative)
+                        <span class="slider-value" id="valence-value">0.0</span>
+                    </label>
+                    <input type="range" id="valence" min="-1" max="1" step="0.1" value="0" 
+                           oninput="updateEmotionalSlider('valence', this.value)">
+                </div>
+                
+                <div class="slider-control">
+                    <label>
+                        Arousal (Calm/Excited)
+                        <span class="slider-value" id="arousal-value">0.3</span>
+                    </label>
+                    <input type="range" id="arousal" min="0" max="1" step="0.1" value="0.3"
+                           oninput="updateEmotionalSlider('arousal', this.value)">
+                </div>
+                
+                <div class="slider-control">
+                    <label>
+                        Curiosity
+                        <span class="slider-value" id="curiosity-value">0.3</span>
+                    </label>
+                    <input type="range" id="curiosity" min="0" max="1" step="0.1" value="0.3"
+                           oninput="updateEmotionalSlider('curiosity', this.value)">
+                </div>
+                
+                <div class="slider-control">
+                    <label>
+                        Confidence
+                        <span class="slider-value" id="confidence-value">0.5</span>
+                    </label>
+                    <input type="range" id="confidence" min="0" max="1" step="0.1" value="0.5"
+                           oninput="updateEmotionalSlider('confidence', this.value)">
+                </div>
+            </div>
+            
+            <div class="control-section">
+                <h3>🧠 Cognitive State</h3>
+                
+                <div class="slider-control">
+                    <label>
+                        Awareness
+                        <span class="slider-value" id="awareness-value">0.5</span>
+                    </label>
+                    <input type="range" id="awareness" min="0" max="1" step="0.1" value="0.5"
+                           oninput="updateCognitiveSlider('awareness', this.value)">
+                </div>
+                
+                <div class="slider-control">
+                    <label>
+                        Attention
+                        <span class="slider-value" id="attention-value">0.5</span>
+                    </label>
+                    <input type="range" id="attention" min="0" max="1" step="0.1" value="0.5"
+                           oninput="updateCognitiveSlider('attention', this.value)">
+                </div>
+                
+                <div class="slider-control">
+                    <label>
+                        Cognitive Load
+                        <span class="slider-value" id="cognitive-load-value">0.3</span>
+                    </label>
+                    <input type="range" id="cognitive-load" min="0" max="1" step="0.1" value="0.3"
+                           oninput="updateCognitiveSlider('cognitive_load', this.value)">
+                </div>
+                
+                <div class="slider-control">
+                    <label>
+                        Energy Level
+                        <span class="slider-value" id="energy-value">0.7</span>
+                    </label>
+                    <input type="range" id="energy" min="0" max="1" step="0.1" value="0.7"
+                           oninput="updateCognitiveSlider('energy_level', this.value)">
+                </div>
+            </div>
+            
+            <div class="control-section">
+                <h3>📊 Current Metrics</h3>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-label">Valence</div>
+                        <div class="metric-value" id="metric-valence">0.0</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Arousal</div>
+                        <div class="metric-value" id="metric-arousal">0.3</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Awareness</div>
+                        <div class="metric-value" id="metric-awareness">0.5</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Energy</div>
+                        <div class="metric-value" id="metric-energy">0.7</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = 'http://localhost:5000/api/live2d';
+        
+        let emotionalState = {
+            valence: 0.0,
+            arousal: 0.3,
+            dominance: 0.5,
+            curiosity: 0.3,
+            confidence: 0.5
+        };
+        
+        let cognitiveState = {
+            awareness: 0.5,
+            attention: 0.5,
+            cognitive_load: 0.3,
+            coherence: 0.7,
+            energy_level: 0.7,
+            processing_mode: 'contemplative'
+        };
+        
+        // Set emotion preset
+        async function setEmotion(emotion) {
+            try {
+                const response = await fetch(`${API_BASE}/emotion/preset/${emotion}`, {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    document.getElementById('current-emotion').textContent = 
+                        `Current Emotion: ${emotion.charAt(0).toUpperCase() + emotion.slice(1)}`;
+                    
+                    // Update active button
+                    document.querySelectorAll('.preset-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    event.target.classList.add('active');
+                    
+                    // Fetch updated state
+                    fetchCurrentState();
+                }
+            } catch (error) {
+                console.error('Error setting emotion:', error);
+            }
+        }
+        
+        // Update emotional slider
+        function updateEmotionalSlider(param, value) {
+            value = parseFloat(value);
+            document.getElementById(`${param}-value`).textContent = value.toFixed(1);
+            emotionalState[param] = value;
+            
+            // Update metric display
+            document.getElementById(`metric-${param}`)?.textContent = value.toFixed(2);
+            
+            // Debounced update
+            clearTimeout(window.emotionalUpdateTimeout);
+            window.emotionalUpdateTimeout = setTimeout(() => {
+                updateEmotionalState();
+            }, 300);
+        }
+        
+        // Update cognitive slider
+        function updateCognitiveSlider(param, value) {
+            value = parseFloat(value);
+            const displayParam = param.replace('_', '-');
+            document.getElementById(`${displayParam}-value`).textContent = value.toFixed(1);
+            cognitiveState[param] = value;
+            
+            // Update metric display
+            const metricParam = displayParam.split('-')[0];
+            document.getElementById(`metric-${metricParam}`)?.textContent = value.toFixed(2);
+            
+            // Debounced update
+            clearTimeout(window.cognitiveUpdateTimeout);
+            window.cognitiveUpdateTimeout = setTimeout(() => {
+                updateCognitiveState();
+            }, 300);
+        }
+        
+        // Update emotional state on server
+        async function updateEmotionalState() {
+            try {
+                await fetch(`${API_BASE}/state/emotional`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(emotionalState)
+                });
+            } catch (error) {
+                console.error('Error updating emotional state:', error);
+            }
+        }
+        
+        // Update cognitive state on server
+        async function updateCognitiveState() {
+            try {
+                await fetch(`${API_BASE}/state/cognitive`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(cognitiveState)
+                });
+            } catch (error) {
+                console.error('Error updating cognitive state:', error);
+            }
+        }
+        
+        // Fetch current state from server
+        async function fetchCurrentState() {
+            try {
+                const response = await fetch(`${API_BASE}/state`);
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    // Update local state
+                    emotionalState = data.emotional;
+                    cognitiveState = data.cognitive;
+                    
+                    // Update UI
+                    updateUIFromState();
+                }
+            } catch (error) {
+                console.error('Error fetching state:', error);
+            }
+        }
+        
+        // Update UI from state
+        function updateUIFromState() {
+            // Update emotional sliders
+            for (const [key, value] of Object.entries(emotionalState)) {
+                const slider = document.getElementById(key);
+                if (slider) {
+                    slider.value = value;
+                    document.getElementById(`${key}-value`).textContent = value.toFixed(1);
+                }
+            }
+            
+            // Update cognitive sliders
+            for (const [key, value] of Object.entries(cognitiveState)) {
+                if (typeof value === 'number') {
+                    const displayKey = key.replace('_', '-');
+                    const slider = document.getElementById(displayKey);
+                    if (slider) {
+                        slider.value = value;
+                        document.getElementById(`${displayKey}-value`).textContent = value.toFixed(1);
+                    }
+                }
+            }
+            
+            // Update metrics
+            updateMetrics();
+        }
+        
+        // Update metric displays
+        function updateMetrics() {
+            document.getElementById('metric-valence').textContent = emotionalState.valence.toFixed(2);
+            document.getElementById('metric-arousal').textContent = emotionalState.arousal.toFixed(2);
+            document.getElementById('metric-awareness').textContent = cognitiveState.awareness.toFixed(2);
+            document.getElementById('metric-energy').textContent = cognitiveState.energy_level.toFixed(2);
+        }
+        
+        // Initialize canvas (placeholder for Live2D rendering)
+        function initCanvas() {
+            const canvas = document.getElementById('avatar-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            // Draw placeholder
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            ctx.font = '24px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Live2D Avatar Rendering', canvas.width / 2, canvas.height / 2 - 20);
+            ctx.font = '16px sans-serif';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+            ctx.fillText('(Requires Live2D Cubism SDK)', canvas.width / 2, canvas.height / 2 + 20);
+        }
+        
+        // Check server status
+        async function checkStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/status`);
+                if (response.ok) {
+                    document.getElementById('connection-status').textContent = 'Connected';
+                } else {
+                    document.getElementById('connection-status').textContent = 'Disconnected';
+                }
+            } catch (error) {
+                document.getElementById('connection-status').textContent = 'Disconnected';
+            }
+        }
+        
+        // Initialize
+        window.addEventListener('load', () => {
+            initCanvas();
+            checkStatus();
+            fetchCurrentState();
+            
+            // Check status every 5 seconds
+            setInterval(checkStatus, 5000);
+            
+            // Fetch state every 2 seconds
+            setInterval(fetchCurrentState, 2000);
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            initCanvas();
+        });
+    </script>
+</body>
+</html>

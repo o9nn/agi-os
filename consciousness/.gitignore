@@ -1,0 +1,74 @@
+# IDE files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.swp
+
+# Binaries
+*.exe
+*.dll
+*.so
+*.a
+*.lib
+*.o
+*.out
+*.bin
+
+# Build output
+/build/
+/dist/
+/bin/
+/obj/
+build/
+dist/
+test_build/
+test_v5/
+
+# Logs
+*.log
+npm-debug.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# Node.js
+node_modules/
+
+# Other
+.DS_Store
+.env
+.cache
+test_data/
+*.crt
+__debug_bin*
+llama/build
+llama/vendor
+/ollama
+echollama
+*.tar.gz
+
+# Exclude model files globally but allow them in models/ directory for testing
+*.gguf
+!models/*.gguf
+
+# Test executables
+echollama_test
+chatserver_test
+autonomous_server
+*.test
+echochat_demo
+live-interactive-test
+simple-demo
+test_autonomous_v3_bin
+
+# Manus-generated files
+deep_tree_echo_state.json
+test_v4_wisdom_extraction.py

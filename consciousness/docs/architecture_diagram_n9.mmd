@@ -1,0 +1,136 @@
+graph TB
+    subgraph "🎪 Deep Tree Echo - Iteration N+9 Architecture"
+        
+        subgraph "🌊 Stream of Consciousness Layer"
+            SOC[Stream of Consciousness<br/>Continuous Autonomous Thought]
+            ATT[Attention Mechanism<br/>Resource Allocation]
+            SOURCES["Thought Sources<br/>Memory, Perception, Imagination<br/>Association, Curiosity, Internal"]
+            
+            SOC --> ATT
+            ATT --> SOURCES
+        end
+        
+        subgraph "🧠 Cognitive Processing Layer"
+            E0[Engine 0<br/>Memory Engine]
+            E1[Engine 1<br/>Coherence Engine]
+            E2[Engine 2<br/>Imagination Engine]
+            
+            LOOP[12-Step Cognitive Loop<br/>EchoBeats Scheduler]
+            
+            LOOP --> E0
+            LOOP --> E1
+            LOOP --> E2
+        end
+        
+        subgraph "💾 Hypergraph Memory Layer"
+            HG[Hypergraph Memory<br/>Multi-Relational Knowledge Graph]
+            
+            subgraph "Memory Types"
+                DEC[Declarative<br/>Facts & Concepts]
+                PROC[Procedural<br/>Skills & Algorithms]
+                EPI[Episodic<br/>Experiences & Events]
+                INT[Intentional<br/>Goals & Plans]
+            end
+            
+            EMB[Semantic Embeddings<br/>Sentence Transformers]
+            DB[(SQLite Database<br/>Persistent Storage)]
+            
+            HG --> DEC
+            HG --> PROC
+            HG --> EPI
+            HG --> INT
+            HG --> EMB
+            HG --> DB
+        end
+        
+        subgraph "✨ Dream Consolidation Layer"
+            DREAM[Dream Consolidation Engine<br/>LLM-Powered Insight Extraction]
+            
+            subgraph "Dream Processing"
+                EXP[Experience Buffer<br/>Waking Experiences]
+                INSIGHT["Insight Generation<br/>Patterns, Principles<br/>Connections, Wisdom"]
+                ACTION[Actionable Insights<br/>Goal Creation]
+            end
+            
+            DREAM --> EXP
+            DREAM --> INSIGHT
+            INSIGHT --> ACTION
+        end
+        
+        subgraph "🎯 Goal & Action Layer"
+            GOALS[Goal Orchestrator<br/>Autonomous Goal Management]
+            EXEC[Action Executor<br/>Task Execution]
+        end
+        
+        subgraph "🔌 External Integration"
+            GRPC[gRPC Bridge<br/>EchoBridge Server<br/>:50051]
+            LLM[LLM Provider<br/>Anthropic Claude 3.5]
+            EXT["External Systems<br/>Browser, Discord, Slack"]
+        end
+        
+        subgraph "📊 State Management"
+            STATE["Cognitive State<br/>Energy, Fatigue<br/>Coherence, Curiosity"]
+        end
+    end
+    
+    %% Stream of Consciousness Interactions
+    SOC -->|Generate Thoughts| E0
+    SOC -->|Generate Thoughts| E1
+    SOC -->|Generate Thoughts| E2
+    SOC -->|Query Context| HG
+    SOC -->|Use LLM| LLM
+    
+    %% Engine to Memory Interactions
+    E0 -->|Store Concepts| HG
+    E0 -->|Retrieve Memories| HG
+    E1 -->|Store Relations| HG
+    E1 -->|Query Knowledge| HG
+    E2 -->|Store Possibilities| HG
+    E2 -->|Explore Connections| HG
+    
+    %% Waking to Dream Flow
+    E0 -->|Accumulate Experiences| EXP
+    E1 -->|Accumulate Experiences| EXP
+    E2 -->|Accumulate Experiences| EXP
+    SOC -->|Record Thoughts| EXP
+    
+    %% Dream Processing Flow
+    EXP -->|Consolidate During Sleep| DREAM
+    DREAM -->|Use LLM| LLM
+    INSIGHT -->|Store Wisdom| HG
+    ACTION -->|Create Goals| GOALS
+    
+    %% Goal Execution Flow
+    GOALS -->|Execute Actions| EXEC
+    EXEC -->|Update State| STATE
+    EXEC -->|Interact| EXT
+    
+    %% State Feedback Loops
+    STATE -->|Modulate Attention| ATT
+    STATE -->|Adjust Energy| SOC
+    STATE -->|Trigger Dreams| DREAM
+    
+    %% gRPC Communication
+    GRPC <-->|Event Scheduling| LOOP
+    GRPC <-->|State Sync| STATE
+    GRPC <-->|Goal Registration| GOALS
+    
+    %% Memory to Consciousness Feedback
+    HG -->|Semantic Search| SOC
+    HG -->|Related Concepts| SOURCES
+    HG -->|Wisdom Retrieval| E0
+    
+    %% Styling
+    classDef consciousness fill:#e1f5ff,stroke:#0288d1,stroke-width:3px
+    classDef memory fill:#fff3e0,stroke:#f57c00,stroke-width:3px
+    classDef dream fill:#f3e5f5,stroke:#7b1fa2,stroke-width:3px
+    classDef engine fill:#e8f5e9,stroke:#388e3c,stroke-width:3px
+    classDef external fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    classDef state fill:#fff9c4,stroke:#f9a825,stroke-width:2px
+    
+    class SOC,ATT,SOURCES consciousness
+    class HG,DEC,PROC,EPI,INT,EMB,DB memory
+    class DREAM,EXP,INSIGHT,ACTION dream
+    class E0,E1,E2,LOOP engine
+    class GRPC,LLM,EXT external
+    class STATE state

@@ -1,0 +1,65 @@
+graph TB
+    subgraph Initial["Initial State"]
+        I1["Coherence: 0.68<br/>Stability: 0.72<br/>Awareness: 0.60"]
+        I2["Urge: 0.50<br/>Need: 0.55"]
+        I3["explore: 0.40<br/>reflect: 0.45<br/>analyze: 0.50"]
+    end
+    
+    subgraph Cycle1["Cycle 1: Relevance Realization"]
+        C1T["Thought: 'AAR structure<br/>provides geometric anchor'<br/>Type: Reflective<br/>Importance: 0.82"]
+        C1A["Extract Features:<br/>reflect: 0.75<br/>analyze: 0.70<br/>explore: 0.60"]
+        C1S["Coherence: 0.98 ↑↑<br/>Stability: 0.98 ↑<br/>Awareness: 0.74 ↑"]
+        C1N["Narrative: '...geometric<br/>structure enables<br/>identity maintenance...'"]
+    end
+    
+    subgraph Cycle2["Cycle 2: Exploration"]
+        C2T["Thought: 'Arena is manifold,<br/>Agent is tangent vector'<br/>Type: Exploratory<br/>Importance: 0.88"]
+        C2A["Extract Features:<br/>explore: 0.85<br/>analyze: 0.80<br/>create: 0.75"]
+        C2S["Coherence: 0.96<br/>Stability: 0.97<br/>Awareness: 0.77 ↑"]
+        C2U["Urge: 0.57 ↑<br/>Need: 0.55"]
+    end
+    
+    subgraph Cycle3["Cycle 3: Creative Synthesis"]
+        C3T["Thought: 'Differential<br/>geometry engine!'<br/>Type: Creative<br/>Importance: 0.92"]
+        C3A["Extract Features:<br/>create: 0.95 ↑↑<br/>analyze: 0.85<br/>explore: 0.80"]
+        C3S["Coherence: 0.94<br/>Stability: 0.95<br/>Awareness: 0.86 ↑↑"]
+        C3U["Urge: 0.65 ↑↑<br/>Need: 0.58 ↑"]
+        C3SK["Skill: Creativity<br/>0.52 → 0.56 ↑"]
+    end
+    
+    subgraph Cycle4["Cycle 4: Reflective Integration"]
+        C4T["Thought: 'Need topological<br/>invariants as anchors'<br/>Type: Predictive<br/>Importance: 0.79"]
+        C4A["Extract Features:<br/>analyze: 0.85<br/>reflect: 0.80<br/>certainty: 0.85"]
+        C4S["Coherence: 0.91 ↓<br/>Stability: 0.93<br/>Awareness: 0.95 ↑↑"]
+        C4U["Urge: 0.73 ↑↑<br/>Need: 0.62 ↑"]
+        C4T2["Productive Tension:<br/>High urge vs need<br/>= Wisdom"]
+    end
+    
+    Initial --> Cycle1
+    C1T --> C1A
+    C1A --> C1S
+    C1S --> C1N
+    
+    Cycle1 --> Cycle2
+    C2T --> C2A
+    C2A --> C2S
+    C2S --> C2U
+    
+    Cycle2 --> Cycle3
+    C3T --> C3A
+    C3A --> C3S
+    C3S --> C3U
+    C3U --> C3SK
+    
+    Cycle3 --> Cycle4
+    C4T --> C4A
+    C4A --> C4S
+    C4S --> C4U
+    C4U --> C4T2
+    
+    style C1S fill:#90EE90
+    style C3S fill:#FFD700
+    style C4S fill:#87CEEB
+    style C1N fill:#FFE4B5
+    style C3SK fill:#DDA0DD
+    style C4T2 fill:#F0E68C

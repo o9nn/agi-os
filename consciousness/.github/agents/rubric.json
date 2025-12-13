@@ -1,0 +1,299 @@
+{
+  "kernel_primitives": {
+    "boot": {
+      "weight": 10,
+      "criticality": "critical",
+      "description": "System initialization and bootloader functionality",
+      "evidence_cues": [
+        "boot",
+        "init",
+        "startup",
+        "bootloader",
+        "grub",
+        "multiboot"
+      ],
+      "target_functions": 15,
+      "target_sloc": 500
+    },
+    "scheduling": {
+      "weight": 15,
+      "criticality": "critical",
+      "description": "Process and thread scheduling algorithms",
+      "evidence_cues": [
+        "schedule",
+        "scheduler",
+        "context_switch",
+        "task_switch",
+        "round_robin",
+        "priority"
+      ],
+      "target_functions": 20,
+      "target_sloc": 800
+    },
+    "process_thread_management": {
+      "weight": 15,
+      "criticality": "critical",
+      "description": "Process creation, destruction, and thread management",
+      "evidence_cues": [
+        "process",
+        "thread",
+        "fork",
+        "exec",
+        "exit",
+        "wait",
+        "kill",
+        "pcb",
+        "tcb"
+      ],
+      "target_functions": 25,
+      "target_sloc": 1000
+    },
+    "memory": {
+      "weight": 15,
+      "criticality": "critical",
+      "description": "Basic memory allocation and management",
+      "evidence_cues": [
+        "malloc",
+        "free",
+        "kalloc",
+        "kfree",
+        "heap",
+        "memory_pool",
+        "slab"
+      ],
+      "target_functions": 18,
+      "target_sloc": 700
+    },
+    "interrupt_handling": {
+      "weight": 12,
+      "criticality": "high",
+      "description": "Interrupt and exception handling mechanisms",
+      "evidence_cues": [
+        "interrupt",
+        "irq",
+        "isr",
+        "exception",
+        "trap",
+        "idt",
+        "gdt"
+      ],
+      "target_functions": 20,
+      "target_sloc": 600
+    },
+    "system_call_interface": {
+      "weight": 12,
+      "criticality": "high",
+      "description": "System call interface and handling",
+      "evidence_cues": [
+        "syscall",
+        "system_call",
+        "sysenter",
+        "int_0x80",
+        "syscall_table"
+      ],
+      "target_functions": 30,
+      "target_sloc": 900
+    },
+    "basic_io": {
+      "weight": 8,
+      "criticality": "high",
+      "description": "Basic input/output operations",
+      "evidence_cues": [
+        "read",
+        "write",
+        "io",
+        "port",
+        "inb",
+        "outb",
+        "console",
+        "tty"
+      ],
+      "target_functions": 15,
+      "target_sloc": 500
+    },
+    "synchronisation": {
+      "weight": 10,
+      "criticality": "high",
+      "description": "Synchronization primitives (locks, semaphores, etc.)",
+      "evidence_cues": [
+        "lock",
+        "unlock",
+        "mutex",
+        "semaphore",
+        "spinlock",
+        "atomic",
+        "barrier"
+      ],
+      "target_functions": 12,
+      "target_sloc": 400
+    },
+    "timers_clock": {
+      "weight": 8,
+      "criticality": "medium",
+      "description": "Timer and clock management",
+      "evidence_cues": [
+        "timer",
+        "clock",
+        "tick",
+        "jiffies",
+        "rtc",
+        "pit",
+        "hpet"
+      ],
+      "target_functions": 10,
+      "target_sloc": 350
+    },
+    "protection": {
+      "weight": 10,
+      "criticality": "high",
+      "description": "Memory protection and privilege levels",
+      "evidence_cues": [
+        "protection",
+        "privilege",
+        "ring",
+        "user_mode",
+        "kernel_mode",
+        "mmu",
+        "tlb"
+      ],
+      "target_functions": 12,
+      "target_sloc": 450
+    }
+  },
+  "os_platform_services": {
+    "virtual_memory": {
+      "weight": 15,
+      "criticality": "critical",
+      "description": "Virtual memory management and paging",
+      "evidence_cues": [
+        "vmm",
+        "virtual_memory",
+        "paging",
+        "page_table",
+        "page_fault",
+        "mmap",
+        "swap"
+      ],
+      "target_functions": 25,
+      "target_sloc": 1200
+    },
+    "driver_framework": {
+      "weight": 12,
+      "criticality": "high",
+      "description": "Device driver framework and management",
+      "evidence_cues": [
+        "driver",
+        "device",
+        "probe",
+        "register_driver",
+        "bus",
+        "pci",
+        "usb"
+      ],
+      "target_functions": 20,
+      "target_sloc": 800
+    },
+    "filesystem": {
+      "weight": 15,
+      "criticality": "critical",
+      "description": "Filesystem abstraction and implementation",
+      "evidence_cues": [
+        "filesystem",
+        "vfs",
+        "inode",
+        "dentry",
+        "mount",
+        "open",
+        "close",
+        "stat"
+      ],
+      "target_functions": 35,
+      "target_sloc": 1500
+    },
+    "networking": {
+      "weight": 13,
+      "criticality": "high",
+      "description": "Network stack and protocols",
+      "evidence_cues": [
+        "network",
+        "socket",
+        "tcp",
+        "udp",
+        "ip",
+        "ethernet",
+        "packet",
+        "skb"
+      ],
+      "target_functions": 40,
+      "target_sloc": 2000
+    },
+    "ipc": {
+      "weight": 10,
+      "criticality": "high",
+      "description": "Inter-process communication mechanisms",
+      "evidence_cues": [
+        "ipc",
+        "pipe",
+        "queue",
+        "message",
+        "shared_memory",
+        "signal"
+      ],
+      "target_functions": 18,
+      "target_sloc": 700
+    },
+    "security": {
+      "weight": 12,
+      "criticality": "critical",
+      "description": "Security mechanisms and access control",
+      "evidence_cues": [
+        "security",
+        "access_control",
+        "permission",
+        "capability",
+        "selinux",
+        "apparmor",
+        "credential"
+      ],
+      "target_functions": 22,
+      "target_sloc": 900
+    },
+    "power_management": {
+      "weight": 8,
+      "criticality": "medium",
+      "description": "Power management and ACPI",
+      "evidence_cues": [
+        "power",
+        "acpi",
+        "suspend",
+        "resume",
+        "sleep",
+        "cpufreq",
+        "idle"
+      ],
+      "target_functions": 15,
+      "target_sloc": 600
+    },
+    "profiling": {
+      "weight": 5,
+      "criticality": "low",
+      "description": "Performance profiling and debugging support",
+      "evidence_cues": [
+        "profile",
+        "perf",
+        "trace",
+        "kprobe",
+        "ftrace",
+        "debug"
+      ],
+      "target_functions": 12,
+      "target_sloc": 400
+    }
+  },
+  "metadata": {
+    "version": "1.0",
+    "total_kernel_weight": 115,
+    "total_os_services_weight": 100,
+    "description": "Evaluation rubric for kernel primitives and OS platform services"
+  }
+}

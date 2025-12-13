@@ -1,0 +1,203 @@
+syntax = "proto3";
+
+package echobridge;
+
+option go_package = "github.com/cogpy/echo9llama/core/echobridge";
+
+// EchoBridge service enables bidirectional communication between
+// Python autonomous core and Go EchoBeats scheduler
+service EchoBridge {
+  // Schedule a cognitive event for processing
+  rpc ScheduleEvent(CognitiveEvent) returns (EventResponse);
+  
+  // Get current cognitive state
+  rpc GetState(StateRequest) returns (CognitiveState);
+  
+  // Update cognitive state
+  rpc UpdateState(CognitiveState) returns (StateResponse);
+  
+  // Stream thoughts bidirectionally
+  rpc StreamThoughts(stream Thought) returns (stream ThoughtResponse);
+  
+  // Stream cognitive events from scheduler to Python
+  rpc StreamEvents(EventStreamRequest) returns (stream CognitiveEvent);
+  
+  // Register a goal
+  rpc RegisterGoal(Goal) returns (GoalResponse);
+  
+  // Update goal progress
+  rpc UpdateGoalProgress(GoalProgress) returns (GoalResponse);
+  
+  // Get active goals
+  rpc GetActiveGoals(GoalRequest) returns (GoalList);
+}
+
+// CognitiveEvent represents an event in the cognitive loop
+message CognitiveEvent {
+  string id = 1;
+  EventType type = 2;
+  int32 priority = 3;
+  int64 scheduled_at = 4;  // Unix timestamp in milliseconds
+  string payload = 5;
+  map<string, string> context = 6;
+  bool recurring = 7;
+  int64 interval_ms = 8;  // Interval in milliseconds for recurring events
+  int32 engine_id = 9;  // Which of the 3 engines should process this (0-2)
+  int32 step_id = 10;  // Which of the 12 steps this belongs to (0-11)
+}
+
+// EventType enumeration
+enum EventType {
+  EVENT_UNKNOWN = 0;
+  EVENT_THOUGHT = 1;
+  EVENT_PERCEPTION = 2;
+  EVENT_ACTION = 3;
+  EVENT_LEARNING = 4;
+  EVENT_MEMORY_CONSOLIDATION = 5;
+  EVENT_GOAL_PURSUIT = 6;
+  EVENT_SOCIAL_INTERACTION = 7;
+  EVENT_INTROSPECTION = 8;
+  EVENT_DREAM = 9;
+  EVENT_WAKE = 10;
+  EVENT_REST = 11;
+  EVENT_SKILL_PRACTICE = 12;
+  EVENT_KNOWLEDGE_INTEGRATION = 13;
+  EVENT_PATTERN_RECOGNITION = 14;
+}
+
+// Thought represents a generated thought
+message Thought {
+  string content = 1;
+  ThoughtType thought_type = 2;
+  double energy_level = 3;
+  int64 timestamp = 4;
+  string state = 5;
+  int32 engine_id = 6;  // Which engine generated this
+  map<string, string> metadata = 7;
+}
+
+// ThoughtType enumeration
+enum ThoughtType {
+  THOUGHT_UNKNOWN = 0;
+  THOUGHT_PERCEPTION = 1;
+  THOUGHT_REFLECTION = 2;
+  THOUGHT_PLANNING = 3;
+  THOUGHT_INSIGHT = 4;
+  THOUGHT_QUESTION = 5;
+  THOUGHT_MEMORY = 6;
+  THOUGHT_IMAGINATION = 7;
+}
+
+// CognitiveState represents the current state of the system
+message CognitiveState {
+  double energy = 1;
+  double fatigue = 2;
+  double coherence = 3;
+  double curiosity = 4;
+  State current_state = 5;
+  int64 last_rest_timestamp = 6;
+  int32 cycles_since_rest = 7;
+  
+  // 3-Engine specific state
+  EngineState engine_0_state = 8;  // Memory Engine (Past)
+  EngineState engine_1_state = 9;  // Coherence Engine (Present)
+  EngineState engine_2_state = 10; // Imagination Engine (Future)
+  
+  int32 current_step = 11;  // Current step in 12-step loop (0-11)
+}
+
+// State enumeration
+enum State {
+  STATE_UNKNOWN = 0;
+  STATE_INITIALIZING = 1;
+  STATE_WAKING = 2;
+  STATE_ACTIVE = 3;
+  STATE_TIRING = 4;
+  STATE_RESTING = 5;
+  STATE_DREAMING = 6;
+  STATE_SHUTDOWN = 7;
+}
+
+// EngineState represents the state of one of the 3 inference engines
+message EngineState {
+  int32 engine_id = 1;
+  string engine_name = 2;
+  bool active = 3;
+  double processing_load = 4;
+  int64 thoughts_generated = 5;
+  int64 last_activity_timestamp = 6;
+  string current_focus = 7;
+}
+
+// Goal represents a cognitive goal
+message Goal {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  int32 priority = 4;
+  double progress = 5;
+  double target = 6;
+  int64 deadline = 7;
+  GoalStatus status = 8;
+  repeated string required_skills = 9;
+  repeated string knowledge_gaps = 10;
+  int64 created_at = 11;
+}
+
+// GoalStatus enumeration
+enum GoalStatus {
+  GOAL_UNKNOWN = 0;
+  GOAL_PENDING = 1;
+  GOAL_ACTIVE = 2;
+  GOAL_COMPLETED = 3;
+  GOAL_PAUSED = 4;
+  GOAL_ABANDONED = 5;
+}
+
+// GoalProgress represents progress update for a goal
+message GoalProgress {
+  string goal_id = 1;
+  double progress = 2;
+  string update_message = 3;
+}
+
+// Request/Response messages
+message EventResponse {
+  bool success = 1;
+  string message = 2;
+  string event_id = 3;
+}
+
+message StateRequest {
+  bool include_engine_details = 1;
+}
+
+message StateResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message ThoughtResponse {
+  bool success = 1;
+  string message = 2;
+  string thought_id = 3;
+}
+
+message EventStreamRequest {
+  repeated EventType event_types = 1;  // Filter by event types
+  int32 engine_id = 2;  // Filter by engine (-1 for all)
+}
+
+message GoalRequest {
+  GoalStatus status_filter = 1;  // Filter by status
+}
+
+message GoalList {
+  repeated Goal goals = 1;
+}
+
+message GoalResponse {
+  bool success = 1;
+  string message = 2;
+  string goal_id = 3;
+}

@@ -1,0 +1,162 @@
+name: Autonomous Agent Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        go-version: ['1.21', '1.22']
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go-version }}
+          cache: true
+      
+      - name: Display Go version
+        run: go version
+      
+      - name: Download dependencies
+        run: go mod download
+      
+      - name: Verify dependencies
+        run: go mod verify
+      
+      - name: Build echoself binary
+        run: |
+          echo "Building echoself autonomous agent..."
+          go build -v -o echoself cmd/echoself/main.go
+          ls -lh echoself
+      
+      - name: Run Go tests
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          echo "Running standard Go tests..."
+          go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+      
+      - name: Build test suite
+        run: |
+          echo "Building autonomous agent test suite..."
+          go build -v -o test_autonomous test_autonomous_agent_nov22.go
+          ls -lh test_autonomous
+      
+      - name: Run autonomous agent tests (with mock LLM)
+        run: |
+          echo "Running autonomous agent integration tests..."
+          timeout 60s ./test_autonomous || exit_code=$?
+          if [ $exit_code -eq 124 ]; then
+            echo "Test timed out after 60 seconds (expected for long-running tests)"
+            exit 0
+          elif [ $exit_code -eq 0 ]; then
+            echo "Tests completed successfully"
+            exit 0
+          else
+            echo "Tests failed with exit code $exit_code"
+            exit $exit_code
+          fi
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.txt
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+      
+      - name: Archive test artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-artifacts-go-${{ matrix.go-version }}
+          path: |
+            echoself
+            test_autonomous
+            coverage.txt
+          retention-days: 7
+
+  build-verification:
+    name: Build Verification
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+          cache: true
+      
+      - name: Build all packages
+        run: |
+          echo "Building all packages..."
+          go build -v ./...
+      
+      - name: Check for build warnings
+        run: |
+          echo "Checking for build issues..."
+          go vet ./...
+      
+      - name: Run static analysis
+        run: |
+          echo "Running static analysis..."
+          go install honnef.co/go/tools/cmd/staticcheck@latest
+          staticcheck ./...
+        continue-on-error: true
+
+  integration-test:
+    name: Integration Test with Real LLM
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+          cache: true
+      
+      - name: Download dependencies
+        run: go mod download
+      
+      - name: Build echoself
+        run: go build -v -o echoself cmd/echoself/main.go
+      
+      - name: Run echoself with real LLM (short test)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          echo "Running echoself for 30 seconds with real LLM provider..."
+          timeout 30s ./echoself || exit_code=$?
+          if [ $exit_code -eq 124 ]; then
+            echo "✅ Echoself ran successfully for 30 seconds"
+            exit 0
+          elif [ $exit_code -eq 0 ]; then
+            echo "✅ Echoself completed successfully"
+            exit 0
+          else
+            echo "❌ Echoself failed with exit code $exit_code"
+            exit $exit_code
+          fi

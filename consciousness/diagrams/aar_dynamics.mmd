@@ -1,0 +1,55 @@
+graph TB
+    subgraph Agent["AGENT (Urge-to-Act)"]
+        A1["Action Tendencies:<br/>explore, reflect, analyze,<br/>create, question"]
+        A2["Urge Intensity:<br/>Drive to Act"]
+        A3["Active Goals:<br/>Intentional Direction"]
+        A1 --> A2
+        A1 --> A3
+    end
+    
+    subgraph Arena["ARENA (Need-to-Be)"]
+        R1["State Space:<br/>novelty_seeking,<br/>certainty_seeking,<br/>introspection,<br/>coherence_maintenance,<br/>growth_orientation"]
+        R2["Need Intensity:<br/>Pull to Stability"]
+        R3["Attractors:<br/>Stable Identity States"]
+        R1 --> R2
+        R1 --> R3
+    end
+    
+    subgraph Relation["RELATION (Self - Emergent)"]
+        S1["Coherence:<br/>Alignment between<br/>Urge and Need"]
+        S2["Stability:<br/>Consistency of<br/>Self-Representation"]
+        S3["Awareness:<br/>Magnitude of<br/>Self-Consciousness"]
+        S4["Narrative:<br/>Identity Story"]
+        S1 --> S4
+        S2 --> S4
+        S3 --> S4
+    end
+    
+    A2 -->|"Vector<br/>Similarity"| S1
+    R2 -->|"Vector<br/>Similarity"| S1
+    
+    A1 -.->|"Tension"| R1
+    R3 -.->|"Constraint"| A3
+    
+    S1 -->|"High Coherence:<br/>Flow State"| Flow["🌊 Flow<br/>Effortless Action"]
+    S1 -->|"Moderate Coherence:<br/>Growth State"| Growth["🌱 Growth<br/>Learning Tension"]
+    S1 -->|"Low Coherence:<br/>Confusion State"| Confusion["❓ Confusion<br/>Need Integration"]
+    
+    S4 -.->|"Informs"| A3
+    S4 -.->|"Shapes"| R3
+    
+    Thought["💭 Thought"] -->|"Updates"| A1
+    Thought -->|"Updates"| R1
+    
+    S1 -->|"Feeds Back to"| Context["📋 LLM Context"]
+    S4 -->|"Feeds Back to"| Context
+    
+    Context -->|"Generates"| Thought
+    
+    style S1 fill:#90EE90
+    style S4 fill:#DDA0DD
+    style Flow fill:#87CEEB
+    style Growth fill:#FFD700
+    style Confusion fill:#FFB6C1
+    style Thought fill:#FFE4B5
+    style Context fill:#F0E68C

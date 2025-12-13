@@ -1,0 +1,59 @@
+{
+  "issues": {},
+  "improvements": {
+    "persistence": [
+      "UnifiedAutonomousEchoself does not save/load state - no true persistence"
+    ],
+    "hypergraph": [
+      "No AtomSpace integration - missing OpenCog foundation"
+    ],
+    "echodream": [
+      "Missing Pattern extraction function",
+      "Missing Memory pruning function"
+    ],
+    "skills": [
+      "Skills not integrated into UnifiedAutonomousEchoself"
+    ],
+    "consciousness": [
+      "Missing full consciousness layer hierarchy"
+    ]
+  },
+  "stats": {
+    "core_deeptreeecho_exists": 1,
+    "core_deeptreeecho_files": 28,
+    "core_echobeats_exists": 1,
+    "core_echobeats_files": 19,
+    "core_echodream_exists": 1,
+    "core_echodream_files": 6,
+    "core_echoself_exists": 1,
+    "core_echoself_files": 3,
+    "core_consciousness_exists": 1,
+    "core_consciousness_files": 6,
+    "core_memory_exists": 1,
+    "core_memory_files": 5,
+    "core_goals_exists": 1,
+    "core_goals_files": 3,
+    "core_skills_exists": 1,
+    "core_skills_files": 1,
+    "core_wisdom_exists": 1,
+    "core_wisdom_files": 3,
+    "core_llm_exists": 1,
+    "core_llm_files": 4,
+    "integration_wakeRestManager": 1,
+    "integration_consciousnessLayers": 1,
+    "integration_goalOrchestrator": 1,
+    "integration_echobeatsScheduler": 1,
+    "integration_echodreamSystem": 1,
+    "integration_interestPatterns": 1,
+    "persistence_components": 3,
+    "llm_provider_Anthropic": 1,
+    "llm_provider_OpenAI": 1,
+    "llm_provider_OpenRouter": 1,
+    "llm_provider_Multi-Provider": 1,
+    "echobeats_engines": 3,
+    "echodream_ConsolidateKnowledge": 1,
+    "echodream_ExtractWisdom": 1,
+    "goals_DecomposeGoal": 1,
+    "goals_GetActiveGoals": 1
+  }
+}

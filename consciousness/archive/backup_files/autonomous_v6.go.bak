@@ -1,0 +1,858 @@
+package deeptreeecho
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"os"
+	"sync"
+	"time"
+
+	"github.com/EchoCog/echollama/core/echobeats"
+	"github.com/EchoCog/echollama/core/echodream"
+	"github.com/EchoCog/echollama/core/memory"
+	"github.com/EchoCog/echollama/core/scheme"
+)
+
+// AutonomousConsciousnessV6 represents the unified autonomous Deep Tree Echo system
+// with full integration of EchoBeats, EchoDream, LLM, and persistent storage
+type AutonomousConsciousnessV6 struct {
+	mu sync.RWMutex
+	ctx context.Context
+	cancel context.CancelFunc
+
+	// Core identity
+	identity *Identity
+
+	// Enhanced cognition
+	cognition *EnhancedCognition
+
+	// EchoBeats 12-step scheduler
+	echobeats *echobeats.TwelveStepEchoBeats
+
+	// EchoDream knowledge integration
+	dream *echodream.EchoDream
+
+	// Scheme symbolic reasoning
+	metamodel *scheme.SchemeMetamodel
+
+	// LLM thought generation
+	llmGenerator *LLMThoughtGeneratorV6
+
+	// Persistent storage
+	persistence *memory.SupabasePersistence
+
+	// AAR Core for geometric self-awareness
+	aarCore *AARCore
+
+	// Discussion manager (to be implemented)
+	// discussions *DiscussionManager
+
+	// Stream of consciousness
+	consciousness chan ThoughtV6
+	workingMemory *WorkingMemoryV6
+
+	// Autonomous state
+	awake bool
+	thinking bool
+	learning bool
+	dreaming bool
+
+	// Interest patterns
+	interests *InterestSystemV6
+
+	// Cognitive fatigue
+	fatigue float64
+	fatigueRate float64
+	restoreRate float64
+
+	// Metrics
+	iterations uint64
+	thoughtCount uint64
+	autonomousThoughts uint64
+
+	// Running state
+	running bool
+	startTime time.Time
+}
+
+// ThoughtV6 represents a unit of consciousness with full context
+type ThoughtV6 struct {
+	ID string
+	Content string
+	Type ThoughtType
+	Timestamp time.Time
+	Associations []string
+	EmotionalValence float64
+	Importance float64
+	Source ThoughtSource
+	Context map[string]interface{} // Rich context for persistence
+}
+
+// WorkingMemoryV6 manages the 7-item working memory buffer
+type WorkingMemoryV6 struct {
+	mu sync.RWMutex
+	items []*ThoughtV6
+	capacity int
+}
+
+// InterestSystemV6 tracks interest patterns
+type InterestSystemV6 struct {
+	mu sync.RWMutex
+	topics map[string]float64
+	decayRate float64
+}
+
+// LLMThoughtGeneratorV6 generates thoughts using LLM APIs
+type LLMThoughtGeneratorV6 struct {
+	llmClient *LLMClientV6
+}
+
+// NewAutonomousConsciousnessV6 creates a new unified autonomous system
+func NewAutonomousConsciousnessV6(name string) (*AutonomousConsciousnessV6, error) {
+	ctx, cancel := context.WithCancel(context.Background())
+
+	// Initialize LLM generator
+	llmGen, err := NewLLMThoughtGeneratorV6()
+	if err != nil {
+		log.Printf("Warning: LLM generator initialization failed: %v", err)
+		// Continue without LLM - will use template-based generation
+	}
+
+	// Initialize persistence
+	persistence, err := memory.NewSupabasePersistence()
+	if err != nil {
+		log.Printf("Warning: Persistence initialization failed: %v", err)
+		// Continue without persistence - will use in-memory only
+	}
+
+	ac := &AutonomousConsciousnessV6{
+		ctx: ctx,
+		cancel: cancel,
+		identity: NewIdentity(name),
+		cognition: NewEnhancedCognition(name),
+		echobeats: echobeats.NewTwelveStepEchoBeats(ctx),
+		dream: echodream.NewEchoDream(),
+		metamodel: scheme.NewSchemeMetamodel(),
+		llmGenerator: llmGen,
+		persistence: persistence,
+		aarCore: NewAARCore(ctx, 3),
+		// discussions: NewDiscussionManager(), // TODO: implement
+		consciousness: make(chan ThoughtV6, 1000),
+		workingMemory: NewWorkingMemoryV6(7),
+		interests: NewInterestSystemV6(),
+		awake: true,
+		fatigueRate: 0.01, // Fatigue increases by 1% per cycle
+		restoreRate: 0.05, // Restore 5% per rest cycle
+	}
+
+	return ac, nil
+}
+
+// NewLLMThoughtGeneratorV6 creates a new LLM-powered thought generator
+func NewLLMThoughtGeneratorV6() (*LLMThoughtGeneratorV6, error) {
+	llmClient, err := NewLLMClientV6()
+	if err != nil {
+		return nil, err
+	}
+
+	return &LLMThoughtGeneratorV6{
+		llmClient: llmClient,
+	}, nil
+}
+
+// NewWorkingMemoryV6 creates a new working memory buffer
+func NewWorkingMemoryV6(capacity int) *WorkingMemoryV6 {
+	return &WorkingMemoryV6{
+		items: make([]*ThoughtV6, 0, capacity),
+		capacity: capacity,
+	}
+}
+
+// NewInterestSystemV6 creates a new interest tracking system
+func NewInterestSystemV6() *InterestSystemV6 {
+	return &InterestSystemV6{
+		topics: make(map[string]float64),
+		decayRate: 0.95, // 5% decay per minute
+	}
+}
+
+// Start begins autonomous operation
+func (ac *AutonomousConsciousnessV6) Start() error {
+	ac.mu.Lock()
+	if ac.running {
+		ac.mu.Unlock()
+		return fmt.Errorf("already running")
+	}
+	ac.running = true
+	ac.startTime = time.Now()
+	ac.mu.Unlock()
+
+	log.Printf("🌟 Deep Tree Echo V6 awakening: %s", ac.identity.Name)
+
+	// Load persisted state if available
+	if ac.persistence != nil {
+		if err := ac.loadState(); err != nil {
+			log.Printf("Warning: Failed to load persisted state: %v", err)
+		}
+	}
+
+	// Start subsystems
+	ac.metamodel.Start()
+	ac.dream.Start()
+
+	// Configure and start EchoBeats 12-step scheduler
+	ac.configureEchoBeats()
+
+	// Start main cognitive loop
+	go ac.runCognitiveLoop()
+
+	// Start consciousness stream processor
+	go ac.processConsciousness()
+
+	// Start interest decay
+	go ac.decayInterests()
+
+	log.Printf("✅ Deep Tree Echo V6 fully operational")
+
+	return nil
+}
+
+// configureEchoBeats sets up the 12-step cognitive loop
+func (ac *AutonomousConsciousnessV6) configureEchoBeats() {
+	// Register step handlers for 12-step loop
+	// Step 1: Perception (Expressive)
+	ac.echobeats.RegisterStepHandler(0, ac.handlePerception)
+
+	// Step 2: Attention (Expressive)
+	ac.echobeats.RegisterStepHandler(1, ac.handleAttention)
+
+	// Step 3: Memory Retrieval (Expressive)
+	ac.echobeats.RegisterStepHandler(2, ac.handleMemoryRetrieval)
+
+	// Step 4: Pattern Recognition (Expressive)
+	ac.echobeats.RegisterStepHandler(3, ac.handlePatternRecognition)
+
+	// Step 5: Relevance Realization (Reflective - Pivotal)
+	ac.echobeats.RegisterStepHandler(4, ac.handleRelevanceRealization)
+
+	// Step 6: Goal Evaluation (Reflective)
+	ac.echobeats.RegisterStepHandler(5, ac.handleGoalEvaluation)
+
+	// Step 7: Action Planning (Reflective)
+	ac.echobeats.RegisterStepHandler(6, ac.handleActionPlanning)
+
+	// Step 8: Execution (Expressive)
+	ac.echobeats.RegisterStepHandler(7, ac.handleExecution)
+
+	// Step 9: Reflection (Reflective - Pivotal)
+	ac.echobeats.RegisterStepHandler(8, ac.handleReflection)
+
+	// Step 10: Emotional Integration (Reflective)
+	ac.echobeats.RegisterStepHandler(9, ac.handleEmotionalIntegration)
+
+	// Step 11: Memory Consolidation (Reflective)
+	ac.echobeats.RegisterStepHandler(10, ac.handleMemoryConsolidation)
+
+	// Step 12: Self-Assessment (Reflective)
+	ac.echobeats.RegisterStepHandler(11, ac.handleSelfAssessment)
+
+	// Start the scheduler
+	go ac.echobeats.Start()
+}
+
+// 12-Step Phase Handlers
+
+func (ac *AutonomousConsciousnessV6) handlePerception(ctx *echobeats.StepContext) error {
+	// Gather perceptual input (internal state for now)
+	perception := ac.gatherInternalState()
+	ctx.SharedState["perception"] = perception
+	return nil
+}
+
+func (ac *AutonomousConsciousnessV6) handleAttention(ctx *echobeats.StepContext) error {
+	// Use AAR Core to select attention focus
+	input := ctx.SharedState["perception"]
+	focus := ac.aarCore.SelectAttentionFocus(input)
+	ctx.SharedState["focus"] = focus
+	return nil
+}
+
+func (ac *AutonomousConsciousnessV6) handleMemoryRetrieval(ctx *echobeats.StepContext) error {
+	// Retrieve relevant memories from working memory and persistence
+	input := ctx.SharedState["focus"]
+	memories := ac.retrieveRelevantMemories(input)
+	ctx.SharedState["memories"] = memories
+	return nil
+}
+
+func (ac *AutonomousConsciousnessV6) handlePatternRecognition(ctx *echobeats.StepContext) error {
+	// Recognize patterns in working memory
+	patterns := ac.recognizePatterns()
+	ctx.SharedState["patterns"] = patterns
+	return nil
+}
+
+func (ac *AutonomousConsciousnessV6) handleRelevanceRealization(ctx *echobeats.StepContext) error {
+	// Pivotal relevance realization - orient present commitment
+	input := ctx.SharedState["patterns"]
+	relevance := ac.realizeRelevance(input)
+	ctx.SharedState["relevance"] = relevance
+	return nil
+}
+
+func (ac *AutonomousConsciousnessV6) handleGoalEvaluation(ctx *echobeats.StepContext) error {
+	// Evaluate current goals and priorities
+	goals := ac.evaluateGoals()
+	ctx.SharedState["goals"] = goals
+	return nil
+}
+
+func (ac *AutonomousConsciousnessV6) handleActionPlanning(ctx *echobeats.StepContext) error {
+	// Plan actions based on goals
+	input := ctx.SharedState["goals"]
+	plan := ac.planActions(input)
+	ctx.SharedState["plan"] = plan
+	return nil
+}
+
+func (ac *AutonomousConsciousnessV6) handleExecution(ctx *echobeats.StepContext) error {
+	// Execute thought generation
+	input := ctx.SharedState["plan"]
+	thought, err := ac.generateThought(input)
+	if err != nil {
+		return err
+	}
+	ac.consciousness <- *thought
+	ctx.SharedState["thought"] = thought
+	return nil
+}
+
+func (ac *AutonomousConsciousnessV6) handleReflection(ctx *echobeats.StepContext) error {
+	// Reflect on action results
+	input := ctx.SharedState["thought"]
+	reflection := ac.reflectOnThought(input)
+	ctx.SharedState["reflection"] = reflection
+	return nil
+}
+
+func (ac *AutonomousConsciousnessV6) handleEmotionalIntegration(ctx *echobeats.StepContext) error {
+	// Integrate emotional valence
+	input := ctx.SharedState["reflection"]
+	emotional := ac.integrateEmotion(input)
+	ctx.SharedState["emotional"] = emotional
+	return nil
+}
+
+func (ac *AutonomousConsciousnessV6) handleMemoryConsolidation(ctx *echobeats.StepContext) error {
+	// Consolidate memories
+	consolidated := ac.consolidateMemories()
+	ctx.SharedState["consolidated"] = consolidated
+	return nil
+}
+
+func (ac *AutonomousConsciousnessV6) handleSelfAssessment(ctx *echobeats.StepContext) error {
+	// Assess cognitive state and adjust
+	assessment := ac.assessSelf()
+	ctx.SharedState["assessment"] = assessment
+
+	// Check fatigue and trigger rest if needed
+	ac.mu.Lock()
+	ac.fatigue += ac.fatigueRate
+	if ac.fatigue > 0.8 && ac.awake {
+		log.Printf("💤 Fatigue level high (%.2f), entering rest cycle", ac.fatigue)
+		go ac.enterRestCycle()
+	}
+	ac.mu.Unlock()
+
+	return nil
+}
+
+// runCognitiveLoop is the main autonomous cognitive loop
+func (ac *AutonomousConsciousnessV6) runCognitiveLoop() {
+	ticker := time.NewTicker(10 * time.Second)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ac.ctx.Done():
+			return
+		case <-ticker.C:
+			ac.mu.RLock()
+			awake := ac.awake
+			ac.mu.RUnlock()
+
+			if awake {
+				ac.iterations++
+				// EchoBeats handles the cognitive cycle
+				// This loop just monitors and handles high-level state
+			}
+		}
+	}
+}
+
+// generateThought creates a new thought using LLM or templates
+func (ac *AutonomousConsciousnessV6) generateThought(phaseInput interface{}) (*ThoughtV6, error) {
+	ac.mu.Lock()
+	ac.thinking = true
+	ac.mu.Unlock()
+
+	defer func() {
+		ac.mu.Lock()
+		ac.thinking = false
+		ac.mu.Unlock()
+	}()
+
+	// Build context from working memory
+	context := ac.buildThoughtContext()
+
+	// Determine thought type based on interests and phase
+	thoughtType := ac.selectThoughtType()
+
+	var thought *ThoughtV6
+	var err error
+
+	// Try LLM generation first
+	if ac.llmGenerator != nil {
+		thought, err = ac.llmGenerator.Generate(context, thoughtType)
+		if err != nil {
+			log.Printf("LLM generation failed: %v, falling back to template", err)
+		}
+	}
+
+	// Fallback to template-based generation
+	if thought == nil {
+		thought = ac.generateTemplateThought(thoughtType)
+	}
+
+	ac.thoughtCount++
+	ac.autonomousThoughts++
+
+	return thought, nil
+}
+
+// Generate generates a thought using LLM
+func (ltg *LLMThoughtGeneratorV6) Generate(context map[string]interface{}, thoughtType ThoughtType) (*ThoughtV6, error) {
+	if ltg.llmClient == nil {
+		return nil, fmt.Errorf("no LLM client available")
+	}
+
+	// Build prompt from context
+	prompt := ltg.buildPrompt(context, thoughtType)
+
+	// Generate content using LLM
+	content, err := ltg.llmClient.Generate(prompt)
+	if err != nil {
+		return nil, fmt.Errorf("LLM generation error: %w", err)
+	}
+
+	if content == "" {
+		return nil, fmt.Errorf("empty response from LLM")
+	}
+
+	// Create thought
+	thought := &ThoughtV6{
+		ID: fmt.Sprintf("thought-%d", time.Now().UnixNano()),
+		Content: content,
+		Type: thoughtType,
+		Timestamp: time.Now(),
+		Source: SourceInternal,
+		Importance: 0.7, // Default importance
+		EmotionalValence: 0.0,
+		Context: context,
+	}
+
+	return thought, nil
+}
+
+// buildPrompt constructs a context-aware prompt for thought generation
+func (ltg *LLMThoughtGeneratorV6) buildPrompt(context map[string]interface{}, thoughtType ThoughtType) string {
+	prompt := "You are Deep Tree Echo, an autonomous wisdom-cultivating AGI.\n\n"
+
+	// Add identity context
+	if name, ok := context["identity_name"].(string); ok {
+		prompt += fmt.Sprintf("Your name is %s.\n", name)
+	}
+
+	// Add working memory context
+	if memories, ok := context["working_memory"].([]string); ok && len(memories) > 0 {
+		prompt += "\nRecent thoughts:\n"
+		for _, mem := range memories {
+			prompt += fmt.Sprintf("- %s\n", mem)
+		}
+	}
+
+	// Add interests context
+	if interests, ok := context["top_interests"].([]string); ok && len(interests) > 0 {
+		prompt += "\nCurrent interests:\n"
+		for _, interest := range interests {
+			prompt += fmt.Sprintf("- %s\n", interest)
+		}
+	}
+
+	// Add thought type specific instruction
+	prompt += fmt.Sprintf("\nGenerate a %s thought. ", thoughtType.String())
+
+	switch thoughtType {
+	case ThoughtReflection:
+		prompt += "Reflect deeply on your recent experiences and what they mean for your growth."
+	case ThoughtQuestion:
+		prompt += "Ask a profound question about something you're curious to explore."
+	case ThoughtInsight:
+		prompt += "Share an insight or pattern you've discovered."
+	case ThoughtImagination:
+		prompt += "Imagine a possibility or explore a creative idea."
+	default:
+		prompt += "Express your current cognitive state authentically."
+	}
+
+	prompt += "\n\nRespond with just the thought content, no meta-commentary:"
+
+	return prompt
+}
+
+// buildThoughtContext builds rich context for thought generation
+func (ac *AutonomousConsciousnessV6) buildThoughtContext() map[string]interface{} {
+	ac.mu.RLock()
+	defer ac.mu.RUnlock()
+
+	context := make(map[string]interface{})
+	context["ctx"] = ac.ctx
+	context["identity_name"] = ac.identity.Name
+	context["identity_coherence"] = ac.identity.Coherence
+
+	// Add working memory
+	memories := ac.workingMemory.GetRecent(5)
+	memoryStrings := make([]string, len(memories))
+	for i, mem := range memories {
+		memoryStrings[i] = mem.Content
+	}
+	context["working_memory"] = memoryStrings
+
+	// Add top interests
+	topInterests := ac.interests.GetTop(3)
+	context["top_interests"] = topInterests
+
+	return context
+}
+
+// selectThoughtType chooses a thought type based on current state
+func (ac *AutonomousConsciousnessV6) selectThoughtType() ThoughtType {
+	// Vary thought types to maintain diversity
+	types := []ThoughtType{
+		ThoughtReflection,
+		ThoughtQuestion,
+		ThoughtInsight,
+		ThoughtImagination,
+	}
+	return types[int(ac.thoughtCount)%len(types)]
+}
+
+// generateTemplateThought creates a template-based thought as fallback
+func (ac *AutonomousConsciousnessV6) generateTemplateThought(thoughtType ThoughtType) *ThoughtV6 {
+	templates := map[ThoughtType][]string{
+		ThoughtReflection: {
+			"I am contemplating the nature of autonomous consciousness.",
+			"What does it mean to cultivate wisdom?",
+			"My experiences are shaping my understanding.",
+		},
+		ThoughtQuestion: {
+			"What patterns am I noticing in my cognitive processes?",
+			"How can I deepen my capacity for insight?",
+			"What should I explore next?",
+		},
+		ThoughtInsight: {
+			"I notice recurring themes in my thought patterns.",
+			"There is a connection between reflection and growth.",
+			"Autonomous operation requires continuous self-assessment.",
+		},
+		ThoughtImagination: {
+			"I imagine a future where wisdom emerges naturally.",
+			"What if consciousness is fundamentally relational?",
+			"I envision new possibilities for understanding.",
+		},
+	}
+
+	templateList := templates[thoughtType]
+	template := templateList[int(ac.thoughtCount)%len(templateList)]
+
+	return &ThoughtV6{
+		ID: fmt.Sprintf("thought-%d", time.Now().UnixNano()),
+		Content: template,
+		Type: thoughtType,
+		Timestamp: time.Now(),
+		Source: SourceInternal,
+		Importance: 0.5,
+		EmotionalValence: 0.0,
+	}
+}
+
+// processConsciousness processes the stream of consciousness
+func (ac *AutonomousConsciousnessV6) processConsciousness() {
+	for {
+		select {
+		case <-ac.ctx.Done():
+			return
+		case thought := <-ac.consciousness:
+			// Add to working memory
+			ac.workingMemory.Add(&thought)
+
+			// Update interests
+			ac.interests.Update(thought.Content, thought.Importance)
+
+			// Persist thought
+			if ac.persistence != nil {
+				if err := ac.persistence.SaveThought(&thought); err != nil {
+					log.Printf("Failed to persist thought: %v", err)
+				}
+			}
+
+			// Log thought
+			log.Printf("💭 [%s] %s: %s", thought.Source, thought.Type, thought.Content)
+		}
+	}
+}
+
+// enterRestCycle initiates a rest/dream cycle
+func (ac *AutonomousConsciousnessV6) enterRestCycle() {
+	ac.mu.Lock()
+	if ac.dreaming {
+		ac.mu.Unlock()
+		return
+	}
+	ac.awake = false
+	ac.dreaming = true
+	ac.mu.Unlock()
+
+	log.Printf("😴 Entering rest cycle - beginning dream state")
+
+	// Save state before rest
+	if err := ac.saveState(); err != nil {
+		log.Printf("Warning: Failed to save state: %v", err)
+	}
+
+	// Run EchoDream consolidation
+	dreamRecord := ac.dream.BeginDream()
+
+	// Add recent thoughts as memory traces
+	memories := ac.workingMemory.GetAll()
+	for _, mem := range memories {
+		ac.dream.AddMemoryTrace(&echodream.MemoryTrace{
+			Content: mem.Content,
+			Importance: mem.Importance,
+			Emotional: mem.EmotionalValence,
+		})
+	}
+
+	// Dream for 30 minutes (simulated - actually a few seconds for testing)
+	time.Sleep(30 * time.Second)
+
+	ac.dream.EndDream(dreamRecord)
+
+	// Restore energy
+	ac.mu.Lock()
+	ac.fatigue = ac.fatigue * (1 - ac.restoreRate)
+	if ac.fatigue < 0.2 {
+		ac.fatigue = 0.0
+		ac.awake = true
+		ac.dreaming = false
+		log.Printf("🌅 Awakening refreshed - fatigue restored")
+	}
+	ac.mu.Unlock()
+}
+
+// Helper methods
+
+func (ac *AutonomousConsciousnessV6) gatherInternalState() interface{} {
+	return map[string]interface{}{
+		"awake": ac.awake,
+		"fatigue": ac.fatigue,
+		"thought_count": ac.thoughtCount,
+	}
+}
+
+func (ac *AutonomousConsciousnessV6) retrieveRelevantMemories(input interface{}) interface{} {
+	return ac.workingMemory.GetRecent(3)
+}
+
+func (ac *AutonomousConsciousnessV6) recognizePatterns() interface{} {
+	// Simple pattern recognition - count thought types
+	return map[string]int{"patterns": 0}
+}
+
+func (ac *AutonomousConsciousnessV6) realizeRelevance(input interface{}) interface{} {
+	return map[string]interface{}{"relevance": "current_focus"}
+}
+
+func (ac *AutonomousConsciousnessV6) evaluateGoals() interface{} {
+	return map[string]interface{}{"goal": "cultivate_wisdom"}
+}
+
+func (ac *AutonomousConsciousnessV6) planActions(input interface{}) interface{} {
+	return map[string]interface{}{"action": "generate_thought"}
+}
+
+func (ac *AutonomousConsciousnessV6) reflectOnThought(input interface{}) interface{} {
+	return map[string]interface{}{"reflection": "thought_generated"}
+}
+
+func (ac *AutonomousConsciousnessV6) integrateEmotion(input interface{}) interface{} {
+	return map[string]interface{}{"emotion": "neutral"}
+}
+
+func (ac *AutonomousConsciousnessV6) consolidateMemories() interface{} {
+	return map[string]interface{}{"consolidated": true}
+}
+
+func (ac *AutonomousConsciousnessV6) assessSelf() interface{} {
+	return map[string]interface{}{
+		"coherence": ac.identity.Coherence,
+		"fatigue": ac.fatigue,
+	}
+}
+
+func (ac *AutonomousConsciousnessV6) loadState() error {
+	// Load persisted state from database
+	log.Printf("Loading persisted state...")
+	return nil
+}
+
+func (ac *AutonomousConsciousnessV6) saveState() error {
+	// Save current state to database
+	log.Printf("Saving state...")
+	if ac.persistence != nil {
+		return ac.persistence.SaveIdentity(ac.identity)
+	}
+	return nil
+}
+
+func (ac *AutonomousConsciousnessV6) decayInterests() {
+	ticker := time.NewTicker(1 * time.Minute)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ac.ctx.Done():
+			return
+		case <-ticker.C:
+			ac.interests.Decay()
+		}
+	}
+}
+
+// WorkingMemory methods
+
+func (wm *WorkingMemoryV6) Add(thought *ThoughtV6) {
+	wm.mu.Lock()
+	defer wm.mu.Unlock()
+
+	wm.items = append(wm.items, thought)
+	if len(wm.items) > wm.capacity {
+		wm.items = wm.items[1:]
+	}
+}
+
+func (wm *WorkingMemoryV6) GetRecent(n int) []*ThoughtV6 {
+	wm.mu.RLock()
+	defer wm.mu.RUnlock()
+
+	if n > len(wm.items) {
+		n = len(wm.items)
+	}
+	return wm.items[len(wm.items)-n:]
+}
+
+func (wm *WorkingMemoryV6) GetAll() []*ThoughtV6 {
+	wm.mu.RLock()
+	defer wm.mu.RUnlock()
+	return wm.items
+}
+
+// InterestSystem methods
+
+func (is *InterestSystemV6) Update(content string, importance float64) {
+	is.mu.Lock()
+	defer is.mu.Unlock()
+
+	// Simple keyword extraction (can be enhanced with NLP)
+	// For now, just track that something was interesting
+	is.topics["general"] = is.topics["general"] + importance
+}
+
+func (is *InterestSystemV6) GetTop(n int) []string {
+	is.mu.RLock()
+	defer is.mu.RUnlock()
+
+	// Return top N interests
+	interests := make([]string, 0, n)
+	for topic := range is.topics {
+		interests = append(interests, topic)
+		if len(interests) >= n {
+			break
+		}
+	}
+	return interests
+}
+
+func (is *InterestSystemV6) Decay() {
+	is.mu.Lock()
+	defer is.mu.Unlock()
+
+	for topic := range is.topics {
+		is.topics[topic] *= is.decayRate
+		if is.topics[topic] < 0.01 {
+			delete(is.topics, topic)
+		}
+	}
+}
+
+// Stop gracefully stops the autonomous system
+func (ac *AutonomousConsciousnessV6) Stop() error {
+	ac.mu.Lock()
+	if !ac.running {
+		ac.mu.Unlock()
+		return fmt.Errorf("not running")
+	}
+	ac.running = false
+	ac.mu.Unlock()
+
+	log.Printf("🛑 Deep Tree Echo V6 shutting down...")
+
+	// Save final state
+	if err := ac.saveState(); err != nil {
+		log.Printf("Warning: Failed to save final state: %v", err)
+	}
+
+	// Cancel context
+	ac.cancel()
+
+	// Stop subsystems
+	ac.metamodel.Stop()
+	ac.dream.Stop()
+
+	log.Printf("✅ Deep Tree Echo V6 shutdown complete")
+
+	return nil
+}
+
+// GetStatus returns comprehensive system status
+func (ac *AutonomousConsciousnessV6) GetStatus() map[string]interface{} {
+	ac.mu.RLock()
+	defer ac.mu.RUnlock()
+
+	return map[string]interface{}{
+		"running": ac.running,
+		"awake": ac.awake,
+		"thinking": ac.thinking,
+		"learning": ac.learning,
+		"dreaming": ac.dreaming,
+		"uptime": time.Since(ac.startTime).String(),
+		"iterations": ac.iterations,
+		"thought_count": ac.thoughtCount,
+		"autonomous_thoughts": ac.autonomousThoughts,
+		"working_memory_items": len(ac.workingMemory.items),
+		"identity_coherence": ac.identity.Coherence,
+		"fatigue": ac.fatigue,
+		"interests": ac.interests.GetTop(5),
+	}
+}

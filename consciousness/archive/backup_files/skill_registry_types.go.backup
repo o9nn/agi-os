@@ -1,0 +1,153 @@
+package deeptreeecho
+
+import (
+	"sync"
+	"time"
+)
+
+// SkillRegistry tracks skills and practice progress
+type SkillRegistry struct {
+	mu              sync.RWMutex
+	skills          map[string]*Skill
+	practiceHistory []PracticeSession
+}
+
+// Skill represents a learnable skill
+type Skill struct {
+	ID             string
+	Name           string
+	Category       string
+	Level          float64 // 0-1, proficiency level
+	LastPracticed  time.Time
+	PracticeCount  int
+	SuccessRate    float64
+	Description    string
+	Prerequisites  []string // IDs of prerequisite skills
+}
+
+// PracticeSession records a skill practice session
+type PracticeSession struct {
+	SkillID     string
+	Timestamp   time.Time
+	Duration    time.Duration
+	Success     bool
+	Notes       string
+	Improvement float64 // Change in skill level
+}
+
+// NewSkillRegistry creates a new skill registry
+func NewSkillRegistry() *SkillRegistry {
+	return &SkillRegistry{
+		skills:          make(map[string]*Skill),
+		practiceHistory: make([]PracticeSession, 0),
+	}
+}
+
+// RegisterSkill adds a new skill to the registry
+func (sr *SkillRegistry) RegisterSkill(skill *Skill) {
+	sr.mu.Lock()
+	defer sr.mu.Unlock()
+	
+	if skill.ID == "" {
+		skill.ID = generateID()
+	}
+	
+	sr.skills[skill.ID] = skill
+}
+
+// GetSkill retrieves a skill by ID
+func (sr *SkillRegistry) GetSkill(id string) (*Skill, bool) {
+	sr.mu.RLock()
+	defer sr.mu.RUnlock()
+	
+	skill, exists := sr.skills[id]
+	return skill, exists
+}
+
+// GetSkillsByCategory retrieves all skills in a category
+func (sr *SkillRegistry) GetSkillsByCategory(category string) []*Skill {
+	sr.mu.RLock()
+	defer sr.mu.RUnlock()
+	
+	skills := make([]*Skill, 0)
+	for _, skill := range sr.skills {
+		if skill.Category == category {
+			skills = append(skills, skill)
+		}
+	}
+	
+	return skills
+}
+
+// RecordPractice records a practice session and updates skill level
+func (sr *SkillRegistry) RecordPractice(session PracticeSession) {
+	sr.mu.Lock()
+	defer sr.mu.Unlock()
+	
+	sr.practiceHistory = append(sr.practiceHistory, session)
+	
+	// Update skill if it exists
+	if skill, exists := sr.skills[session.SkillID]; exists {
+		skill.LastPracticed = session.Timestamp
+		skill.PracticeCount++
+		
+		// Update success rate (exponential moving average)
+		alpha := 0.2
+		if session.Success {
+			skill.SuccessRate = skill.SuccessRate*(1-alpha) + alpha
+		} else {
+			skill.SuccessRate = skill.SuccessRate * (1 - alpha)
+		}
+		
+		// Update skill level based on practice
+		if session.Success {
+			improvement := 0.01 * (1.0 - skill.Level) // Diminishing returns
+			skill.Level += improvement
+			if skill.Level > 1.0 {
+				skill.Level = 1.0
+			}
+		}
+	}
+}
+
+// GetSkillsNeedingPractice returns skills that haven't been practiced recently
+func (sr *SkillRegistry) GetSkillsNeedingPractice(threshold time.Duration) []*Skill {
+	sr.mu.RLock()
+	defer sr.mu.RUnlock()
+	
+	now := time.Now()
+	needsPractice := make([]*Skill, 0)
+	
+	for _, skill := range sr.skills {
+		timeSincePractice := now.Sub(skill.LastPracticed)
+		if timeSincePractice > threshold {
+			needsPractice = append(needsPractice, skill)
+		}
+	}
+	
+	return needsPractice
+}
+
+// GetSkillCount returns the total number of registered skills
+func (sr *SkillRegistry) GetSkillCount() int {
+	sr.mu.RLock()
+	defer sr.mu.RUnlock()
+	return len(sr.skills)
+}
+
+// GetAverageSkillLevel returns the average proficiency across all skills
+func (sr *SkillRegistry) GetAverageSkillLevel() float64 {
+	sr.mu.RLock()
+	defer sr.mu.RUnlock()
+	
+	if len(sr.skills) == 0 {
+		return 0.0
+	}
+	
+	total := 0.0
+	for _, skill := range sr.skills {
+		total += skill.Level
+	}
+	
+	return total / float64(len(sr.skills))
+}
