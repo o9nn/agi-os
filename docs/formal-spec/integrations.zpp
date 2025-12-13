@@ -1,0 +1,803 @@
+(*
+ * AGI-OS Integration Contracts - Z++ Formal Specification
+ * 
+ * This specification formalizes the contracts for external system
+ * integration, including LLM APIs, storage backends, network protocols,
+ * and inter-process communication interfaces.
+ * 
+ * Author: AGI-OS Development Team
+ * Date: December 12, 2025
+ * Version: 1.0
+ *)
+
+(* Import dependencies *)
+include "data_model.zpp"
+include "system_state.zpp"
+include "operations.zpp"
+
+(* ========================================================================
+ * EXTERNAL LLM INTEGRATION
+ * ======================================================================== *)
+
+(*
+ * LLM (Large Language Model) integration contracts
+ * Supports multiple LLM backends: Mistral, Llama, GPT, etc.
+ *)
+
+[LLMProvider]
+LLMProvider ::= Mistral | Llama | GPT | Claude | Local
+
+schema LLMModel
+  model_id: AtomName
+  provider: LLMProvider
+  model_name: AtomName
+  context_length: ℕ₁
+  is_loaded: 𝔹
+  quantization: AtomName    (* "Q4_K_M", "Q5_K_S", "F16", etc. *)
+where
+  model_id ≠ ""
+  model_name ≠ ""
+  (* Context length typically 2048 to 128K tokens *)
+  context_length ≥ 2048 ∧ context_length ≤ 131072
+  quantization ∈ {"Q4_K_M", "Q5_K_S", "Q8_0", "F16", "F32"}
+end
+
+schema LLMPrompt
+  prompt_id: ℕ₁
+  system_prompt: AtomName
+  user_prompt: AtomName
+  context_atoms: ℙ AtomID    (* AtomSpace context *)
+  max_tokens: ℕ₁
+  temperature: ℝ
+  top_p: Probability
+where
+  prompt_id > 0
+  max_tokens > 0 ∧ max_tokens ≤ 4096
+  0.0 ≤ temperature ∧ temperature ≤ 2.0
+  0.0 < top_p ∧ top_p ≤ 1.0
+end
+
+schema LLMResponse
+  response_id: ℕ₁
+  prompt_id: ℕ₁
+  generated_text: AtomName
+  tokens_used: ℕ
+  inference_time: ℕ         (* Milliseconds *)
+  finish_reason: AtomName   (* "stop", "length", "error" *)
+where
+  response_id > 0
+  prompt_id > 0
+  tokens_used ≥ 0
+  inference_time ≥ 0
+  finish_reason ∈ {"stop", "length", "error", "cancelled"}
+end
+
+(*
+ * InvokeLLM: Call external LLM service
+ *)
+
+schema InvokeLLM
+  ΞAtomSpaceState
+  model: LLMModel
+  prompt: LLMPrompt
+  response!: LLMResponse
+  success!: 𝔹
+where
+  (* Pre-conditions *)
+  model.is_loaded
+  prompt.context_atoms ⊆ dom atoms
+  
+  (* Serialize context atoms to text *)
+  let context_text = serialize_atoms_to_text(
+    {aid: prompt.context_atoms • atoms(aid)}
+  ) in
+  
+  (* Construct full prompt *)
+  let full_prompt = 
+    prompt.system_prompt + "\n\n" +
+    "Context:\n" + context_text + "\n\n" +
+    "Query: " + prompt.user_prompt in
+  
+  (* Call LLM inference *)
+  let (output_text, token_count, time_ms, reason) = 
+    model.provider.inference(
+      model.model_name,
+      full_prompt,
+      prompt.max_tokens,
+      prompt.temperature,
+      prompt.top_p
+    ) in
+  
+  (* Construct response *)
+  response! = LLMResponse {
+    response_id = generate_response_id(),
+    prompt_id = prompt.prompt_id,
+    generated_text = output_text,
+    tokens_used = token_count,
+    inference_time = time_ms,
+    finish_reason = reason
+  } ∧
+  
+  success! = (reason ∈ {"stop", "length"})
+end
+
+(*
+ * ParseLLMOutput: Parse LLM output into AtomSpace
+ *)
+
+schema ParseLLMOutput
+  ΔAtomSpaceState
+  response: LLMResponse
+  suggestion_atoms!: ℙ AtomID
+where
+  (* Extract structured suggestions from text *)
+  let suggestions = extract_suggestions(response.generated_text) in
+  
+  (* Parse each suggestion into atoms *)
+  suggestion_atoms! = {s: suggestions • 
+    parse_suggestion_to_atoms(s, atomspace)
+  }
+end
+
+(* ========================================================================
+ * STORAGE BACKEND INTEGRATION
+ * ======================================================================== *)
+
+(*
+ * RocksDB Backend Contract
+ *)
+
+schema RocksDBBackend
+  extends StorageBackend
+  db_path: AtomName
+  cache_size: ℕ₁             (* Cache size in MB *)
+  write_buffer_size: ℕ₁
+  compression_enabled: 𝔹
+where
+  backend_type = RocksDB
+  db_path ≠ ""
+  cache_size ≥ 8 ∧ cache_size ≤ 65536
+  write_buffer_size ≥ 4 ∧ write_buffer_size ≤ 1024
+end
+
+schema RocksDBStore
+  backend: RocksDBBackend
+  atom: Atom
+  success!: 𝔹
+where
+  backend.is_connected
+  ¬backend.read_only
+  
+  (* Serialize atom to key-value *)
+  let key = encode_atom_key(atom.atom_id) in
+  let value = serialize_atom(atom) in
+  
+  (* Write to RocksDB *)
+  success! = backend.db_handle.put(key, value)
+end
+
+schema RocksDBFetch
+  backend: RocksDBBackend
+  atom_id: AtomID
+  atom!: Atom
+  found!: 𝔹
+where
+  backend.is_connected
+  
+  (* Read from RocksDB *)
+  let key = encode_atom_key(atom_id) in
+  let (value, exists) = backend.db_handle.get(key) in
+  
+  found! = exists ∧
+  (exists ⟹ atom! = deserialize_atom(value))
+end
+
+(*
+ * PostgreSQL Backend Contract
+ *)
+
+schema PostgreSQLBackend
+  extends StorageBackend
+  host: AtomName
+  port: ℕ₁
+  database: AtomName
+  username: AtomName
+  password: AtomName
+  pool_size: ℕ₁
+where
+  backend_type = PostgreSQL
+  host ≠ ""
+  port ∈ 1..65535
+  database ≠ ""
+  username ≠ ""
+  pool_size ≥ 1 ∧ pool_size ≤ 100
+end
+
+schema PostgreSQLStore
+  backend: PostgreSQLBackend
+  atoms: ℙ Atom
+  success!: 𝔹
+where
+  backend.is_connected
+  ¬backend.read_only
+  
+  (* Begin transaction *)
+  let tx = backend.begin_transaction() in
+  
+  (* Insert atoms *)
+  ∀ a: atoms •
+    let sql = generate_insert_sql(a) in
+    tx.execute(sql)
+  
+  (* Commit transaction *)
+  success! = tx.commit()
+end
+
+schema PostgreSQLQuery
+  backend: PostgreSQLBackend
+  sql_query: AtomName
+  results!: ℙ Atom
+where
+  backend.is_connected
+  
+  (* Execute query *)
+  let rows = backend.execute_query(sql_query) in
+  
+  (* Parse results *)
+  results! = {row: rows • parse_row_to_atom(row)}
+end
+
+(*
+ * IPFS Backend Contract (Content-Addressed Storage)
+ *)
+
+schema IPFSBackend
+  extends StorageBackend
+  ipfs_node_url: AtomName
+  gateway_url: AtomName
+  pin_all: 𝔹              (* Pin all content permanently *)
+where
+  backend_type = IPFS
+  ipfs_node_url ≠ ""
+  gateway_url ≠ ""
+end
+
+schema IPFSStore
+  backend: IPFSBackend
+  atomspace_snapshot: AtomSpace
+  content_hash!: AtomName
+  success!: 𝔹
+where
+  backend.is_connected
+  ¬backend.read_only
+  
+  (* Serialize entire atomspace *)
+  let content = serialize_atomspace(atomspace_snapshot) in
+  
+  (* Add to IPFS *)
+  let (hash, added) = backend.ipfs_api.add(content) in
+  
+  (* Pin if configured *)
+  backend.pin_all ∧ added ⟹
+    backend.ipfs_api.pin(hash)
+  
+  content_hash! = hash ∧
+  success! = added
+end
+
+schema IPFSFetch
+  backend: IPFSBackend
+  content_hash: AtomName
+  atomspace!: AtomSpace
+  success!: 𝔹
+where
+  backend.is_connected
+  
+  (* Fetch from IPFS *)
+  let (content, fetched) = backend.ipfs_api.get(content_hash) in
+  
+  (* Deserialize atomspace *)
+  fetched ⟹ atomspace! = deserialize_atomspace(content)
+  
+  success! = fetched
+end
+
+(* ========================================================================
+ * NETWORK PROTOCOL INTEGRATION
+ * ======================================================================== *)
+
+(*
+ * Model Context Protocol (MCP) - Anthropic's standard
+ *)
+
+[MCPMessageType]
+MCPMessageType ::= Request | Response | Notification | Error
+
+schema MCPMessage
+  message_id: ℕ₁
+  message_type: MCPMessageType
+  method: AtomName
+  params: ℙ KeyValuePair
+  timestamp: Timestamp
+where
+  message_id > 0
+  method ≠ "" ⟹ message_type = Request
+end
+
+schema MCPRequest
+  extends MCPMessage
+  session_id: ℕ₁
+where
+  message_type = Request
+  method ∈ {"get_atom", "add_atom", "execute_query", 
+             "get_types", "pattern_match"}
+end
+
+schema MCPResponse
+  extends MCPMessage
+  request_id: ℕ₁
+  result: ℙ KeyValuePair
+  success: 𝔹
+where
+  message_type = Response
+  request_id > 0
+end
+
+(*
+ * HandleMCPRequest: Process MCP protocol request
+ *)
+
+schema HandleMCPRequest
+  ΞAtomSpaceState
+  request: MCPRequest
+  response!: MCPResponse
+where
+  (* Route to appropriate handler *)
+  request.method = "get_atom" ⟹
+    let atom_id_str = get_param(request.params, "atom_id") in
+    let atom_id = parse_atom_id(atom_id_str) in
+    atom_id ∈ dom atoms ⟹
+      response! = MCPResponse {
+        message_id = generate_message_id(),
+        message_type = Response,
+        request_id = request.message_id,
+        result = serialize_atom_to_kvp(atoms(atom_id)),
+        success = true,
+        method = "",
+        params = ∅,
+        timestamp = current_time
+      }
+  
+  request.method = "execute_query" ⟹
+    let pattern_str = get_param(request.params, "pattern") in
+    let pattern = parse_pattern(pattern_str) in
+    let solutions = execute_query(pattern, atoms) in
+      response! = MCPResponse {
+        message_id = generate_message_id(),
+        message_type = Response,
+        request_id = request.message_id,
+        result = serialize_solutions_to_kvp(solutions),
+        success = true,
+        method = "",
+        params = ∅,
+        timestamp = current_time
+      }
+end
+
+(*
+ * RESTful HTTP API
+ *)
+
+[HTTPMethod]
+HTTPMethod ::= GET | POST | PUT | DELETE | PATCH
+
+[HTTPStatus]
+HTTPStatus == 100..599
+
+schema HTTPRequest
+  request_id: ℕ₁
+  method: HTTPMethod
+  path: AtomName
+  headers: AtomName ↦ AtomName
+  body: AtomName
+  query_params: AtomName ↦ AtomName
+where
+  request_id > 0
+  path ≠ ""
+end
+
+schema HTTPResponse
+  response_id: ℕ₁
+  request_id: ℕ₁
+  status_code: HTTPStatus
+  headers: AtomName ↦ AtomName
+  body: AtomName
+where
+  response_id > 0
+  request_id > 0
+  status_code ∈ 100..599
+end
+
+(*
+ * HandleHTTPRequest: Process HTTP REST API request
+ *)
+
+schema HandleHTTPRequest
+  ΞAtomSpaceState
+  request: HTTPRequest
+  response!: HTTPResponse
+where
+  (* Route based on path and method *)
+  
+  (* GET /api/v1/atoms/:id *)
+  request.method = GET ∧ matches(request.path, "/api/v1/atoms/*") ⟹
+    let atom_id = extract_id(request.path) in
+    atom_id ∈ dom atoms ⟹
+      response! = HTTPResponse {
+        response_id = generate_response_id(),
+        request_id = request.request_id,
+        status_code = 200,
+        headers = {"Content-Type" ↦ "application/json"},
+        body = atom_to_json(atoms(atom_id))
+      }
+  
+  (* POST /api/v1/atoms *)
+  request.method = POST ∧ request.path = "/api/v1/atoms" ⟹
+    let atom_data = parse_json(request.body) in
+    let new_atom = create_atom_from_data(atom_data) in
+    let atom_id = add_atom(new_atom) in
+      response! = HTTPResponse {
+        response_id = generate_response_id(),
+        request_id = request.request_id,
+        status_code = 201,
+        headers = {"Content-Type" ↦ "application/json",
+                   "Location" ↦ "/api/v1/atoms/" + str(atom_id)},
+        body = atom_to_json(atoms(atom_id))
+      }
+  
+  (* GET /api/v1/query *)
+  request.method = GET ∧ request.path = "/api/v1/query" ⟹
+    let pattern_str = request.query_params("pattern") in
+    let pattern = parse_pattern(pattern_str) in
+    let solutions = execute_query(pattern, atoms) in
+      response! = HTTPResponse {
+        response_id = generate_response_id(),
+        request_id = request.request_id,
+        status_code = 200,
+        headers = {"Content-Type" ↦ "application/json"},
+        body = solutions_to_json(solutions)
+      }
+end
+
+(* ========================================================================
+ * INTER-PROCESS COMMUNICATION (IPC)
+ * ======================================================================== *)
+
+(*
+ * Mach IPC Message Contract
+ *)
+
+schema MachIPCMessage
+  msg_id: ℕ₁
+  source_port: PortID
+  dest_port: PortID
+  msg_type: AtomName
+  payload: seq ℕ          (* Raw bytes *)
+  size: ℕ₁
+where
+  msg_id > 0
+  source_port > 0
+  dest_port > 0
+  size = #payload
+  size ≤ 8192             (* Max message size *)
+end
+
+(*
+ * SendIPCMessage: Send message via Mach IPC
+ *)
+
+schema SendIPCMessage
+  ΔCogNumachState
+  message: MachIPCMessage
+  success!: 𝔹
+where
+  (* Pre-conditions *)
+  message.source_port ∈ dom ports
+  message.dest_port ∈ dom ports
+  ports(message.source_port).send_right
+  ports(message.dest_port).receive_right
+  
+  (* Check queue capacity *)
+  let dest_queue = ports(message.dest_port) in
+  dest_queue.current_queue_size < dest_queue.queue_limit ⟹
+    (* Enqueue message *)
+    ports' = ports ⊕ {message.dest_port ↦ 
+      dest_queue ⊕ {
+        current_queue_size = dest_queue.current_queue_size + 1
+      }} ∧
+    success! = true
+  
+  dest_queue.current_queue_size ≥ dest_queue.queue_limit ⟹
+    (* Queue full *)
+    ports' = ports ∧
+    success! = false
+end
+
+(*
+ * ReceiveIPCMessage: Receive message via Mach IPC
+ *)
+
+schema ReceiveIPCMessage
+  ΔCogNumachState
+  dest_port: PortID
+  timeout: ℕ              (* Milliseconds, 0 = no wait *)
+  message!: MachIPCMessage
+  success!: 𝔹
+where
+  (* Pre-conditions *)
+  dest_port ∈ dom ports
+  ports(dest_port).receive_right
+  
+  (* Check if message available *)
+  let port_queue = ports(dest_port) in
+  port_queue.current_queue_size > 0 ⟹
+    (* Dequeue message *)
+    message! = dequeue_message(dest_port) ∧
+    ports' = ports ⊕ {dest_port ↦ 
+      port_queue ⊕ {
+        current_queue_size = port_queue.current_queue_size - 1
+      }} ∧
+    success! = true
+  
+  port_queue.current_queue_size = 0 ⟹
+    (* No message available *)
+    ports' = ports ∧
+    success! = false ∧
+    timeout = 0  (* Non-blocking *)
+end
+
+(* ========================================================================
+ * TRANSLATOR INTERFACE (HURD)
+ * ======================================================================== *)
+
+(*
+ * Translator operations following Hurd conventions
+ *)
+
+schema TranslatorOpen
+  ΞHurdCogState
+  path: AtomName
+  flags: AtomName
+  translator_id!: TranslatorID
+  success!: 𝔹
+where
+  (* Find translator for path *)
+  let mount_point = find_mount_point(path, translators) in
+  mount_point ∈ dom translators ⟹
+    let t = translators(mount_point) in
+    t.is_active ⟹
+      translator_id! = mount_point ∧
+      success! = true
+  
+  mount_point ∉ dom translators ⟹
+    success! = false
+end
+
+schema TranslatorRead
+  ΞHurdCogState
+  translator_id: TranslatorID
+  offset: ℕ
+  length: ℕ₁
+  data!: seq ℕ
+  bytes_read!: ℕ
+where
+  (* Pre-conditions *)
+  translator_id ∈ dom translators
+  translators(translator_id).is_active
+  
+  (* Send read request to translator process via IPC *)
+  let t = translators(translator_id) in
+  let request = construct_read_request(offset, length) in
+  let (response, success) = send_ipc_to_translator(t.backing_pid, request) in
+  
+  success ⟹
+    data! = parse_read_response(response) ∧
+    bytes_read! = #data!
+  
+  ¬success ⟹
+    data! = ⟨⟩ ∧
+    bytes_read! = 0
+end
+
+schema TranslatorWrite
+  ΔHurdCogState
+  translator_id: TranslatorID
+  offset: ℕ
+  data: seq ℕ
+  bytes_written!: ℕ
+  success!: 𝔹
+where
+  (* Pre-conditions *)
+  translator_id ∈ dom translators
+  translators(translator_id).is_active
+  ¬translators(translator_id).read_only
+  
+  (* Send write request to translator process via IPC *)
+  let t = translators(translator_id) in
+  let request = construct_write_request(offset, data) in
+  let (response, write_success) = 
+    send_ipc_to_translator(t.backing_pid, request) in
+  
+  write_success ⟹
+    bytes_written! = parse_write_response(response) ∧
+    success! = true
+  
+  ¬write_success ⟹
+    bytes_written! = 0 ∧
+    success! = false
+end
+
+(* ========================================================================
+ * COGNITIVE CACHE INTEGRATION
+ * ======================================================================== *)
+
+(*
+ * Cognitive cache operations that use STI for cache management
+ *)
+
+schema UpdateCognitiveCache
+  ΔHurdCogState
+  accessed_inode: InodeNumber
+where
+  (* Pre-condition *)
+  accessed_inode ∈ dom file_system
+  
+  (* Update access frequency *)
+  accessed_inode ∈ cognitive_cache.cached_inodes ⟹
+    cognitive_cache.access_frequency' = 
+      cognitive_cache.access_frequency ⊕ {accessed_inode ↦ 
+        (cognitive_cache.access_frequency(accessed_inode) + 1)}
+  
+  (* Add to cache if not present *)
+  accessed_inode ∉ cognitive_cache.cached_inodes ⟹
+    #cognitive_cache.cached_inodes < cognitive_cache.max_cache_size ⟹
+      cognitive_cache.cached_inodes' = 
+        cognitive_cache.cached_inodes ∪ {accessed_inode} ∧
+      cognitive_cache.access_frequency' = 
+        cognitive_cache.access_frequency ∪ {accessed_inode ↦ 1}
+  
+  (* Update STI based on access frequency *)
+  let freq = cognitive_cache.access_frequency'(accessed_inode) in
+  cognitive_cache.sti_scores' = 
+    cognitive_cache.sti_scores ⊕ {accessed_inode ↦ 
+      compute_sti_from_frequency(freq)}
+end
+
+schema EvictFromCognitiveCache
+  ΔHurdCogState
+where
+  (* Evict lowest STI items when cache is full *)
+  #cognitive_cache.cached_inodes ≥ cognitive_cache.max_cache_size ⟹
+    let sorted_by_sti = 
+      sort_by_sti_asc(cognitive_cache.cached_inodes) in
+    let eviction_count = 
+      #cognitive_cache.cached_inodes div 10 in  (* Evict 10% *)
+    let to_evict = take eviction_count sorted_by_sti in
+    
+    cognitive_cache.cached_inodes' = 
+      cognitive_cache.cached_inodes \ to_evict ∧
+    cognitive_cache.access_frequency' = 
+      to_evict ⩤ cognitive_cache.access_frequency ∧
+    cognitive_cache.sti_scores' = 
+      to_evict ⩤ cognitive_cache.sti_scores
+end
+
+(* ========================================================================
+ * EXTERNAL IDE INTEGRATION (LANGUAGE SERVER PROTOCOL)
+ * ======================================================================== *)
+
+(*
+ * Language Server Protocol (LSP) integration
+ *)
+
+[LSPMessageType]
+LSPMessageType ::= Initialize | Completion | Hover | Definition | 
+                   Diagnostic | CodeAction
+
+schema LSPMessage
+  msg_id: ℕ₁
+  msg_type: LSPMessageType
+  uri: AtomName            (* File URI *)
+  position: (ℕ × ℕ)        (* Line, column *)
+  content: AtomName
+where
+  msg_id > 0
+  uri ≠ ""
+  let (line, col) = position in
+    line ≥ 0 ∧ col ≥ 0
+end
+
+schema HandleLSPCompletion
+  ΞAtomSpaceState
+  ΞCogBoltState
+  request: LSPMessage
+  completions!: seq AtomName
+where
+  request.msg_type = Completion
+  
+  (* Extract code context *)
+  let file_content = read_file(request.uri) in
+  let (line, col) = request.position in
+  let context = extract_context(file_content, line, col) in
+  
+  (* Query atomspace for relevant patterns *)
+  let pattern = context_to_pattern(context) in
+  let solutions = execute_query(pattern, atoms) in
+  
+  (* Generate completions *)
+  completions! = solutions_to_completions(solutions)
+end
+
+(* ========================================================================
+ * EVENT-DRIVEN INTEGRATION
+ * ======================================================================== *)
+
+(*
+ * Webhook receiver for external events
+ *)
+
+schema WebhookEvent
+  event_id: ℕ₁
+  source_url: AtomName
+  event_type: AtomName
+  payload: ℙ KeyValuePair
+  signature: AtomName      (* HMAC signature for verification *)
+  timestamp: Timestamp
+where
+  event_id > 0
+  source_url ≠ ""
+  event_type ≠ ""
+end
+
+schema ProcessWebhook
+  ΔEventQueue
+  webhook: WebhookEvent
+  verified: 𝔹
+  success!: 𝔹
+where
+  (* Verify webhook signature *)
+  verified = verify_webhook_signature(
+    webhook.payload,
+    webhook.signature
+  )
+  
+  (* Process verified webhooks *)
+  verified ⟹
+    let cognitive_event = webhook_to_cognitive_event(webhook) in
+    PublishEvent(cognitive_event) ∧
+    success! = true
+  
+  ¬verified ⟹
+    success! = false ∧
+    events' = events
+end
+
+(* ========================================================================
+ * END OF INTEGRATION CONTRACTS SPECIFICATION
+ * ======================================================================== *)
+
+(*
+ * This integration contracts specification defines:
+ * 
+ * 1. External LLM integration (Mistral, Llama, GPT)
+ * 2. Storage backend contracts (RocksDB, PostgreSQL, IPFS)
+ * 3. Network protocol integration (MCP, HTTP REST API)
+ * 4. Inter-process communication (Mach IPC)
+ * 5. Translator interface (Hurd filesystem abstraction)
+ * 6. Cognitive cache management
+ * 7. Language Server Protocol (LSP) for IDE integration
+ * 8. Event-driven integration (webhooks, message queues)
+ * 
+ * All integration points specify precise contracts with
+ * pre-conditions, post-conditions, and error handling.
+ *)

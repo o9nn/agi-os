@@ -1,0 +1,604 @@
+(*
+ * AGI-OS Data Model - Z++ Formal Specification
+ * 
+ * This specification formalizes the core data structures and entities
+ * in the AGI-OS architecture, focusing on the AtomSpace knowledge
+ * representation system and its interactions with other components.
+ * 
+ * Author: AGI-OS Development Team
+ * Date: December 12, 2025
+ * Version: 1.0
+ *)
+
+(* ========================================================================
+ * BASE TYPES AND PRIMITIVES
+ * ======================================================================== *)
+
+(* Basic integer and real number types *)
+AtomID == ℕ₁        (* Unique identifier for atoms, positive natural numbers *)
+TypeID == ℕ         (* Type identifier in the type hierarchy *)
+ThreadID == ℕ       (* Thread identifier for concurrent access *)
+
+(* String type for names and labels *)
+AtomName == seq ℂ   (* Sequence of characters *)
+
+(* Floating-point values for probabilistic and attention values *)
+Probability == { r: ℝ | 0.0 ≤ r ≤ 1.0 }
+Confidence == { r: ℝ | 0.0 ≤ r ≤ 1.0 }
+AttentionValue == ℤ (* Attention values can be negative, zero, or positive *)
+
+(* Timestamp for temporal information *)
+Timestamp == ℕ      (* Unix timestamp in milliseconds *)
+
+(* ========================================================================
+ * TRUTH VALUES - PROBABILISTIC LOGIC
+ * ======================================================================== *)
+
+(*
+ * TruthValue represents the epistemic state of a proposition
+ * Supports multiple truth value types for different reasoning systems
+ *)
+
+[TruthValueType]
+TruthValueType ::= SimpleTruthValue | CountTruthValue | 
+                   IndefiniteTruthValue | FuzzyTruthValue | 
+                   ProbabilisticTruthValue
+
+schema SimpleTruthValue
+  strength: Probability
+  confidence: Confidence
+where
+  (* Strength represents the probability that the proposition is true *)
+  (* Confidence represents the degree of certainty in the strength value *)
+  confidence > 0.0 ⟹ 0.0 ≤ strength ≤ 1.0
+end
+
+schema CountTruthValue
+  extends SimpleTruthValue
+  count: ℝ⁺          (* Positive count of observations *)
+where
+  (* Confidence derived from observation count *)
+  confidence = count / (count + 800.0)  (* K=800 is standard OpenCog value *)
+end
+
+schema IndefiniteTruthValue
+  lower_bound: Probability
+  upper_bound: Probability
+  confidence: Confidence
+where
+  lower_bound ≤ upper_bound
+  confidence > 0.0
+end
+
+schema FuzzyTruthValue
+  extends SimpleTruthValue
+where
+  (* Fuzzy truth values use simplified strength computation *)
+  strength ∈ {0.0, 0.25, 0.5, 0.75, 1.0}
+end
+
+(* ========================================================================
+ * ATTENTION VALUES - ECONOMIC ATTENTION NETWORKS (ECAN)
+ * ======================================================================== *)
+
+(*
+ * AttentionValues control which atoms are in the AttentionalFocus
+ * and which are candidates for forgetting
+ *)
+
+schema ShortTermImportance
+  sti: AttentionValue  (* Short-term importance, can be negative *)
+where
+  (* STI determines if atom is in attentional focus *)
+  (* Typical range: -1000 to +1000, but unbounded *)
+  true  (* No hard constraints on STI values *)
+end
+
+schema LongTermImportance
+  lti: AttentionValue  (* Long-term importance, typically non-negative *)
+where
+  (* LTI determines forgetting: low LTI atoms may be removed *)
+  lti ≥ -1000  (* Practical lower bound *)
+end
+
+schema VeryLongTermImportance
+  vlti: AttentionValue  (* Very long-term importance *)
+where
+  (* VLTI for permanent storage decisions *)
+  vlti ≥ 0
+end
+
+schema AttentionValueSet
+  sti: ShortTermImportance
+  lti: LongTermImportance
+  vlti: VeryLongTermImportance
+where
+  (* Attention values form a coordinate in attention space *)
+  true
+end
+
+(* ========================================================================
+ * ATOM TYPE SYSTEM
+ * ======================================================================== *)
+
+(*
+ * AtomType defines the hierarchical type system for atoms
+ * Types are organized in an inheritance hierarchy
+ *)
+
+[AtomTypeClass]
+AtomTypeClass ::= NodeType | LinkType | ValueType
+
+schema AtomType
+  type_id: TypeID
+  type_name: AtomName
+  type_class: AtomTypeClass
+  parent_type: ℙ TypeID      (* Set of parent types (multiple inheritance) *)
+  is_abstract: 𝔹             (* Abstract types cannot be instantiated *)
+where
+  (* Root type has no parents *)
+  type_id = 0 ⟹ parent_type = ∅
+  (* Non-root types must have at least one parent *)
+  type_id ≠ 0 ⟹ parent_type ≠ ∅
+  (* Type cannot be its own parent *)
+  type_id ∉ parent_type
+end
+
+(* ========================================================================
+ * ATOMS - CORE KNOWLEDGE REPRESENTATION
+ * ======================================================================== *)
+
+(*
+ * Atom is the fundamental unit of knowledge in AGI-OS
+ * An atom is either a Node (terminal symbol) or a Link (relationship)
+ *)
+
+schema Atom
+  atom_id: AtomID
+  atom_type: AtomType
+  truth_value: TruthValueType
+  attention_value: AttentionValueSet
+  created_time: Timestamp
+  modified_time: Timestamp
+where
+  (* Atoms are immutable - modifications create new versions *)
+  created_time ≤ modified_time
+  (* Each atom has a unique identifier *)
+  atom_id > 0
+end
+
+(*
+ * Node represents a constant or terminal symbol
+ * Examples: ConceptNode, PredicateNode, NumberNode
+ *)
+
+schema Node
+  extends Atom
+  name: AtomName
+where
+  (* Nodes have names and are identified by (type, name) pair *)
+  atom_type.type_class = NodeType
+  (* Names are unique within a type *)
+  name ≠ ""
+end
+
+(*
+ * Link represents a relationship between atoms
+ * Examples: InheritanceLink, EvaluationLink, ListLink
+ *)
+
+schema Link
+  extends Atom
+  outgoing: seq AtomID  (* Ordered sequence of child atoms *)
+  arity: ℕ
+where
+  (* Links connect other atoms *)
+  atom_type.type_class = LinkType
+  (* Arity matches the length of outgoing set *)
+  arity = #outgoing
+  (* Links must have at least one outgoing atom *)
+  arity > 0
+  (* Outgoing atoms must exist (referential integrity) *)
+  ∀ aid: outgoing • aid > 0
+end
+
+(* ========================================================================
+ * VALUES - TYPED DATA ATTACHED TO ATOMS
+ * ======================================================================== *)
+
+(*
+ * Values represent typed data that can be attached to atoms
+ * Unlike atoms, values are not hypergraph nodes and don't have IDs
+ *)
+
+[ValueType]
+ValueType ::= FloatValue | StringValue | LinkValue | TensorValue
+
+schema Value
+  value_type: ValueType
+where
+  true
+end
+
+schema FloatValue
+  extends Value
+  vector: seq ℝ
+where
+  value_type = FloatValue
+  #vector > 0
+end
+
+schema StringValue
+  extends Value
+  strings: seq AtomName
+where
+  value_type = StringValue
+  #strings > 0
+end
+
+schema LinkValue
+  extends Value
+  links: seq AtomID
+where
+  value_type = LinkValue
+  #links > 0
+end
+
+schema TensorValue
+  extends Value
+  dimensions: seq ℕ₁
+  data: seq ℝ
+where
+  value_type = TensorValue
+  (* Data size must match tensor dimensions *)
+  #data = (product dimensions)
+end
+
+(* ========================================================================
+ * KEY-VALUE ATTACHMENTS
+ * ======================================================================== *)
+
+(*
+ * Atoms can have arbitrary key-value pairs attached
+ * Keys are atoms (typically PredicateNodes), values are Values
+ *)
+
+schema KeyValuePair
+  key: AtomID         (* Key must be an atom, typically a PredicateNode *)
+  value: Value
+where
+  key > 0
+end
+
+schema AtomWithValues
+  extends Atom
+  attached_values: seq KeyValuePair
+where
+  (* Keys must be unique *)
+  ∀ i, j: dom attached_values • 
+    i ≠ j ⟹ attached_values(i).key ≠ attached_values(j).key
+end
+
+(* ========================================================================
+ * ATOMSPACE - HYPERGRAPH DATABASE
+ * ======================================================================== *)
+
+(*
+ * AtomSpace is the central knowledge repository
+ * It maintains a hypergraph of atoms with indices for efficient access
+ *)
+
+schema AtomSpace
+  space_id: ℕ                    (* Unique space identifier *)
+  atoms: AtomID ↦ Atom           (* Map from ID to atom *)
+  type_index: TypeID ↦ ℙ AtomID  (* Index: type → set of atoms *)
+  name_index: (TypeID × AtomName) ↦ AtomID  (* Index: (type,name) → node *)
+  incoming_index: AtomID ↦ ℙ AtomID  (* Index: atom → incoming links *)
+  atom_count: ℕ
+  read_only: 𝔹
+where
+  (* Atom count matches the size of atoms map *)
+  atom_count = #atoms
+  
+  (* Type index consistency *)
+  ∀ tid: TypeID; aid: AtomID | aid ∈ type_index(tid) •
+    aid ∈ dom atoms ∧ atoms(aid).atom_type.type_id = tid
+  
+  (* Name index consistency for nodes *)
+  ∀ tid: TypeID; name: AtomName; aid: AtomID | 
+    (tid, name) ∈ dom name_index ∧ name_index(tid, name) = aid •
+    aid ∈ dom atoms ∧
+    atoms(aid) ∈ Node ∧
+    atoms(aid).name = name ∧
+    atoms(aid).atom_type.type_id = tid
+  
+  (* Incoming index consistency *)
+  ∀ target: AtomID; incoming_set: ℙ AtomID |
+    target ∈ dom incoming_index ∧ incoming_index(target) = incoming_set •
+    ∀ link_id: incoming_set •
+      link_id ∈ dom atoms ∧
+      atoms(link_id) ∈ Link ∧
+      target ∈ atoms(link_id).outgoing
+  
+  (* Read-only atomspaces cannot be modified *)
+  (* This is enforced at the operation level *)
+  true
+end
+
+(* ========================================================================
+ * ATTENTION FOCUS - WORKING MEMORY
+ * ======================================================================== *)
+
+(*
+ * AttentionalFocus represents the working memory of the cognitive system
+ * Contains atoms with STI above a threshold
+ *)
+
+schema AttentionalFocus
+  atomspace: AtomSpace
+  sti_threshold: AttentionValue
+  focus_atoms: ℙ AtomID
+  max_size: ℕ₁
+where
+  (* Focus atoms must be in the atomspace *)
+  focus_atoms ⊆ dom atomspace.atoms
+  
+  (* All atoms in focus have STI above threshold *)
+  ∀ aid: focus_atoms •
+    atomspace.atoms(aid).attention_value.sti.sti ≥ sti_threshold
+  
+  (* Focus size is bounded *)
+  #focus_atoms ≤ max_size
+  
+  (* Typically max_size is around 100-1000 atoms *)
+  max_size ≥ 10 ∧ max_size ≤ 10000
+end
+
+(* ========================================================================
+ * FORGETTING MECHANISM
+ * ======================================================================== *)
+
+(*
+ * ForgettingAgent manages atom removal based on LTI
+ *)
+
+schema ForgettingPolicy
+  lti_threshold: AttentionValue
+  min_age: Timestamp        (* Minimum age before forgetting *)
+  protected_types: ℙ TypeID (* Types that are never forgotten *)
+where
+  lti_threshold < 0         (* Atoms with very low LTI can be forgotten *)
+  min_age > 0
+end
+
+schema ForgettingCandidate
+  atomspace: AtomSpace
+  policy: ForgettingPolicy
+  candidate_atoms: ℙ AtomID
+where
+  (* Candidates have low LTI and old enough *)
+  ∀ aid: candidate_atoms •
+    aid ∈ dom atomspace.atoms ∧
+    atomspace.atoms(aid).attention_value.lti.lti ≤ policy.lti_threshold ∧
+    atomspace.atoms(aid).atom_type.type_id ∉ policy.protected_types
+  
+  (* Never forget atoms in attentional focus *)
+  candidate_atoms ∩ {aid: dom atomspace.atoms | 
+    atomspace.atoms(aid).attention_value.sti.sti > 0} = ∅
+end
+
+(* ========================================================================
+ * PATTERN MATCHING - QUERIES
+ * ======================================================================== *)
+
+(*
+ * Pattern represents a query against the atomspace
+ * Patterns can contain variables and constraints
+ *)
+
+[VariableID]
+VariableID == ℕ₁
+
+schema Variable
+  var_id: VariableID
+  var_name: AtomName
+  type_constraint: ℙ TypeID  (* Allowed types for this variable *)
+where
+  (* Variables can match atoms of specified types *)
+  type_constraint ≠ ∅
+end
+
+schema Pattern
+  variables: ℙ Variable
+  clauses: seq Atom         (* Pattern clauses with variables *)
+  constraints: seq Atom     (* Additional constraints *)
+where
+  (* All variable IDs in clauses must be declared *)
+  true  (* Simplified for specification *)
+end
+
+schema PatternMatch
+  pattern: Pattern
+  atomspace: AtomSpace
+  solution: VariableID ↦ AtomID  (* Variable bindings *)
+where
+  (* Solution maps variables to atoms *)
+  dom solution = {v: pattern.variables • v.var_id}
+  
+  (* Each variable is bound to an atom of compatible type *)
+  ∀ vid: dom solution •
+    solution(vid) ∈ dom atomspace.atoms ∧
+    (∃ v: pattern.variables | v.var_id = vid •
+      atomspace.atoms(solution(vid)).atom_type.type_id ∈ v.type_constraint)
+end
+
+(* ========================================================================
+ * COGNITIVE SCHEDULER - TASK PRIORITY
+ * ======================================================================== *)
+
+(*
+ * CognitiveTask represents a unit of work in the cognitive system
+ *)
+
+[TaskPriority]
+TaskPriority ::= Realtime | High | Normal | Low | Idle
+
+[TaskType]
+TaskType ::= Inference | Attention | Learning | Perception | 
+             Action | Memory | Communication | System
+
+[TaskState]
+TaskState ::= Created | Queued | Running | Blocked | 
+              Completed | Cancelled | Failed
+
+schema CognitiveTask
+  task_id: ℕ₁
+  task_name: AtomName
+  task_type: TaskType
+  priority: TaskPriority
+  state: TaskState
+  created_time: Timestamp
+  deadline: Timestamp       (* Optional deadline *)
+  attention_boost: AttentionValue  (* STI boost for related atoms *)
+where
+  (* Tasks have unique identifiers *)
+  task_id > 0
+  (* Deadlines are in the future *)
+  deadline ≥ created_time
+  (* Attention boost is typically positive *)
+  attention_boost ≥ 0
+end
+
+schema TaskQueue
+  tasks: seq CognitiveTask
+  max_size: ℕ₁
+where
+  (* Queue is sorted by priority *)
+  ∀ i: dom tasks | i + 1 ∈ dom tasks •
+    tasks(i).priority ≤ tasks(i + 1).priority
+  
+  (* Queue size is bounded *)
+  #tasks ≤ max_size
+end
+
+(* ========================================================================
+ * EVENT BUS - INTERRUPT SYSTEM
+ * ======================================================================== *)
+
+(*
+ * CognitiveEvent represents an event in the AGI-OS event system
+ *)
+
+[EventPriority]
+EventPriority ::= Critical | AttentionSignal | HighPriority | 
+                  NormalPriority | LowPriority
+
+[EventCategory]
+EventCategory ::= SystemEvent | AttentionEvent | InferenceEvent | 
+                  LearningEvent | MemoryEvent | PerceptionEvent | 
+                  ActionEvent | CommunicationEvent | TimerEvent | UserEvent
+
+schema CognitiveEvent
+  event_id: ℕ₁
+  event_type: AtomName
+  category: EventCategory
+  priority: EventPriority
+  timestamp: Timestamp
+  source: AtomName
+  data: ℙ KeyValuePair
+  sti_value: AttentionValue  (* Optional STI context *)
+where
+  event_id > 0
+  (* Events with higher priority are processed first *)
+  true
+end
+
+schema EventQueue
+  events: seq CognitiveEvent
+where
+  (* Events sorted by priority, then timestamp *)
+  ∀ i: dom events | i + 1 ∈ dom events •
+    events(i).priority ≤ events(i + 1).priority ∨
+    (events(i).priority = events(i + 1).priority ∧
+     events(i).timestamp ≤ events(i + 1).timestamp)
+end
+
+(* ========================================================================
+ * STORAGE BACKEND ABSTRACTION
+ * ======================================================================== *)
+
+(*
+ * StorageBackend defines the interface for persistent storage
+ *)
+
+[BackendType]
+BackendType ::= RocksDB | PostgreSQL | IPFS | DHT | FileSystem
+
+schema StorageBackend
+  backend_id: ℕ₁
+  backend_type: BackendType
+  connection_string: AtomName
+  is_connected: 𝔹
+  read_only: 𝔹
+where
+  backend_id > 0
+  (* Read-only backends cannot be modified *)
+  true
+end
+
+schema PersistenceOperation
+  operation_id: ℕ₁
+  backend: StorageBackend
+  atom_ids: ℙ AtomID       (* Atoms involved in operation *)
+  timestamp: Timestamp
+where
+  operation_id > 0
+  (* Operations require connected backend *)
+  backend.is_connected = true
+end
+
+(* ========================================================================
+ * INVARIANTS - GLOBAL CONSTRAINTS
+ * ======================================================================== *)
+
+(*
+ * Global invariants that must hold across the entire system
+ *)
+
+schema AtomSpaceInvariant
+  atomspace: AtomSpace
+where
+  (* Referential integrity: all outgoing atoms exist *)
+  ∀ aid: dom atomspace.atoms | atomspace.atoms(aid) ∈ Link •
+    ∀ out_id: atomspace.atoms(aid).outgoing •
+      out_id ∈ dom atomspace.atoms
+  
+  (* No cycles through single link (simple cycle detection) *)
+  ∀ aid: dom atomspace.atoms | atomspace.atoms(aid) ∈ Link •
+    aid ∉ atomspace.atoms(aid).outgoing
+  
+  (* Truth values are well-formed *)
+  ∀ aid: dom atomspace.atoms •
+    atomspace.atoms(aid).truth_value ∈ TruthValueType
+end
+
+(* ========================================================================
+ * END OF DATA MODEL SPECIFICATION
+ * ======================================================================== *)
+
+(*
+ * This data model specification provides the foundation for the
+ * AGI-OS formal specification. It defines:
+ * 
+ * 1. Core data structures (Atoms, Nodes, Links)
+ * 2. Truth values for probabilistic reasoning
+ * 3. Attention values for economic attention allocation
+ * 4. AtomSpace hypergraph database
+ * 5. Pattern matching and queries
+ * 6. Cognitive task scheduling
+ * 7. Event system
+ * 8. Storage backend abstraction
+ * 
+ * The next specifications (system_state.zpp, operations.zpp) build
+ * upon these foundational schemas to define system behavior and operations.
+ *)

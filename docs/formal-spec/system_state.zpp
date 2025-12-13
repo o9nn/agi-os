@@ -1,0 +1,598 @@
+(*
+ * AGI-OS System State - Z++ Formal Specification
+ * 
+ * This specification formalizes the overall system state of AGI-OS,
+ * including all cognitive components, microkernel state, OS services,
+ * and their interactions.
+ * 
+ * Author: AGI-OS Development Team
+ * Date: December 12, 2025
+ * Version: 1.0
+ *)
+
+(* Import data model *)
+include "data_model.zpp"
+
+(* ========================================================================
+ * LAYER 1: MICROKERNEL STATE (COGNUMACH)
+ * ======================================================================== *)
+
+(*
+ * CogNumach microkernel manages low-level system resources
+ * with cognitive awareness
+ *)
+
+[ProcessID]
+ProcessID == ℕ₁
+
+[PortID]
+PortID == ℕ₁
+
+[MemoryRegionID]
+MemoryRegionID == ℕ₁
+
+schema ProcessState
+  pid: ProcessID
+  process_name: AtomName
+  parent_pid: ProcessID
+  state: AtomName         (* "running", "blocked", "zombie", etc. *)
+  priority: ℕ             (* Scheduler priority 0-255 *)
+  cpu_time: ℕ             (* CPU time used in microseconds *)
+  memory_usage: ℕ         (* Memory usage in bytes *)
+  sti_value: AttentionValue  (* Cognitive STI for scheduling *)
+where
+  pid > 0
+  priority ≤ 255
+  (* Parent process must exist or be init (pid 1) *)
+  parent_pid > 0
+  (* STI influences scheduling decisions *)
+  sti_value ∈ ℤ
+end
+
+schema MemoryRegion
+  region_id: MemoryRegionID
+  start_address: ℕ
+  size: ℕ₁
+  owner_pid: ProcessID
+  permissions: AtomName   (* "r", "w", "x" combinations *)
+  is_shared: 𝔹
+where
+  region_id > 0
+  size > 0
+  (* Memory regions don't wrap around *)
+  start_address + size > start_address
+end
+
+schema IPCPort
+  port_id: PortID
+  owner_pid: ProcessID
+  receive_right: 𝔹       (* Can receive messages *)
+  send_right: 𝔹          (* Can send messages *)
+  queue_limit: ℕ₁
+  current_queue_size: ℕ
+where
+  port_id > 0
+  owner_pid > 0
+  (* Queue doesn't exceed limit *)
+  current_queue_size ≤ queue_limit
+  (* Must have at least one right *)
+  receive_right ∨ send_right
+end
+
+schema CogNumachState
+  processes: ProcessID ↦ ProcessState
+  memory_regions: MemoryRegionID ↦ MemoryRegion
+  ports: PortID ↦ IPCPort
+  active_pid: ProcessID      (* Currently executing process *)
+  cpu_count: ℕ₁
+  total_memory: ℕ₁
+  free_memory: ℕ
+where
+  (* Active process must exist *)
+  active_pid ∈ dom processes
+  
+  (* Init process always exists *)
+  1 ∈ dom processes
+  
+  (* Memory regions don't overlap *)
+  ∀ r1, r2: ran memory_regions | r1 ≠ r2 •
+    (r1.start_address + r1.size ≤ r2.start_address) ∨
+    (r2.start_address + r2.size ≤ r1.start_address)
+  
+  (* Free memory is consistent *)
+  free_memory ≤ total_memory
+  
+  (* Total allocated memory doesn't exceed total memory *)
+  (∑ r: ran memory_regions • r.size) ≤ total_memory - free_memory
+end
+
+(* ========================================================================
+ * LAYER 2: OPERATING SYSTEM STATE (HURDCOG)
+ * ======================================================================== *)
+
+(*
+ * HurdCog OS manages translators, file systems, and services
+ * with cognitive extensions
+ *)
+
+[TranslatorID]
+TranslatorID == ℕ₁
+
+[FileSystemID]
+FileSystemID == ℕ₁
+
+[InodeNumber]
+InodeNumber == ℕ
+
+schema Translator
+  translator_id: TranslatorID
+  translator_type: AtomName  (* "ext2fs", "tmpfs", "ftpfs", etc. *)
+  mount_point: AtomName
+  backing_pid: ProcessID      (* Process implementing translator *)
+  is_active: 𝔹
+  read_only: 𝔹
+where
+  translator_id > 0
+  backing_pid > 0
+end
+
+schema FileDescriptor
+  fd_number: ℕ
+  inode: InodeNumber
+  position: ℕ              (* Current read/write position *)
+  flags: AtomName          (* "O_RDONLY", "O_WRONLY", "O_RDWR", etc. *)
+  owner_pid: ProcessID
+where
+  fd_number ≥ 0            (* 0=stdin, 1=stdout, 2=stderr *)
+  position ≥ 0
+  owner_pid > 0
+end
+
+schema FileSystemEntry
+  inode: InodeNumber
+  path: AtomName
+  entry_type: AtomName     (* "file", "directory", "symlink", etc. *)
+  size: ℕ
+  permissions: ℕ           (* Unix-style permissions *)
+  owner_pid: ProcessID
+  modified_time: Timestamp
+where
+  inode ≥ 0
+  permissions ≤ 777₈       (* Octal permissions *)
+  owner_pid > 0
+end
+
+schema CognitiveCache
+  cache_id: ℕ₁
+  cached_inodes: ℙ InodeNumber
+  access_frequency: InodeNumber ↦ ℕ  (* Access count per inode *)
+  sti_scores: InodeNumber ↦ AttentionValue
+  max_cache_size: ℕ₁
+where
+  (* Cached inodes track access patterns *)
+  dom access_frequency = cached_inodes
+  dom sti_scores = cached_inodes
+  
+  (* Cache size is bounded *)
+  #cached_inodes ≤ max_cache_size
+  
+  (* Frequently accessed files have higher STI *)
+  ∀ i: cached_inodes •
+    sti_scores(i) ≥ 0 ⟹ access_frequency(i) > 0
+end
+
+schema HurdCogState
+  translators: TranslatorID ↦ Translator
+  file_descriptors: ℙ FileDescriptor
+  file_system: InodeNumber ↦ FileSystemEntry
+  cognitive_cache: CognitiveCache
+  root_inode: InodeNumber
+where
+  (* Root filesystem always exists *)
+  root_inode ∈ dom file_system
+  file_system(root_inode).entry_type = "directory"
+  
+  (* All translators backed by valid processes *)
+  ∀ t: ran translators | t.is_active •
+    t.backing_pid > 0
+  
+  (* File descriptors reference valid inodes *)
+  ∀ fd: file_descriptors •
+    fd.inode ∈ dom file_system
+  
+  (* Cached inodes must exist in file system *)
+  cognitive_cache.cached_inodes ⊆ dom file_system
+end
+
+(* ========================================================================
+ * LAYER 3: COGNITIVE FRAMEWORK STATE (OPENCOG)
+ * ======================================================================== *)
+
+(*
+ * OpenCog cognitive framework manages reasoning, learning, and attention
+ *)
+
+schema CogUtilState
+  logger_level: AtomName    (* "DEBUG", "INFO", "WARN", "ERROR" *)
+  random_seed: ℕ
+  config_params: AtomName ↦ AtomName
+where
+  logger_level ∈ {"DEBUG", "INFO", "WARN", "ERROR"}
+end
+
+schema AtomSpaceState
+  extends AtomSpace
+  attention_focus: AttentionalFocus
+  forgetting_policy: ForgettingPolicy
+  query_cache: Pattern ↦ ℙ (VariableID ↦ AtomID)
+where
+  (* Attentional focus is consistent with atomspace *)
+  attention_focus.atomspace = self
+  
+  (* Query cache contains valid solutions *)
+  ∀ p: dom query_cache •
+    ∀ solution: query_cache(p) •
+      dom solution = {v: p.variables • v.var_id}
+end
+
+schema CogServerState
+  server_id: ℕ₁
+  port_number: ℕ₁
+  is_listening: 𝔹
+  connected_clients: ℙ (AtomName × ℕ)  (* (IP address, client ID) pairs *)
+  atomspace: AtomSpaceState
+  request_count: ℕ
+  last_request_time: Timestamp
+where
+  server_id > 0
+  (* Standard ports: 17001 for telnet, 18080 for HTTP *)
+  port_number ∈ 1024..65535
+  
+  (* Can't have clients without listening *)
+  #connected_clients > 0 ⟹ is_listening
+  
+  (* Request count only increases *)
+  request_count ≥ 0
+end
+
+(* ========================================================================
+ * REASONING SUBSYSTEM STATE
+ * ======================================================================== *)
+
+schema PLNState
+  rule_base: ℙ AtomID         (* Set of inference rules *)
+  inference_depth: ℕ           (* Maximum inference depth *)
+  confidence_threshold: Confidence
+  active_inferences: ℙ AtomID  (* Currently active inference chains *)
+  inference_count: ℕ
+where
+  (* Rules must be in atomspace *)
+  true  (* Simplified - would reference parent atomspace *)
+  
+  (* Depth bounded to prevent infinite recursion *)
+  inference_depth ≤ 100
+  
+  (* Confidence threshold controls inference *)
+  confidence_threshold > 0.0
+  
+  (* Inference count increases monotonically *)
+  inference_count ≥ 0
+end
+
+schema UREState
+  forward_rules: ℙ AtomID
+  backward_rules: ℙ AtomID
+  max_iterations: ℕ₁
+  current_iteration: ℕ
+where
+  (* URE maintains separate forward and backward rule sets *)
+  forward_rules ∩ backward_rules = ∅  (* Rules are directional *)
+  
+  (* Iteration control *)
+  current_iteration ≤ max_iterations
+  max_iterations ≤ 10000  (* Practical upper bound *)
+end
+
+(* ========================================================================
+ * LEARNING SUBSYSTEM STATE
+ * ======================================================================== *)
+
+schema MOSESState
+  population_size: ℕ₁
+  max_generations: ℕ₁
+  current_generation: ℕ
+  best_fitness: ℝ
+  population: seq AtomID      (* Current population of programs *)
+  fitness_cache: AtomID ↦ ℝ
+where
+  (* Population size is fixed *)
+  #population = population_size
+  
+  (* Generation count *)
+  current_generation ≤ max_generations
+  
+  (* Best fitness is from current population *)
+  best_fitness ∈ ran fitness_cache
+  
+  (* All population members have fitness scores *)
+  dom fitness_cache ⊇ elems population
+end
+
+schema PatternMinerState
+  min_support: ℕ₁             (* Minimum pattern frequency *)
+  max_conjuncts: ℕ₁           (* Maximum pattern complexity *)
+  discovered_patterns: ℙ AtomID
+  pattern_frequency: AtomID ↦ ℕ
+where
+  (* Support threshold *)
+  min_support ≥ 2
+  
+  (* Complexity bounds *)
+  max_conjuncts ≥ 1 ∧ max_conjuncts ≤ 10
+  
+  (* All discovered patterns have frequency *)
+  dom pattern_frequency = discovered_patterns
+  
+  (* All patterns meet minimum support *)
+  ∀ p: discovered_patterns •
+    pattern_frequency(p) ≥ min_support
+end
+
+schema ECANState
+  sti_funds_total: AttentionValue
+  lti_funds_total: AttentionValue
+  min_sti: AttentionValue
+  max_sti: AttentionValue
+  attention_focus: AttentionalFocus
+  rent_collection_rate: ℝ      (* Rate of STI decay *)
+  update_count: ℕ
+where
+  (* Attention economy conservation *)
+  sti_funds_total > 0
+  lti_funds_total > 0
+  
+  (* STI bounds *)
+  min_sti ≤ max_sti
+  
+  (* Rent collection rate *)
+  0.0 < rent_collection_rate ∧ rent_collection_rate ≤ 1.0
+  
+  (* Update count tracks attention spreads *)
+  update_count ≥ 0
+end
+
+(* ========================================================================
+ * LAYER 4: AI DEVELOPMENT TOOLS (COGBOLT)
+ * ======================================================================== *)
+
+schema CogBoltState
+  workspace_path: AtomName
+  open_files: ℙ AtomName
+  active_file: AtomName
+  cursor_position: (ℕ × ℕ)    (* (line, column) *)
+  undo_stack_depth: ℕ
+  is_ai_enabled: 𝔹
+  llm_model_loaded: 𝔹
+where
+  (* Active file must be in open files *)
+  active_file ∈ open_files ∨ open_files = ∅
+  
+  (* Cursor position is valid *)
+  let (line, col) = cursor_position in
+    line ≥ 1 ∧ col ≥ 1
+  
+  (* AI features require model *)
+  is_ai_enabled ⟹ llm_model_loaded
+end
+
+(* ========================================================================
+ * COMPLETE SYSTEM STATE
+ * ======================================================================== *)
+
+schema AGIOSSystemState
+  (* Layer 1: Microkernel *)
+  cognumach: CogNumachState
+  
+  (* Layer 2: Operating System *)
+  hurdcog: HurdCogState
+  
+  (* Layer 3: Cognitive Framework *)
+  cogutil: CogUtilState
+  atomspace: AtomSpaceState
+  cogserver: CogServerState
+  
+  (* Reasoning *)
+  pln: PLNState
+  ure: UREState
+  
+  (* Learning *)
+  moses: MOSESState
+  pattern_miner: PatternMinerState
+  ecan: ECANState
+  
+  (* Layer 4: Development Tools *)
+  cogbolt: CogBoltState
+  
+  (* System-wide *)
+  boot_time: Timestamp
+  uptime: ℕ               (* Seconds since boot *)
+  current_time: Timestamp
+  
+  (* Task scheduling *)
+  task_queue: TaskQueue
+  event_queue: EventQueue
+where
+  (* CogServer uses the same atomspace *)
+  cogserver.atomspace = atomspace
+  
+  (* ECAN manages attention in atomspace *)
+  ecan.attention_focus = atomspace.attention_focus
+  
+  (* Uptime is consistent *)
+  current_time = boot_time + uptime
+  
+  (* HurdCog translators run as CogNumach processes *)
+  ∀ t: ran hurdcog.translators | t.is_active •
+    t.backing_pid ∈ dom cognumach.processes
+  
+  (* CogServer runs as a CogNumach process *)
+  ∃ pid: dom cognumach.processes •
+    cognumach.processes(pid).process_name = "cogserver"
+end
+
+(* ========================================================================
+ * INITIAL STATE
+ * ======================================================================== *)
+
+schema InitialState
+  extends AGIOSSystemState
+where
+  (* Boot phase complete *)
+  uptime > 0
+  
+  (* Essential processes running *)
+  1 ∈ dom cognumach.processes  (* init *)
+  #cognumach.processes ≥ 3      (* init + basic services *)
+  
+  (* Root filesystem mounted *)
+  hurdcog.root_inode ∈ dom hurdcog.file_system
+  
+  (* AtomSpace initialized *)
+  atomspace.atom_count ≥ 0
+  
+  (* CogServer ready *)
+  cogserver.is_listening
+  
+  (* Event and task queues initialized *)
+  #task_queue.tasks ≥ 0
+  #event_queue.events ≥ 0
+end
+
+(* ========================================================================
+ * STEADY STATE INVARIANTS
+ * ======================================================================== *)
+
+schema SteadyStateInvariant
+  state: AGIOSSystemState
+where
+  (* Memory consistency *)
+  cognumach.free_memory ≥ 0
+  
+  (* AtomSpace consistency *)
+  ∀ aid: dom state.atomspace.atoms | state.atomspace.atoms(aid) ∈ Link •
+    ∀ out_id: state.atomspace.atoms(aid).outgoing •
+      out_id ∈ dom state.atomspace.atoms
+  
+  (* Attention conservation *)
+  let total_sti = (∑ aid: dom state.atomspace.atoms • 
+                    state.atomspace.atoms(aid).attention_value.sti.sti) in
+    total_sti ≤ state.ecan.sti_funds_total
+  
+  (* Task queue bounded *)
+  #state.task_queue.tasks ≤ state.task_queue.max_size
+  
+  (* File descriptor consistency *)
+  ∀ fd: state.hurdcog.file_descriptors •
+    fd.owner_pid ∈ dom state.cognumach.processes
+  
+  (* No orphan processes (except init children) *)
+  ∀ pid: dom state.cognumach.processes | pid ≠ 1 •
+    state.cognumach.processes(pid).parent_pid ∈ dom state.cognumach.processes
+end
+
+(* ========================================================================
+ * DEGRADED STATE
+ * ======================================================================== *)
+
+(*
+ * System can operate in degraded mode if components fail
+ *)
+
+schema DegradedState
+  state: AGIOSSystemState
+  failed_components: ℙ AtomName
+  degradation_level: ℕ    (* 0=normal, 1=minor, 2=major, 3=critical *)
+where
+  (* Level based on failed components *)
+  degradation_level ∈ 0..3
+  
+  (* Core components must be operational *)
+  "cognumach" ∉ failed_components  (* Microkernel must work *)
+  "atomspace" ∉ failed_components  (* Memory must work *)
+  
+  (* Degradation levels *)
+  degradation_level = 0 ⟹ failed_components = ∅
+  degradation_level = 1 ⟹ #failed_components ∈ 1..2
+  degradation_level = 2 ⟹ #failed_components ∈ 3..5
+  degradation_level = 3 ⟹ #failed_components > 5
+end
+
+(* ========================================================================
+ * STATE TRANSITIONS
+ * ======================================================================== *)
+
+(*
+ * State transitions capture system evolution over time
+ *)
+
+schema StateTransition
+  before: AGIOSSystemState
+  after: AGIOSSystemState
+  elapsed_time: ℕ₁
+where
+  (* Time moves forward *)
+  after.current_time = before.current_time + elapsed_time
+  after.uptime = before.uptime + elapsed_time
+  
+  (* Boot time never changes *)
+  after.boot_time = before.boot_time
+  
+  (* Atom IDs only increase *)
+  dom after.atomspace.atoms ⊇ dom before.atomspace.atoms
+  
+  (* Process IDs only increase (processes can terminate) *)
+  ∃ new_pids: ℙ ProcessID •
+    dom after.cognumach.processes = 
+      (dom before.cognumach.processes ∪ new_pids)
+end
+
+(* ========================================================================
+ * SHUTDOWN STATE
+ * ======================================================================== *)
+
+schema ShutdownState
+  extends AGIOSSystemState
+  shutdown_reason: AtomName
+  unsaved_atoms: ℙ AtomID
+where
+  (* No active tasks *)
+  #task_queue.tasks = 0
+  
+  (* CogServer stopped accepting connections *)
+  ¬cogserver.is_listening
+  
+  (* Only essential processes remain *)
+  #cognumach.processes ≤ 5
+  
+  (* Track unsaved data *)
+  unsaved_atoms ⊆ dom atomspace.atoms
+end
+
+(* ========================================================================
+ * END OF SYSTEM STATE SPECIFICATION
+ * ======================================================================== *)
+
+(*
+ * This system state specification defines:
+ * 
+ * 1. Complete system state across all four layers
+ * 2. Microkernel state (processes, memory, IPC)
+ * 3. Operating system state (file systems, translators)
+ * 4. Cognitive framework state (reasoning, learning, attention)
+ * 5. Development tools state (CogBolt IDE)
+ * 6. System-wide invariants and consistency conditions
+ * 7. Initial, steady, degraded, and shutdown states
+ * 
+ * The next specification (operations.zpp) defines operations that
+ * transform this state while maintaining invariants.
+ *)
