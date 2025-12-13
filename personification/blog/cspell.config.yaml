@@ -1,0 +1,25 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - agentic
+  - arktype
+  - ayaka
+  - deepdml
+  - deepseek
+  - Granularities
+  - kizuna
+  - lume
+  - metas
+  - moeru
+  - neko
+  - ollama
+  - Speaches
+  - unspeech
+  - valibot
+  - xenova
+  - xsai
+  - xsschema
+ignoreWords: []
+import: []

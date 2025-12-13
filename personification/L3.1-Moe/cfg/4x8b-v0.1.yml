@@ -1,0 +1,41 @@
+base_model: argilla-warehouse/Llama-3.1-8B-MagPie-Ultra
+gate_mode: hidden
+dtype: bfloat16
+experts:
+  - source_model: argilla-warehouse/Llama-3.1-8B-MagPie-Ultra
+    positive_prompts:
+      - "chat"
+      - "assistant"
+      - "tell me"
+      - "explain"
+      - "I want"
+  - source_model: sequelbox/Llama3.1-8B-PlumCode
+    positive_prompts:
+      - "code"
+      - "python"
+      - "javascript"
+      - "programming"
+      - "algorithm"
+  - source_model: sequelbox/Llama3.1-8B-PlumMath
+    positive_prompts:
+      - "reason"
+      - "math"
+      - "mathematics"
+      - "solve"
+      - "count"
+  - source_model: ArliAI/Llama-3.1-8B-ArliAI-RPMax-v1.2
+    positive_prompts:
+      - "storywriting"
+      - "write"
+      - "scene"
+      - "story"
+      - "character"
+# shared_experts:
+#   - source_model: argilla-warehouse/Llama-3.1-8B-MagPie-Ultra
+#     positive_prompts:
+#       - "chat"
+#       - "assistant"
+#       - "tell me"
+#       - "explain"
+#       - "I want"
+#     residual_scale: 0.1

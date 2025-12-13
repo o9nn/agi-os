@@ -1,0 +1,10 @@
+{
+  "extends": [
+    "@importantimport/tsconfig/node.json",
+    "@importantimport/tsconfig/parts/check-js.json"
+  ],
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo"
+  },
+  "include": ["*.config.ts", "*.config.js"]
+}

@@ -1,0 +1,62 @@
+{
+  "name": "@xsai-transformers/speech",
+  "type": "module",
+  "version": "0.0.10",
+  "description": "Transformers.js wrapper makes it easy to use with xsai",
+  "author": {
+    "name": "Moeru AI",
+    "email": "neko@moeru.ai",
+    "url": "https://github.com/moeru-ai"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/moeru-ai/xsai-transformers",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moeru-ai/xsai-transformers.git",
+    "directory": "packages/speech"
+  },
+  "bugs": "https://github.com/moeru-ai/xsai-transformers/issues",
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./worker": {
+        "types": "./dist/worker/index.d.ts",
+        "default": "./dist/worker/index.js"
+      },
+      "./package.json": "./package.json"
+    },
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./worker": "./src/worker/index.ts"
+  },
+  "files": [
+    "README.md",
+    "dist",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "pkgroll",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "web-worker": "^1.5.0"
+  },
+  "peerDependenciesMeta": {
+    "web-worker": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^3.7.5",
+    "@xsai-ext/shared-providers": "catalog:",
+    "@xsai-transformers/shared": "workspace:^",
+    "@xsai/embed": "catalog:",
+    "@xsai/shared": "catalog:"
+  }
+}

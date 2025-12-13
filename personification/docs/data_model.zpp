@@ -1,0 +1,484 @@
+(*
+  Moeru AI Monorepo - Data Model Formal Specification (Z++)
+  
+  This specification formally models the data structures and entities
+  within the Moeru AI ecosystem, focusing on core backend components.
+*)
+
+(* ============================================================================
+   BASIC TYPES & PRIMITIVES
+   ============================================================================ *)
+
+(* Base scalar types *)
+[STRING]       (* UTF-8 encoded strings *)
+[TIMESTAMP]    (* ISO 8601 timestamp *)
+[UUID]         (* Universally unique identifier *)
+[URL]          (* Valid HTTP/HTTPS URL *)
+[JSON]         (* JSON-serializable data *)
+
+(* Enumerated types *)
+ProviderType ::= openai | anthropic | deepseek | groq | google | 
+                 ollama | llamacpp | transformers
+
+ModelType ::= text_generation | text_embedding | speech_generation | 
+              speech_transcription | image_generation | object_generation
+
+ServiceStatus ::= running | stopped | error | initializing
+
+ConnectionState ::= connected | disconnected | connecting | error
+
+MessageRole ::= user | assistant | system | tool
+
+FinishReason ::= stop | length | tool_calls | content_filter | error
+
+EventType ::= text_message | audio_stream | state_update | 
+              error_event | tool_call | module_register
+
+(* ============================================================================
+   CORE DATA ENTITIES
+   ============================================================================ *)
+
+(* User Session *)
+schema UserSession
+  sessionId: UUID
+  authToken: STRING
+  authenticated: BOOLEAN
+  createdAt: TIMESTAMP
+  lastActivity: TIMESTAMP
+  
+  (* Invariants *)
+  authenticated = true ⇒ authToken ≠ ""
+  lastActivity ≥ createdAt
+end UserSession
+
+(* WebSocket Connection *)
+schema WebSocketConnection
+  connectionId: UUID
+  session: UserSession
+  state: ConnectionState
+  peerId: STRING
+  connectedAt: TIMESTAMP
+  lastHeartbeat: TIMESTAMP
+  
+  (* Invariants *)
+  state = connected ⇒ session.authenticated = true
+  lastHeartbeat ≥ connectedAt
+  state = connected ⇒ (lastHeartbeat - connectedAt) < 300 (* 5 min timeout *)
+end WebSocketConnection
+
+(* ============================================================================
+   AI MODEL ENTITIES
+   ============================================================================ *)
+
+(* Model Configuration *)
+schema ModelConfig
+  modelId: STRING
+  provider: ProviderType
+  modelType: ModelType
+  apiEndpoint: URL
+  apiKey: STRING
+  temperature: ℝ
+  maxTokens: ℕ
+  
+  (* Invariants *)
+  0 ≤ temperature ≤ 2
+  maxTokens > 0
+  provider ∈ {openai, anthropic, deepseek, groq, google} ⇒ apiKey ≠ ""
+end ModelConfig
+
+(* Model Metadata (from Inventory Service) *)
+schema ModelMetadata
+  id: UUID
+  name: STRING
+  description: STRING
+  provider: ProviderType
+  modelType: ModelType
+  sourceUrl: URL
+  version: STRING
+  size: ℕ (* bytes *)
+  downloadUrl: URL
+  lastUpdated: TIMESTAMP
+  tags: seq STRING
+  
+  (* Invariants *)
+  size > 0
+  name ≠ ""
+  version ≠ ""
+end ModelMetadata
+
+(* Model Catalog Entry *)
+schema CatalogEntry
+  metadata: ModelMetadata
+  available: BOOLEAN
+  localPath: STRING
+  downloadProgress: ℝ
+  lastAccessed: TIMESTAMP
+  
+  (* Invariants *)
+  0 ≤ downloadProgress ≤ 100
+  available = true ⇒ downloadProgress = 100
+  available = true ⇒ localPath ≠ ""
+end CatalogEntry
+
+(* ============================================================================
+   CHAT & MESSAGE ENTITIES
+   ============================================================================ *)
+
+(* Message Content *)
+schema MessageContent
+  text: STRING
+  reasoning: STRING (* DeepSeek reasoning content *)
+  
+  (* Invariants *)
+  text ≠ "" ∨ reasoning ≠ ""
+end MessageContent
+
+(* Tool Call *)
+schema ToolCall
+  id: UUID
+  name: STRING
+  arguments: JSON
+  
+  (* Invariants *)
+  name ≠ ""
+end ToolCall
+
+(* Tool Result *)
+schema ToolResult
+  toolCallId: UUID
+  result: JSON
+  success: BOOLEAN
+  errorMessage: STRING
+  
+  (* Invariants *)
+  success = false ⇒ errorMessage ≠ ""
+end ToolResult
+
+(* Chat Message *)
+schema ChatMessage
+  id: UUID
+  role: MessageRole
+  content: MessageContent
+  toolCalls: seq ToolCall
+  timestamp: TIMESTAMP
+  
+  (* Invariants *)
+  role = tool ⇒ #toolCalls > 0
+  role ∈ {user, assistant, system} ⇒ content.text ≠ ""
+end ChatMessage
+
+(* Usage Metrics *)
+schema UsageMetrics
+  promptTokens: ℕ
+  completionTokens: ℕ
+  totalTokens: ℕ
+  
+  (* Invariants *)
+  totalTokens = promptTokens + completionTokens
+  totalTokens > 0
+end UsageMetrics
+
+(* Completion Step *)
+schema CompletionStep
+  stepId: UUID
+  messages: seq ChatMessage
+  toolCalls: seq ToolCall
+  toolResults: seq ToolResult
+  finishReason: FinishReason
+  usage: UsageMetrics
+  timestamp: TIMESTAMP
+  
+  (* Invariants *)
+  #toolCalls = #toolResults ⇒ finishReason ≠ tool_calls
+  finishReason = stop ⇒ #messages > 0
+end CompletionStep
+
+(* Conversation Context *)
+schema ConversationContext
+  conversationId: UUID
+  userId: UUID
+  messages: seq ChatMessage
+  activeModel: ModelConfig
+  steps: seq CompletionStep
+  totalUsage: UsageMetrics
+  createdAt: TIMESTAMP
+  updatedAt: TIMESTAMP
+  
+  (* Invariants *)
+  updatedAt ≥ createdAt
+  #messages > 0 ⇒ messages[1].role = system ∨ messages[1].role = user
+  totalUsage.totalTokens = Σ(step ∈ steps) step.usage.totalTokens
+end ConversationContext
+
+(* ============================================================================
+   TTS (Text-to-Speech) ENTITIES
+   ============================================================================ *)
+
+(* TTS Request *)
+schema TTSRequest
+  requestId: UUID
+  text: STRING
+  language: STRING
+  speakerId: ℕ
+  speed: ℝ
+  pitch: ℝ
+  timestamp: TIMESTAMP
+  
+  (* Invariants *)
+  text ≠ ""
+  0.5 ≤ speed ≤ 2.0
+  0.5 ≤ pitch ≤ 2.0
+  speakerId ≥ 0
+end TTSRequest
+
+(* TTS Response *)
+schema TTSResponse
+  requestId: UUID
+  audioData: seq BYTE
+  format: STRING (* wav, mp3, etc. *)
+  duration: ℝ (* seconds *)
+  sampleRate: ℕ
+  timestamp: TIMESTAMP
+  
+  (* Invariants *)
+  #audioData > 0
+  duration > 0
+  sampleRate > 0
+  format ∈ {"wav", "mp3", "ogg", "flac"}
+end TTSResponse
+
+(* ============================================================================
+   SERVICE & INTEGRATION ENTITIES
+   ============================================================================ *)
+
+(* Discord Bot State *)
+schema DiscordBotState
+  botId: STRING
+  guildId: STRING
+  channelId: STRING
+  connectionState: ConnectionState
+  lastMessageId: STRING
+  
+  (* Invariants *)
+  connectionState = connected ⇒ channelId ≠ ""
+  botId ≠ ""
+end DiscordBotState
+
+(* Telegram Bot State *)
+schema TelegramBotState
+  botId: STRING
+  chatId: STRING
+  connectionState: ConnectionState
+  lastUpdateId: ℕ
+  
+  (* Invariants *)
+  connectionState = connected ⇒ chatId ≠ ""
+  botId ≠ ""
+end TelegramBotState
+
+(* Twitter Service State *)
+schema TwitterServiceState
+  accountId: STRING
+  connectionState: ConnectionState
+  lastTweetId: STRING
+  rateLimitRemaining: ℕ
+  rateLimitReset: TIMESTAMP
+  
+  (* Invariants *)
+  accountId ≠ ""
+  connectionState = connected ⇒ rateLimitRemaining ≥ 0
+end TwitterServiceState
+
+(* Minecraft Integration State *)
+schema MinecraftState
+  serverAddress: STRING
+  serverPort: ℕ
+  connectionState: ConnectionState
+  botUsername: STRING
+  currentPosition: ℝ × ℝ × ℝ
+  
+  (* Invariants *)
+  1024 ≤ serverPort ≤ 65535
+  connectionState = connected ⇒ botUsername ≠ ""
+  serverAddress ≠ ""
+end MinecraftState
+
+(* Factorio Integration State *)
+schema FactorioState
+  rconAddress: STRING
+  rconPort: ℕ
+  connectionState: ConnectionState
+  password: STRING
+  lastCommandTime: TIMESTAMP
+  
+  (* Invariants *)
+  1024 ≤ rconPort ≤ 65535
+  connectionState = connected ⇒ password ≠ ""
+  rconAddress ≠ ""
+end FactorioState
+
+(* ============================================================================
+   EVENT SYSTEM ENTITIES (eventa)
+   ============================================================================ *)
+
+(* Event *)
+schema Event
+  eventId: UUID
+  eventType: EventType
+  payload: JSON
+  source: STRING
+  timestamp: TIMESTAMP
+  
+  (* Invariants *)
+  source ≠ ""
+end Event
+
+(* Event Handler Registration *)
+schema EventHandler
+  handlerId: UUID
+  eventType: EventType
+  callbackEndpoint: URL
+  priority: ℕ
+  active: BOOLEAN
+  
+  (* Invariants *)
+  priority ≥ 0
+end EventHandler
+
+(* Event Queue *)
+schema EventQueue
+  queueId: UUID
+  events: seq Event
+  maxSize: ℕ
+  
+  (* Invariants *)
+  #events ≤ maxSize
+  maxSize > 0
+end EventQueue
+
+(* ============================================================================
+   MODULE PEER REGISTRATION (AIRI Server Runtime)
+   ============================================================================ *)
+
+(* Module Peer *)
+schema ModulePeer
+  peerId: STRING
+  moduleName: STRING
+  moduleIndex: ℕ
+  connection: WebSocketConnection
+  registeredAt: TIMESTAMP
+  capabilities: seq STRING
+  
+  (* Invariants *)
+  peerId ≠ ""
+  moduleName ≠ ""
+  connection.state = connected
+end ModulePeer
+
+(* Module Registry *)
+schema ModuleRegistry
+  modules: seq ModulePeer
+  modulesByName: STRING ⇸ seq ModulePeer
+  
+  (* Invariants *)
+  ∀ p: ModulePeer @ p ∈ modules ⇒ 
+    p ∈ modulesByName(p.moduleName)
+  ∀ name: STRING @ name ∈ dom(modulesByName) ⇒
+    ∀ p1, p2: ModulePeer @ 
+      p1 ∈ modulesByName(name) ∧ p2 ∈ modulesByName(name) ∧ p1 ≠ p2 ⇒
+      p1.moduleIndex ≠ p2.moduleIndex
+end ModuleRegistry
+
+(* ============================================================================
+   EXTERNAL API CONFIGURATIONS
+   ============================================================================ *)
+
+(* HuggingFace API Config *)
+schema HuggingFaceConfig
+  apiToken: STRING
+  apiEndpoint: URL
+  cacheDir: STRING
+  maxConcurrentDownloads: ℕ
+  
+  (* Invariants *)
+  apiEndpoint = "https://huggingface.co"
+  maxConcurrentDownloads > 0
+  cacheDir ≠ ""
+end HuggingFaceConfig
+
+(* Ollama API Config *)
+schema OllamaConfig
+  apiEndpoint: URL
+  timeout: ℕ (* seconds *)
+  
+  (* Invariants *)
+  timeout > 0
+  apiEndpoint ≠ ""
+end OllamaConfig
+
+(* External Service Configuration *)
+schema ExternalServiceConfig
+  serviceName: STRING
+  endpoint: URL
+  apiKey: STRING
+  timeout: ℕ
+  retryAttempts: ℕ
+  
+  (* Invariants *)
+  serviceName ≠ ""
+  endpoint ≠ ""
+  timeout > 0
+  retryAttempts ≥ 0
+end ExternalServiceConfig
+
+(* ============================================================================
+   DATA RELATIONSHIPS & CONSTRAINTS
+   ============================================================================ *)
+
+(* Conversation-Message Relationship *)
+schema ConversationMessageRelation
+  conversations: seq ConversationContext
+  allMessages: seq ChatMessage
+  
+  (* Invariants *)
+  (* All messages in conversations must be in allMessages *)
+  ∀ conv: ConversationContext @ conv ∈ conversations ⇒
+    ∀ msg: ChatMessage @ msg ∈ conv.messages ⇒
+      msg ∈ allMessages
+  
+  (* No message belongs to multiple conversations *)
+  ∀ conv1, conv2: ConversationContext @
+    conv1 ∈ conversations ∧ conv2 ∈ conversations ∧ conv1 ≠ conv2 ⇒
+    (ran conv1.messages) ∩ (ran conv2.messages) = ∅
+end ConversationMessageRelation
+
+(* Model Catalog Consistency *)
+schema ModelCatalogConsistency
+  catalog: seq CatalogEntry
+  
+  (* Invariants *)
+  (* No duplicate model IDs *)
+  ∀ e1, e2: CatalogEntry @
+    e1 ∈ catalog ∧ e2 ∈ catalog ∧ e1 ≠ e2 ⇒
+    e1.metadata.id ≠ e2.metadata.id
+  
+  (* Available models must have valid local paths *)
+  ∀ e: CatalogEntry @ e ∈ catalog ∧ e.available = true ⇒
+    e.localPath ≠ "" ∧ e.downloadProgress = 100
+end ModelCatalogConsistency
+
+(* Session-Connection Relationship *)
+schema SessionConnectionRelation
+  sessions: seq UserSession
+  connections: seq WebSocketConnection
+  
+  (* Invariants *)
+  (* All connections must reference valid sessions *)
+  ∀ conn: WebSocketConnection @ conn ∈ connections ⇒
+    conn.session ∈ sessions
+  
+  (* Connected connections must have authenticated sessions *)
+  ∀ conn: WebSocketConnection @ 
+    conn ∈ connections ∧ conn.state = connected ⇒
+    conn.session.authenticated = true
+end SessionConnectionRelation

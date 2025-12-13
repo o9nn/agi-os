@@ -1,0 +1,35 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - argmax
+  - bitnami
+  - cangjie
+  - clippy
+  - cpus
+  - cuda
+  - dtype
+  - huggingface
+  - jieba
+  - kakasi
+  - keepdims
+  - logits
+  - moeru
+  - ndarray
+  - nfkd
+  - nixpkgs
+  - onnx
+  - ortts
+  - palc
+  - pkgs
+  - pname
+  - rsplit
+  - rustc
+  - rustls
+  - serde
+  - sinc
+  - ureq
+  - utoipa
+ignoreWords: []
+import: []

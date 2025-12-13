@@ -1,0 +1,151 @@
+name: Maintenance
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'airi/**'
+      - 'xsai/**'
+      - '.github/workflows/maintenance.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'airi/**'
+      - 'xsai/**'
+      - '.github/workflows/maintenance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  # Detect which projects have changes
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      airi: ${{ steps.filter.outputs.airi }}
+      airi-nix: ${{ steps.filter.outputs.airi-nix }}
+      xsai: ${{ steps.filter.outputs.xsai }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            airi:
+              - 'airi/**'
+            airi-nix:
+              - 'airi/apps/stage-tamagotchi/package.json'
+              - 'airi/apps/stage-tamagotchi/vite.config.ts'
+            xsai:
+              - 'xsai/**'
+
+  # Autofix for Node.js projects (lint --fix)
+  autofix:
+    needs: changes
+    if: |
+      (needs.changes.outputs.airi == 'true' || needs.changes.outputs.xsai == 'true') &&
+      github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [airi, xsai]
+    name: Autofix ${{ matrix.project }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        if: matrix.project == 'xsai'
+        with:
+          run_install: false
+          package_json_file: ${{ matrix.project }}/package.json
+
+      - uses: pnpm/action-setup@v3
+        if: matrix.project == 'airi'
+        with:
+          package_json_file: ${{ matrix.project }}/package.json
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.project == 'xsai' && '24' || 'lts/*' }}
+          cache: pnpm
+          cache-dependency-path: ${{ matrix.project }}/pnpm-lock.yaml
+
+      - name: Cache turbo
+        if: matrix.project == 'xsai'
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
+      - name: Install dependencies
+        run: pnpm install ${{ matrix.project == 'airi' && '--frozen-lockfile' || '' }}
+        working-directory: ${{ matrix.project }}
+
+      - name: Prune and dedupe (airi only)
+        if: matrix.project == 'airi'
+        run: pnpm prune && pnpm dedupe
+        working-directory: airi
+
+      - name: Lint fix
+        run: pnpm ${{ matrix.project == 'airi' && 'run lint:fix' || 'lint --fix' }}
+        working-directory: ${{ matrix.project }}
+
+      - uses: autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27
+
+  # Nix assets hash update (airi only)
+  nix-assets-hash:
+    needs: changes
+    if: |
+      needs.changes.outputs.airi-nix == 'true' &&
+      github.event_name == 'push'
+    runs-on: ubuntu-latest
+    concurrency: nix-update-assets
+    name: Update Nix assets hash
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: experimental-features = nix-command flakes
+
+      - name: Update Hash
+        run: nix/update-assets-hash.sh
+        working-directory: airi
+
+      - uses: stefanzweifel/git-auto-commit-action@v6
+        with:
+          commit_message: 'chore(nix): update assets hash'
+          commit_author: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
+
+  # Nix pnpm deps hash update (airi only)
+  nix-pnpm-deps-hash:
+    needs: changes
+    if: |
+      needs.changes.outputs.airi == 'true' &&
+      github.event_name == 'push'
+    runs-on: ubuntu-latest
+    concurrency: nix-update-pnpm-deps
+    name: Update Nix pnpm deps hash
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: experimental-features = nix-command flakes
+
+      - name: Update Hash
+        run: nix/update-pnpm-deps-hash.sh
+        working-directory: airi
+
+      - uses: stefanzweifel/git-auto-commit-action@v6
+        with:
+          commit_message: 'chore(nix): update pnpm deps hash'
+          commit_author: github-actions[bot] <github-actions[bot]@users.noreply.github.com>

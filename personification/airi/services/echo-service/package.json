@@ -1,0 +1,34 @@
+{
+  "name": "@proj-airi/echo-service",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Echo character service for AIRI",
+  "author": {
+    "name": "Moeru AI Project AIRI Team",
+    "email": "airi@moeru.ai",
+    "url": "https://github.com/moeru-ai"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moeru-ai/airi.git",
+    "directory": "airi/services/echo-service"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@guiiai/logg": "catalog:",
+    "@moeru/std": "catalog:",
+    "@proj-airi/character-echo": "workspace:*",
+    "@proj-airi/server-sdk": "workspace:*",
+    "@xsai/generate-text": "catalog:",
+    "@xsai/stream-text": "catalog:"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.6",
+    "typescript": "~5.9.3"
+  }
+}

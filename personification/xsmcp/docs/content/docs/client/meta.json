@@ -1,0 +1,14 @@
+{
+  "title": "Client",
+  "icon": "MonitorSmartphone",
+  "root": true,
+  "pages": [
+    "index",
+    "---Shared---",
+    "...shared",
+    "---HTTP---",
+    "...http",
+    "---Integrations---",
+    "...integrations"
+  ]
+}

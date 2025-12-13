@@ -1,0 +1,63 @@
+{
+  "name": "gpuu",
+  "type": "module",
+  "version": "1.0.6",
+  "packageManager": "pnpm@10.18.2",
+  "description": "A collection of utilities for working with GPUs, especially for WebGPU.",
+  "author": {
+    "name": "Neko Ayaka",
+    "email": "neko@ayaka.moe",
+    "url": "https://github.com/nekomeowww"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moeru-ai/gpuu.git"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    },
+    "./webgpu": {
+      "types": "./dist/webgpu/index.d.mts",
+      "default": "./dist/webgpu/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "README.md",
+    "dist",
+    "package.json"
+  ],
+  "scripts": {
+    "dev": "tsdown",
+    "stub": "tsdown",
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "attw": "attw --pack . --profile esm-only --ignore-rules cjs-resolves-to-esm",
+    "up": "taze -w -r -I -f && pnpm prune && pnpm dedupe"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^5.4.1",
+    "@arethetypeswrong/cli": "^0.18.2",
+    "@types/node": "^24.7.1",
+    "@webgpu/types": "^0.1.65",
+    "bumpp": "^10.3.1",
+    "eslint": "^9.37.0",
+    "taze": "^19.7.0",
+    "tsdown": "^0.15.6",
+    "typescript": "^5.9.3",
+    "unplugin-unused": "^0.5.4"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "unrs-resolver"
+    ]
+  }
+}

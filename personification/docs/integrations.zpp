@@ -1,0 +1,670 @@
+(*
+  Moeru AI Monorepo - External Integrations Formal Specification (Z++)
+  
+  This specification formally models the contracts and interactions
+  with external services and APIs.
+*)
+
+(* Import data model and system state *)
+include "data_model.zpp"
+include "system_state.zpp"
+
+(* ============================================================================
+   LLM PROVIDER INTEGRATIONS
+   ============================================================================ *)
+
+(* OpenAI API Contract *)
+schema OpenAIAPIContract
+  (* Request *)
+  model: STRING
+  messages: seq ChatMessage
+  temperature: ℝ
+  maxTokens: ℕ
+  stream: BOOLEAN
+  
+  (* Response *)
+  responseId: UUID
+  responseModel: STRING
+  choices: seq {
+    index: ℕ,
+    message: ChatMessage,
+    finishReason: FinishReason
+  }
+  usage: UsageMetrics
+  
+  (* Contract Invariants *)
+  model ≠ ""
+  #messages > 0
+  0 ≤ temperature ≤ 2
+  maxTokens > 0
+  
+  (* Response constraints *)
+  #choices > 0
+  ∀ c ∈ choices @ c.message.role = assistant
+  usage.totalTokens > 0
+  
+  (* Error handling *)
+  errorCode: ℕ
+  errorMessage: STRING
+  errorCode ≠ 0 ⇒ errorMessage ≠ ""
+end OpenAIAPIContract
+
+(* Anthropic Claude API Contract *)
+schema AnthropicAPIContract
+  (* Request *)
+  model: STRING
+  messages: seq ChatMessage
+  maxTokens: ℕ
+  temperature: ℝ
+  system: STRING
+  
+  (* Response *)
+  responseId: UUID
+  responseModel: STRING
+  content: seq {
+    type: STRING,
+    text: STRING
+  }
+  stopReason: STRING
+  usage: UsageMetrics
+  
+  (* Contract Invariants *)
+  model ∈ {"claude-3-opus", "claude-3-sonnet", "claude-3-haiku", 
+            "claude-3-5-sonnet", "claude-3-5-haiku"}
+  #messages > 0
+  maxTokens > 0
+  0 ≤ temperature ≤ 1
+  
+  (* First message must be user message *)
+  #messages > 0 ⇒ messages[1].role = user
+  
+  (* Response constraints *)
+  #content > 0
+  stopReason ∈ {"end_turn", "max_tokens", "stop_sequence"}
+  usage.totalTokens > 0
+end AnthropicAPIContract
+
+(* DeepSeek API Contract *)
+schema DeepSeekAPIContract
+  (* Request *)
+  model: STRING
+  messages: seq ChatMessage
+  temperature: ℝ
+  maxTokens: ℕ
+  
+  (* Response *)
+  responseId: UUID
+  choices: seq {
+    index: ℕ,
+    message: ChatMessage,
+    finishReason: FinishReason,
+    reasoningContent: STRING
+  }
+  usage: UsageMetrics
+  
+  (* Contract Invariants *)
+  model ∈ {"deepseek-chat", "deepseek-reasoner"}
+  #messages > 0
+  0 ≤ temperature ≤ 2
+  maxTokens > 0
+  
+  (* DeepSeek-specific: reasoning content *)
+  model = "deepseek-reasoner" ⇒
+    ∀ c ∈ choices @ c.reasoningContent ≠ ""
+  
+  usage.totalTokens > 0
+end DeepSeekAPIContract
+
+(* Groq API Contract *)
+schema GroqAPIContract
+  (* Request *)
+  model: STRING
+  messages: seq ChatMessage
+  temperature: ℝ
+  maxTokens: ℕ
+  stream: BOOLEAN
+  
+  (* Response *)
+  responseId: UUID
+  choices: seq {
+    index: ℕ,
+    message: ChatMessage,
+    finishReason: FinishReason
+  }
+  usage: UsageMetrics
+  
+  (* Contract Invariants *)
+  model ∈ {"llama-3.3-70b-versatile", "llama-3.1-8b-instant", 
+            "mixtral-8x7b-32768", "gemma2-9b-it"}
+  #messages > 0
+  0 ≤ temperature ≤ 2
+  maxTokens > 0
+  
+  (* High-speed inference *)
+  usage.totalTokens > 0
+end GroqAPIContract
+
+(* ============================================================================
+   LOCAL MODEL INTEGRATIONS
+   ============================================================================ *)
+
+(* Ollama API Contract *)
+schema OllamaAPIContract
+  (* Request *)
+  model: STRING
+  prompt: STRING
+  stream: BOOLEAN
+  options: {
+    temperature: ℝ,
+    num_predict: ℕ,
+    top_k: ℕ,
+    top_p: ℝ
+  }
+  
+  (* Response *)
+  modelName: STRING
+  createdAt: TIMESTAMP
+  response: STRING
+  done: BOOLEAN
+  
+  (* Contract Invariants *)
+  model ≠ ""
+  prompt ≠ ""
+  0 ≤ options.temperature ≤ 2
+  options.num_predict > 0
+  0 ≤ options.top_p ≤ 1
+  
+  (* Stream vs complete response *)
+  stream = false ⇒ done = true
+  done = true ⇒ response ≠ ""
+end OllamaAPIContract
+
+(* Transformers.js Local Inference Contract *)
+schema TransformersJSContract
+  (* Request *)
+  modelId: STRING
+  task: STRING (* "text-generation", "text-embedding", etc. *)
+  inputs: JSON
+  
+  (* Response *)
+  outputs: JSON
+  
+  (* Contract Invariants *)
+  modelId ≠ ""
+  task ∈ {"text-generation", "text-embedding", "automatic-speech-recognition",
+           "text-to-speech", "image-to-text"}
+  
+  (* Task-specific constraints *)
+  task = "text-generation" ⇒
+    ∃ text: STRING @ text ∈ inputs ∧ text ≠ ""
+  
+  task = "text-embedding" ⇒
+    ∃ embeddings: seq ℝ @ embeddings ∈ outputs ∧ #embeddings > 0
+end TransformersJSContract
+
+(* ============================================================================
+   MODEL REPOSITORY INTEGRATIONS
+   ============================================================================ *)
+
+(* HuggingFace Hub API Contract *)
+schema HuggingFaceHubContract
+  (* Request *)
+  operation: STRING (* "list", "info", "download" *)
+  modelId: STRING
+  revision: STRING
+  filename: STRING
+  
+  (* Response *)
+  modelInfo: {
+    id: STRING,
+    author: STRING,
+    downloads: ℕ,
+    likes: ℕ,
+    tags: seq STRING,
+    lastModified: TIMESTAMP
+  }
+  fileUrl: URL
+  files: seq {
+    filename: STRING,
+    size: ℕ,
+    url: URL
+  }
+  
+  (* Contract Invariants *)
+  operation ∈ {"list", "info", "download"}
+  
+  operation = "info" ⇒ modelId ≠ ""
+  operation = "download" ⇒ modelId ≠ "" ∧ filename ≠ ""
+  
+  (* Response constraints *)
+  operation = "info" ⇒ modelInfo.id ≠ ""
+  operation = "download" ⇒ fileUrl ≠ ""
+  operation = "list" ⇒ #files > 0
+  
+  (* Rate limiting *)
+  rateLimitRemaining: ℕ
+  rateLimitReset: TIMESTAMP
+end HuggingFaceHubContract
+
+(* Ollama Registry Contract *)
+schema OllamaRegistryContract
+  (* Request *)
+  operation: STRING (* "list", "pull", "push" *)
+  modelName: STRING
+  
+  (* Response *)
+  models: seq {
+    name: STRING,
+    size: ℕ,
+    modified: TIMESTAMP,
+    digest: STRING
+  }
+  status: STRING
+  
+  (* Contract Invariants *)
+  operation ∈ {"list", "pull", "push", "delete"}
+  
+  operation ∈ {"pull", "push", "delete"} ⇒ modelName ≠ ""
+  
+  (* Response constraints *)
+  operation = "list" ⇒ #models ≥ 0
+  operation = "pull" ⇒ status ∈ {"downloading", "verifying", "success", "error"}
+end OllamaRegistryContract
+
+(* ============================================================================
+   SOCIAL PLATFORM INTEGRATIONS
+   ============================================================================ *)
+
+(* Discord API Contract *)
+schema DiscordAPIContract
+  (* Request *)
+  operation: STRING (* "send_message", "join_voice", "leave_voice" *)
+  channelId: STRING
+  content: STRING
+  embeds: seq JSON
+  
+  (* Response *)
+  messageId: STRING
+  timestamp: TIMESTAMP
+  success: BOOLEAN
+  
+  (* Contract Invariants *)
+  operation ∈ {"send_message", "edit_message", "delete_message",
+                "join_voice", "leave_voice"}
+  
+  channelId ≠ ""
+  operation = "send_message" ⇒ (content ≠ "" ∨ #embeds > 0)
+  
+  (* Rate limiting *)
+  rateLimitRemaining: ℕ
+  rateLimitReset: TIMESTAMP
+  
+  (* Response constraints *)
+  success = true ⇒ messageId ≠ ""
+end DiscordAPIContract
+
+(* Telegram Bot API Contract *)
+schema TelegramBotAPIContract
+  (* Request *)
+  method: STRING (* "sendMessage", "getUpdates", etc. *)
+  chatId: STRING
+  text: STRING
+  replyMarkup: JSON
+  
+  (* Response *)
+  ok: BOOLEAN
+  result: JSON
+  updateId: ℕ
+  
+  (* Contract Invariants *)
+  method ∈ {"sendMessage", "editMessage", "deleteMessage", 
+             "getUpdates", "setWebhook"}
+  
+  method ∈ {"sendMessage", "editMessage"} ⇒ 
+    chatId ≠ "" ∧ text ≠ ""
+  
+  (* Message length limit *)
+  method = "sendMessage" ⇒ #text ≤ 4096
+  
+  (* Response constraints *)
+  ok = true ⇒ result ≠ nil
+end TelegramBotAPIContract
+
+(* Twitter/X API Contract *)
+schema TwitterAPIContract
+  (* Request *)
+  operation: STRING (* "post", "reply", "retweet", "timeline" *)
+  text: STRING
+  inReplyToId: STRING
+  
+  (* Response *)
+  tweetId: STRING
+  createdAt: TIMESTAMP
+  success: BOOLEAN
+  
+  (* Contract Invariants *)
+  operation ∈ {"post", "reply", "retweet", "delete", "timeline"}
+  
+  operation ∈ {"post", "reply"} ⇒ text ≠ ""
+  operation = "reply" ⇒ inReplyToId ≠ ""
+  
+  (* Character limit *)
+  operation ∈ {"post", "reply"} ⇒ #text ≤ 280
+  
+  (* Rate limiting *)
+  rateLimitRemaining: ℕ
+  rateLimitResetTime: TIMESTAMP
+  rateLimitRemaining ≥ 0
+  
+  (* Response constraints *)
+  success = true ⇒ tweetId ≠ ""
+end TwitterAPIContract
+
+(* ============================================================================
+   GAMING PLATFORM INTEGRATIONS
+   ============================================================================ *)
+
+(* Minecraft RCON Protocol Contract *)
+schema MinecraftRCONContract
+  (* Request *)
+  requestId: ℕ
+  requestType: ℕ (* 2=command, 3=login *)
+  payload: STRING
+  
+  (* Response *)
+  responseId: ℕ
+  responseType: ℕ (* 0=response, 2=command *)
+  responsePayload: STRING
+  
+  (* Contract Invariants *)
+  requestType ∈ {2, 3}
+  requestType = 3 ⇒ payload ≠ "" (* password for login *)
+  requestType = 2 ⇒ payload ≠ "" (* command *)
+  
+  (* Response must match request *)
+  responseId = requestId
+  
+  (* Authentication required for commands *)
+  requestType = 2 ⇒ ∃ auth: BOOLEAN @ auth = true
+end MinecraftRCONContract
+
+(* Factorio RCON Protocol Contract *)
+schema FactorioRCONContract
+  (* Request *)
+  command: STRING
+  
+  (* Response *)
+  output: STRING
+  
+  (* Contract Invariants *)
+  command ≠ ""
+  
+  (* Factorio-specific: Lua commands via RCON *)
+  (* Commands are arbitrary Lua code prefixed with /c *)
+  isValidFactorioCommand: BOOLEAN
+  isValidFactorioCommand = (command starts with "/c " ∨ command starts with "/silent-command ")
+  
+  (* Response may be empty for some commands *)
+  output ≠ "" ∨ true
+end FactorioRCONContract
+
+(* ============================================================================
+   TTS SERVICE INTEGRATIONS
+   ============================================================================ *)
+
+(* ElevenLabs API Contract *)
+schema ElevenLabsContract
+  (* Request *)
+  text: STRING
+  voiceId: STRING
+  modelId: STRING
+  voiceSettings: {
+    stability: ℝ,
+    similarityBoost: ℝ,
+    style: ℝ,
+    useSpeakerBoost: BOOLEAN
+  }
+  
+  (* Response *)
+  audio: seq BYTE
+  
+  (* Contract Invariants *)
+  text ≠ ""
+  voiceId ≠ ""
+  0 ≤ voiceSettings.stability ≤ 1
+  0 ≤ voiceSettings.similarityBoost ≤ 1
+  0 ≤ voiceSettings.style ≤ 1
+  
+  (* Character limit *)
+  #text ≤ 5000
+  
+  (* Response constraints *)
+  #audio > 0
+end ElevenLabsContract
+
+(* Azure Speech Services Contract *)
+schema AzureSpeechContract
+  (* Request *)
+  text: STRING
+  voiceName: STRING
+  outputFormat: STRING
+  pitch: STRING
+  rate: STRING
+  
+  (* Response *)
+  audio: seq BYTE
+  duration: ℝ
+  
+  (* Contract Invariants *)
+  text ≠ ""
+  voiceName ≠ ""
+  outputFormat ∈ {"audio-16khz-32kbitrate-mono-mp3",
+                   "audio-24khz-48kbitrate-mono-mp3",
+                   "riff-24khz-16bit-mono-pcm"}
+  
+  (* SSML support for pitch and rate *)
+  pitch ∈ {"x-low", "low", "medium", "high", "x-high", "default"}
+  rate ∈ {"x-slow", "slow", "medium", "fast", "x-fast", "default"}
+  
+  (* Response constraints *)
+  #audio > 0
+  duration > 0
+end AzureSpeechContract
+
+(* ============================================================================
+   AUTHENTICATION & AUTHORIZATION
+   ============================================================================ *)
+
+(* OAuth2 Token Exchange Contract *)
+schema OAuth2Contract
+  (* Request *)
+  grantType: STRING
+  clientId: STRING
+  clientSecret: STRING
+  scope: STRING
+  redirectUri: URL
+  code: STRING
+  
+  (* Response *)
+  accessToken: STRING
+  tokenType: STRING
+  expiresIn: ℕ
+  refreshToken: STRING
+  
+  (* Contract Invariants *)
+  grantType ∈ {"authorization_code", "refresh_token", "client_credentials"}
+  clientId ≠ ""
+  
+  grantType = "authorization_code" ⇒ code ≠ "" ∧ redirectUri ≠ ""
+  grantType = "refresh_token" ⇒ refreshToken ≠ ""
+  grantType = "client_credentials" ⇒ clientSecret ≠ ""
+  
+  (* Response constraints *)
+  accessToken ≠ ""
+  tokenType = "Bearer"
+  expiresIn > 0
+end OAuth2Contract
+
+(* API Key Authentication Contract *)
+schema APIKeyAuthContract
+  (* Request *)
+  apiKey: STRING
+  requestPath: URL
+  
+  (* Response *)
+  authenticated: BOOLEAN
+  userId: UUID
+  permissions: seq STRING
+  
+  (* Contract Invariants *)
+  apiKey ≠ ""
+  requestPath ≠ ""
+  
+  (* Response constraints *)
+  authenticated = true ⇒ userId ≠ nil
+  authenticated = true ⇒ #permissions > 0
+end APIKeyAuthContract
+
+(* ============================================================================
+   INTEGRATION ERROR HANDLING
+   ============================================================================ *)
+
+(* Generic API Error Response *)
+schema APIErrorResponse
+  statusCode: ℕ
+  errorType: STRING
+  errorMessage: STRING
+  retryAfter: ℕ (* seconds *)
+  
+  (* Contract Invariants *)
+  statusCode ≥ 400
+  errorMessage ≠ ""
+  
+  (* Common error types *)
+  errorType ∈ {"rate_limit_exceeded", "invalid_request", 
+                "authentication_failed", "not_found",
+                "internal_server_error", "service_unavailable"}
+  
+  (* Rate limit errors provide retry time *)
+  errorType = "rate_limit_exceeded" ⇒ retryAfter > 0
+  
+  (* Status code mapping *)
+  errorType = "rate_limit_exceeded" ⇒ statusCode = 429
+  errorType = "authentication_failed" ⇒ statusCode = 401
+  errorType = "not_found" ⇒ statusCode = 404
+  errorType = "internal_server_error" ⇒ statusCode = 500
+  errorType = "service_unavailable" ⇒ statusCode = 503
+end APIErrorResponse
+
+(* Retry Strategy *)
+schema RetryStrategy
+  maxAttempts: ℕ
+  currentAttempt: ℕ
+  baseDelay: ℕ (* milliseconds *)
+  maxDelay: ℕ (* milliseconds *)
+  backoffMultiplier: ℝ
+  
+  (* Contract Invariants *)
+  maxAttempts > 0
+  0 ≤ currentAttempt ≤ maxAttempts
+  baseDelay > 0
+  maxDelay ≥ baseDelay
+  backoffMultiplier ≥ 1
+  
+  (* Exponential backoff calculation *)
+  nextDelay: ℕ
+  nextDelay = min(baseDelay × (backoffMultiplier ^ currentAttempt), maxDelay)
+end RetryStrategy
+
+(* ============================================================================
+   INTEGRATION STATE MANAGEMENT
+   ============================================================================ *)
+
+(* Connection Pool *)
+schema ConnectionPool
+  poolId: UUID
+  serviceEndpoint: URL
+  maxConnections: ℕ
+  activeConnections: ℕ
+  idleConnections: ℕ
+  waitingRequests: ℕ
+  
+  (* Contract Invariants *)
+  maxConnections > 0
+  activeConnections + idleConnections ≤ maxConnections
+  activeConnections ≥ 0
+  idleConnections ≥ 0
+  waitingRequests ≥ 0
+  
+  (* Connection reuse *)
+  activeConnections + idleConnections > 0 ⇒ serviceEndpoint ≠ ""
+end ConnectionPool
+
+(* Circuit Breaker Pattern *)
+schema CircuitBreaker
+  serviceId: UUID
+  state: STRING (* "closed", "open", "half_open" *)
+  failureCount: ℕ
+  successCount: ℕ
+  failureThreshold: ℕ
+  successThreshold: ℕ
+  timeout: ℕ (* milliseconds *)
+  lastFailureTime: TIMESTAMP
+  
+  (* Contract Invariants *)
+  state ∈ {"closed", "open", "half_open"}
+  failureThreshold > 0
+  successThreshold > 0
+  timeout > 0
+  
+  (* State transition rules *)
+  failureCount ≥ failureThreshold ⇒ state = "open"
+  state = "half_open" ∧ successCount ≥ successThreshold ⇒ state = "closed"
+  state = "half_open" ∧ failureCount > 0 ⇒ state = "open"
+end CircuitBreaker
+
+(* ============================================================================
+   INTEGRATION COMPOSITION
+   ============================================================================ *)
+
+(* Multi-Provider Fallback Strategy *)
+schema MultiProviderFallback
+  primaryProvider: ProviderState
+  fallbackProviders: seq ProviderState
+  currentProvider: ProviderState
+  lastSwitch: TIMESTAMP
+  
+  (* Contract Invariants *)
+  primaryProvider.available = true ⇒ 
+    currentProvider = primaryProvider
+  
+  primaryProvider.available = false ⇒
+    ∃ p: ProviderState @
+      p ∈ fallbackProviders ∧
+      p.available = true ∧
+      currentProvider = p
+  
+  (* All providers unavailable is an error state *)
+  primaryProvider.available = false ∧
+  (∀ p: ProviderState @ p ∈ fallbackProviders ⇒ p.available = false) ⇒
+  false (* should trigger system alert *)
+end MultiProviderFallback
+
+(* Load Balancing Strategy *)
+schema LoadBalancingStrategy
+  providers: seq ProviderState
+  strategy: STRING (* "round_robin", "least_connections", "weighted" *)
+  weights: ProviderState ⇸ ℕ
+  
+  (* Contract Invariants *)
+  strategy ∈ {"round_robin", "least_connections", "weighted", "random"}
+  
+  strategy = "weighted" ⇒
+    ∀ p: ProviderState @ p ∈ providers ⇒ p ∈ dom(weights)
+  
+  strategy = "weighted" ⇒
+    ∀ p: ProviderState @ p ∈ dom(weights) ⇒ weights(p) > 0
+  
+  (* At least one provider must be available *)
+  ∃ p: ProviderState @ p ∈ providers ∧ p.available = true
+end LoadBalancingStrategy

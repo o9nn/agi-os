@@ -1,0 +1,55 @@
+{
+  "compilerOptions": {
+    "composite": true,
+
+    "baseUrl": "./src/renderer",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
+    /* Build */
+    "target": "ESNext",
+    "jsx": "preserve",
+    "lib": [
+      "DOM",
+      "ESNext",
+      "DOM.Iterable",
+      "DOM.AsyncIterable"
+    ],
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "types": [
+      "vitest",
+      "vite/client",
+      "vite-plugin-vue-layouts/client",
+      "unplugin-vue-macros/macros-global",
+      "unplugin-vue-router/client",
+      "./src/renderer/electron.d.ts"
+    ],
+    "allowJs": true,
+
+    /* Linting */
+    "strict": true,
+    "strictNullChecks": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/renderer/**/*.ts",
+    "src/renderer/**/*.d.ts",
+    "src/renderer/**/*.tsx",
+    "src/renderer/**/*.vue",
+    "types/tanstack-table.d.ts"
+  ]
+}

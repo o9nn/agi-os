@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`@xsai/generate-text > basic 1`] = `
+[
+  {
+    "finishReason": "stop",
+    "stepType": "initial",
+    "text": "YES",
+    "toolCalls": [],
+    "toolResults": [],
+    "usage": {
+      "completion_tokens": 2,
+      "prompt_tokens": 34,
+      "total_tokens": 36,
+    },
+  },
+]
+`;

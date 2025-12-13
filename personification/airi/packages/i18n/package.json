@@ -1,0 +1,69 @@
+{
+  "name": "@proj-airi/i18n",
+  "type": "module",
+  "private": true,
+  "description": "Internationalization (i18n) locales and utilities for Project AIRI",
+  "author": {
+    "name": "Moeru AI Project AIRI Team",
+    "email": "airi@moeru.ai",
+    "url": "https://github.com/moeru-ai"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moeru-ai/airi.git",
+    "directory": "packages/i18n"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./locales": {
+      "types": "./dist/locales/index.d.ts",
+      "default": "./dist/locales/index.js"
+    },
+    "./locales/en": {
+      "types": "./dist/locales/en/index.d.ts",
+      "default": "./dist/locales/en/index.js"
+    },
+    "./locales/zh-Hans": {
+      "types": "./dist/locales/zh-Hans/index.d.ts",
+      "default": "./dist/locales/zh-Hans/index.js"
+    },
+    "./locales/es": {
+      "types": "./dist/locales/es/index.d.ts",
+      "default": "./dist/locales/es/index.js"
+    },
+    "./locales/ru": {
+      "types": "./dist/locales/ru/index.d.ts",
+      "default": "./dist/locales/ru/index.js"
+    },
+    "./locales/fr": {
+      "types": "./dist/locales/fr/index.d.ts",
+      "default": "./dist/locales/fr/index.js"
+    },
+    "./locales/vi": {
+      "types": "./dist/locales/vi/index.d.ts",
+      "default": "./dist/locales/vi/index.js"
+    },
+    "./locales/*.yaml": {
+      "default": "./dist/locales/*.yaml"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "README.md",
+    "dist",
+    "package.json"
+  ],
+  "scripts": {
+    "dev": "pnpm run build",
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "unplugin-yaml": "^3.0.7"
+  }
+}

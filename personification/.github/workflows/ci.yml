@@ -1,0 +1,609 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'airi/**'
+      - 'airi-factorio/**'
+      - 'airi-minecraft/**'
+      - 'chat/**'
+      - 'deditor/**'
+      - 'eventa/**'
+      - 'gpuu/**'
+      - 'hf-inspector/**'
+      - 'hfup/**'
+      - 'inventory/**'
+      - 'mcp-launcher/**'
+      - 'std/**'
+      - 'talk/**'
+      - 'three-mmd/**'
+      - 'unspeech/**'
+      - 'velin/**'
+      - 'xsai/**'
+      - 'xsai-transformers/**'
+      - 'xsai-use/**'
+      - 'xsmcp/**'
+      - '.github/workflows/ci.yml'
+
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'airi/**'
+      - 'airi-factorio/**'
+      - 'airi-minecraft/**'
+      - 'chat/**'
+      - 'deditor/**'
+      - 'eventa/**'
+      - 'gpuu/**'
+      - 'hf-inspector/**'
+      - 'hfup/**'
+      - 'inventory/**'
+      - 'mcp-launcher/**'
+      - 'std/**'
+      - 'talk/**'
+      - 'three-mmd/**'
+      - 'unspeech/**'
+      - 'velin/**'
+      - 'xsai/**'
+      - 'xsai-transformers/**'
+      - 'xsai-use/**'
+      - 'xsmcp/**'
+      - '.github/workflows/ci.yml'
+
+jobs:
+  # Detect which projects have changes
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      airi: ${{ steps.filter.outputs.airi }}
+      airi-factorio: ${{ steps.filter.outputs.airi-factorio }}
+      airi-minecraft: ${{ steps.filter.outputs.airi-minecraft }}
+      chat: ${{ steps.filter.outputs.chat }}
+      deditor: ${{ steps.filter.outputs.deditor }}
+      eventa: ${{ steps.filter.outputs.eventa }}
+      gpuu: ${{ steps.filter.outputs.gpuu }}
+      hf-inspector: ${{ steps.filter.outputs.hf-inspector }}
+      hfup: ${{ steps.filter.outputs.hfup }}
+      inventory: ${{ steps.filter.outputs.inventory }}
+      mcp-launcher: ${{ steps.filter.outputs.mcp-launcher }}
+      std: ${{ steps.filter.outputs.std }}
+      talk: ${{ steps.filter.outputs.talk }}
+      three-mmd: ${{ steps.filter.outputs.three-mmd }}
+      unspeech: ${{ steps.filter.outputs.unspeech }}
+      velin: ${{ steps.filter.outputs.velin }}
+      xsai: ${{ steps.filter.outputs.xsai }}
+      xsai-transformers: ${{ steps.filter.outputs.xsai-transformers }}
+      xsai-use: ${{ steps.filter.outputs.xsai-use }}
+      xsmcp: ${{ steps.filter.outputs.xsmcp }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            airi:
+              - 'airi/**'
+            airi-factorio:
+              - 'airi-factorio/**'
+            airi-minecraft:
+              - 'airi-minecraft/**'
+            chat:
+              - 'chat/**'
+            deditor:
+              - 'deditor/**'
+            eventa:
+              - 'eventa/**'
+            gpuu:
+              - 'gpuu/**'
+            hf-inspector:
+              - 'hf-inspector/**'
+            hfup:
+              - 'hfup/**'
+            inventory:
+              - 'inventory/**'
+            mcp-launcher:
+              - 'mcp-launcher/**'
+            std:
+              - 'std/**'
+            talk:
+              - 'talk/**'
+            three-mmd:
+              - 'three-mmd/**'
+            unspeech:
+              - 'unspeech/**'
+            velin:
+              - 'velin/**'
+            xsai:
+              - 'xsai/**'
+            xsai-transformers:
+              - 'xsai-transformers/**'
+            xsai-use:
+              - 'xsai-use/**'
+            xsmcp:
+              - 'xsmcp/**'
+
+  # airi project
+  airi:
+    needs: changes
+    if: needs.changes.outputs.airi == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - job: lint
+          - job: typecheck
+            turbo: true
+            skip-i18n: true
+          - job: build-stage-web
+            turbo: true
+            skip-i18n: true
+          - job: build-stage-tamagotchi
+            turbo: true
+            skip-i18n: true
+          - job: build-ui-transitions
+            turbo: true
+            skip-i18n: true
+          - job: build-ui-loading-screens
+            turbo: true
+            skip-i18n: true
+          - job: check-provenance
+            provenance: true
+    name: airi - ${{ matrix.job }}
+    steps:
+      - uses: actions/checkout@v5
+        if: ${{ !matrix.provenance }}
+
+      - uses: actions/checkout@v5
+        if: matrix.provenance
+        with:
+          fetch-depth: 0
+
+      - name: Cache turbo
+        if: matrix.turbo
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
+      - uses: pnpm/action-setup@v4
+        if: ${{ !matrix.provenance }}
+        with:
+          package_json_file: airi/package.json
+      - uses: pnpm/action-setup@v3
+        if: matrix.provenance
+        with:
+          package_json_file: airi/package.json
+
+      - uses: actions/setup-node@v6
+        if: ${{ !matrix.provenance }}
+        with:
+          node-version: lts/*
+          cache: pnpm
+          cache-dependency-path: airi/pnpm-lock.yaml
+
+      - uses: actions/setup-node@v4
+        if: matrix.provenance
+        with:
+          node-version: lts/*
+          cache: pnpm
+          cache-dependency-path: airi/pnpm-lock.yaml
+
+      - uses: danielroe/provenance-action@main
+        if: matrix.provenance
+        id: check
+        with:
+          fail-on-provenance-change: true
+      - name: Print provenance result
+        if: matrix.provenance
+        run: "echo 'Downgraded: ${{ steps.check.outputs.downgraded }}'"
+        working-directory: airi
+
+      - name: Install
+        if: |
+          !matrix.provenance && 
+          (!matrix.skip-i18n || 
+           !(github.event_name == 'pull_request' && 
+             startsWith(github.event.pull_request.head.label, 'moeru-ai:i18n/')))
+        run: pnpm install --frozen-lockfile
+        working-directory: airi
+
+      - name: Build packages
+        if: matrix.turbo || matrix.job == 'typecheck'
+        run: pnpm run build:packages
+        working-directory: airi
+
+      - name: Lint
+        if: matrix.job == 'lint'
+        run: pnpm run lint
+        working-directory: airi
+
+      - name: Typecheck
+        if: matrix.job == 'typecheck'
+        run: pnpm run typecheck
+        working-directory: airi
+
+      - name: Build stage-web
+        if: matrix.job == 'build-stage-web'
+        run: |
+          pnpm -F @proj-airi/stage-web run build
+          pnpm -F @proj-airi/docs run build:base
+          mv ./docs/.vitepress/dist ./apps/stage-web/dist/docs
+          pnpm -F @proj-airi/stage-ui run story:build
+          mv ./packages/stage-ui/.histoire/dist ./apps/stage-web/dist/ui
+        working-directory: airi
+
+      - name: Build stage-tamagotchi
+        if: matrix.job == 'build-stage-tamagotchi'
+        run: pnpm -F @proj-airi/stage-tamagotchi run build
+        working-directory: airi
+
+      - name: Build ui-transitions
+        if: matrix.job == 'build-ui-transitions'
+        run: |
+          pnpm -F @proj-airi/ui-transitions run build
+          pnpm -F @proj-airi/ui-transitions run play:build
+        working-directory: airi
+
+      - name: Build ui-loading-screens
+        if: matrix.job == 'build-ui-loading-screens'
+        run: |
+          pnpm -F @proj-airi/ui-loading-screens run build
+          pnpm -F @proj-airi/ui-loading-screens run play:build
+        working-directory: airi
+
+  # Node.js projects - standard pattern (lint, build, typecheck)
+  node-std:
+    needs: changes
+    if: |
+      needs.changes.outputs.airi-factorio == 'true' ||
+      needs.changes.outputs.airi-minecraft == 'true' ||
+      needs.changes.outputs.gpuu == 'true' ||
+      needs.changes.outputs.hf-inspector == 'true' ||
+      needs.changes.outputs.hfup == 'true' ||
+      needs.changes.outputs.xsai == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [airi-factorio, airi-minecraft, gpuu, hf-inspector, hfup, xsai]
+        job: [lint, build, typecheck]
+        exclude:
+          - project: airi-minecraft
+            job: typecheck
+    name: ${{ matrix.project }} - ${{ matrix.job }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: ${{ matrix.project }}/package.json
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: pnpm
+          cache-dependency-path: ${{ matrix.project }}/pnpm-lock.yaml
+
+      - name: Install
+        run: |
+          if [ "${{ matrix.project }}" = "hf-inspector" ]; then
+            pnpm install --frozen-lockfile
+          else
+            pnpm install
+          fi
+        working-directory: ${{ matrix.project }}
+
+      - name: Lint
+        if: matrix.job == 'lint'
+        run: pnpm run lint
+        working-directory: ${{ matrix.project }}
+
+      - name: Build
+        if: matrix.job == 'build'
+        run: |
+          pnpm run build
+          if [ "${{ matrix.project }}" = "xsai" ]; then
+            pnpm run play:build
+          fi
+        working-directory: ${{ matrix.project }}
+
+      - name: Typecheck
+        if: matrix.job == 'typecheck'
+        run: pnpm run typecheck
+        working-directory: ${{ matrix.project }}
+
+  # Node.js projects - check only (lint + build)
+  node-check:
+    needs: changes
+    if: |
+      needs.changes.outputs.chat == 'true' ||
+      needs.changes.outputs.std == 'true' ||
+      needs.changes.outputs.talk == 'true' ||
+      needs.changes.outputs.three-mmd == 'true' ||
+      needs.changes.outputs.xsai-transformers == 'true' ||
+      needs.changes.outputs.xsai-use == 'true' ||
+      needs.changes.outputs.xsmcp == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: chat
+            node: latest
+          - project: std
+            node: '24'
+            test: true
+          - project: talk
+            node: lts/*
+          - project: three-mmd
+            node: lts/*
+          - project: xsai-transformers
+            node: lts/*
+          - project: xsai-use
+            node: lts/*
+          - project: xsmcp
+            node: lts/*
+    name: ${{ matrix.project }} - check
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: ${{ matrix.project }}/package.json
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+          cache-dependency-path: ${{ matrix.project }}/pnpm-lock.yaml
+
+      - name: Install
+        run: pnpm install
+        working-directory: ${{ matrix.project }}
+
+      - name: Lint
+        run: pnpm lint
+        working-directory: ${{ matrix.project }}
+
+      - name: Test
+        if: matrix.test
+        run: pnpm test
+        working-directory: ${{ matrix.project }}
+
+      - name: Build
+        run: |
+          if [ "${{ matrix.project }}" = "chat" ]; then
+            pnpm -r build
+          else
+            pnpm build
+          fi
+        working-directory: ${{ matrix.project }}
+
+  # Node.js projects - advanced (multiple jobs with tests)
+  node-advanced:
+    needs: changes
+    if: |
+      needs.changes.outputs.deditor == 'true' ||
+      needs.changes.outputs.eventa == 'true' ||
+      needs.changes.outputs.velin == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: deditor
+            job: lint
+          - project: deditor
+            job: build-test
+          - project: deditor
+            job: typecheck
+          - project: eventa
+            job: lint
+          - project: eventa
+            job: build-test
+          - project: eventa
+            job: test
+          - project: eventa
+            job: typecheck
+          - project: velin
+            job: lint
+          - project: velin
+            job: build-test
+          - project: velin
+            job: unit-test
+          - project: velin
+            job: typecheck
+    name: ${{ matrix.project }} - ${{ matrix.job }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: ${{ matrix.project }}/package.json
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: pnpm
+          cache-dependency-path: ${{ matrix.project }}/pnpm-lock.yaml
+
+      - name: Install
+        run: pnpm install
+        working-directory: ${{ matrix.project }}
+
+      - name: Lint
+        if: matrix.job == 'lint'
+        run: pnpm run lint
+        working-directory: ${{ matrix.project }}
+
+      - name: Build (deditor build-test)
+        if: matrix.project == 'deditor' && matrix.job == 'build-test'
+        run: pnpm run build:unpack
+        working-directory: deditor
+
+      - name: Build (deditor typecheck)
+        if: matrix.project == 'deditor' && matrix.job == 'typecheck'
+        run: pnpm run build
+        working-directory: deditor
+
+      - name: Build (eventa/velin build-test)
+        if: |
+          (matrix.project == 'eventa' || matrix.project == 'velin') && 
+          matrix.job == 'build-test'
+        run: |
+          pnpm run build
+          pnpm run attw:packages
+        working-directory: ${{ matrix.project }}
+
+      - name: Build (eventa/velin test/typecheck)
+        if: |
+          (matrix.project == 'eventa' && (matrix.job == 'test' || matrix.job == 'typecheck')) ||
+          (matrix.project == 'velin' && (matrix.job == 'unit-test' || matrix.job == 'typecheck'))
+        run: |
+          if [ "${{ matrix.job }}" = "typecheck" ]; then
+            pnpm run build:packages
+          else
+            pnpm run build
+          fi
+        working-directory: ${{ matrix.project }}
+
+      - name: Typecheck
+        if: matrix.job == 'typecheck'
+        run: pnpm run typecheck
+        working-directory: ${{ matrix.project }}
+
+      - name: Test
+        if: matrix.job == 'test' || matrix.job == 'unit-test'
+        run: pnpm run test:run
+        working-directory: ${{ matrix.project }}
+
+  # Go projects
+  go-projects:
+    needs: changes
+    if: |
+      needs.changes.outputs.inventory == 'true' ||
+      needs.changes.outputs.mcp-launcher == 'true' ||
+      needs.changes.outputs.unspeech == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: unspeech
+            job: build-test
+            go: stable
+          - project: unspeech
+            job: lint
+            go: stable
+            lint-version: v8
+          - project: unspeech
+            job: unit-test
+            go: stable
+          - project: mcp-launcher
+            job: build-test
+            go: stable
+          - project: mcp-launcher
+            job: lint
+            go: stable
+            lint-version: v3.4.0
+          - project: mcp-launcher
+            job: unit-test
+            go: stable
+          - project: inventory
+            job: build-test
+            go: '^1.24'
+          - project: inventory
+            job: lint
+            go: '^1.24'
+            lint-version: v6.1.1
+          - project: inventory
+            job: unit-test
+            go: '^1.24'
+    name: ${{ matrix.project }} - ${{ matrix.job }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+          cache: true
+          cache-dependency-path: ${{ matrix.project }}/go.sum
+
+      - name: Lint
+        if: matrix.job == 'lint'
+        uses: golangci/golangci-lint-action@v8
+        with:
+          working-directory: ${{ matrix.project }}
+          args: --timeout=10m
+          version: ${{ matrix.lint-version }}
+
+      - name: Build
+        if: matrix.job == 'build-test'
+        run: |
+          if [ "${{ matrix.project }}" = "inventory" ]; then
+            go build -a -o "release/inventory" "github.com/moeru-ai/inventory/cmd/api-server"
+          else
+            go build ./...
+          fi
+        working-directory: ${{ matrix.project }}
+
+      - name: Test
+        if: matrix.job == 'unit-test'
+        run: |
+          go test ./... -coverprofile=coverage.out -covermode=atomic -p=1
+          go tool cover -func coverage.out
+        working-directory: ${{ matrix.project }}
+
+  # Inventory TypeScript
+  inventory-ts:
+    needs: changes
+    if: needs.changes.outputs.inventory == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        job: [lint, build, typecheck, test, jem-validator]
+    name: inventory - ${{ matrix.job }}-ts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: inventory/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: pnpm
+          cache-dependency-path: inventory/pnpm-lock.yaml
+
+      - name: Install
+        run: pnpm install
+        working-directory: inventory
+
+      - name: Lint
+        if: matrix.job == 'lint'
+        run: pnpm lint
+        working-directory: inventory
+
+      - name: Build
+        if: matrix.job == 'build'
+        run: pnpm build
+        working-directory: inventory
+
+      - name: Typecheck
+        if: matrix.job == 'typecheck'
+        run: pnpm typecheck
+        working-directory: inventory
+
+      - name: Test
+        if: matrix.job == 'test'
+        run: pnpm test
+        working-directory: inventory
+
+      - name: JEM Validator
+        if: matrix.job == 'jem-validator'
+        run: pnpm run jem-validator
+        working-directory: inventory
+        env:
+          OPENAI_API_KEY: ${{ secrets.JEM_OPENAI_API_KEY }}
+          MINIMAX_API_KEY: ${{ secrets.JEM_MINIMAX_API_KEY }}
+          MINIMAXI_API_KEY: ${{ secrets.JEM_MINIMAXI_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.JEM_GOOGLE_API_KEY }}

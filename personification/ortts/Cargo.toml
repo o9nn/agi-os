@@ -1,0 +1,89 @@
+[workspace.package]
+version = "0.1.0"
+authors = ["Moeru AI"]
+edition = "2024"
+rust-version = "1.89"
+description = ""
+documentation = "https://ortts.moeru.ai"
+readme = "README.md"
+homepage = "https://ortts.moeru.ai"
+repository = "https://github.com/moeru-ai/ortts"
+license = "MIT"
+publish = false
+
+[package]
+name = "ortts"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+readme.workspace = true
+license.workspace = true
+authors.workspace = true
+description.workspace = true
+documentation.workspace = true
+homepage.workspace = true
+repository.workspace = true
+
+
+[workspace]
+members = [
+  ".",
+  "crates/model_chatterbox_multilingual",
+  "crates/onnx",
+  "crates/server",
+  "crates/shared",
+]
+
+[workspace.dependencies]
+ortts_model_chatterbox_multilingual.path = "crates/model_chatterbox_multilingual"
+ortts_onnx.path = "./crates/onnx"
+ortts_server.path = "./crates/server"
+ortts_shared.path = "./crates/shared"
+anyhow = "1.0"
+axum = { version = "0.8", features = ["tokio", "macros"] }
+axum-extra = { version = "0.10", features = ["typed-header"] }
+headers = "0.4.1"
+# TODO: rustls-tls
+# https://github.com/pykeio/ort/issues/436
+hf-hub = { version = "0.4", default-features = false, features = [
+  "tokio",
+  "native-tls",
+] }
+jieba-rs = "0.8.1"
+kakasi = "0.1.0"
+# TODO: tls-rustls
+# https://github.com/pykeio/ort/issues/436
+# TODO: add EP features
+# https://ort.pyke.io/setup/cargo-features#execution-providers
+ort = { version = "=2.0.0-rc.10", features = [
+  "ndarray",
+  "half",
+  # "cuda",
+  # "coreml",
+  # "directml",
+  # "webgpu",
+] }
+half = "2.4"
+serde = "1.0"
+serde_json = "1.0"
+tokio = { version = "1.48", features = ["full"] }
+tracing = "0.1"
+unicode-general-category = "1.1.0"
+unicode-normalization = "0.1.25"
+utoipa = { version = "5.4", features = ["axum_extras"] }
+utoipa-axum = "0.2"
+utoipa-scalar = { version = "0.3", features = ["axum"] }
+
+[dependencies]
+ortts_server.workspace = true
+ortts_shared.workspace = true
+anyhow.workspace = true
+axum.workspace = true
+axum-extra.workspace = true
+clap = { version = "4.5", features = ["derive"] }
+human-panic = "2.0"
+serde.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+tracing-subscriber = "0.3"

@@ -1,0 +1,42 @@
+{
+  "name": "@proj-airi/factorio-agent",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "An agent for Factorio written in TypeScript.",
+  "author": "LemonNekoGH",
+  "license": "MIT",
+  "keywords": [
+    "factorio",
+    "llm",
+    "agent",
+    "typescript"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "dev": "vite-node src/main.ts",
+    "start": "dotenvx run -f .env -f .env.local --overload -- tsx src/main.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@dotenvx/dotenvx": "^1.51.0",
+    "@guiiai/logg": "^1.2.4",
+    "@xsai/generate-text": "^0.3.5",
+    "@xsai/providers": "^0.1.0-beta.5",
+    "execa": "^9.6.0",
+    "exponential-backoff": "^3.1.3",
+    "factorio-rcon-api-client": "^2.0.4",
+    "it-ws": "^6.1.5",
+    "neuri": "^0.2.1",
+    "zod": "^4.1.12",
+    "zod-to-json-schema": "^3.24.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.18.12",
+    "tsx": "^4.20.6",
+    "unbuild": "^3.6.1",
+    "vite": "^7.1.12",
+    "vite-node": "^3.2.4",
+    "vitest": "^4.0.4"
+  }
+}

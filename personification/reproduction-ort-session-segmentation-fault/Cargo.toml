@@ -1,0 +1,19 @@
+[package]
+name = "reproduction-ort-session-segmentation-fault"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+hf-hub = "0.4.3"
+tokio = { version = "1.48.0", features = ["macros"] }
+
+[dependencies.ort]
+version = "2.0.0-rc.10"
+default-features = false
+features = [
+  "std",
+  "ndarray",
+  # "tracing",
+  # "download-binaries",
+  "copy-dylibs"
+]

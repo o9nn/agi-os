@@ -1,0 +1,33 @@
+{
+  "name": "@xsmcp/docs",
+  "type": "module",
+  "version": "0.1.0-beta.3",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --turbo",
+    "postinstall": "fumadocs-mdx",
+    "start": "next start"
+  },
+  "dependencies": {
+    "fumadocs-core": "^15.4.2",
+    "fumadocs-docgen": "^2.0.0",
+    "fumadocs-mdx": "^11.6.6",
+    "fumadocs-twoslash": "^3.1.3",
+    "fumadocs-ui": "^15.4.2",
+    "lucide-react": "^0.511.0",
+    "next": "^15.3.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "twoslash": "^0.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.8",
+    "@types/mdx": "^2.0.13",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.5",
+    "postcss": "^8.5.4",
+    "tailwindcss": "^4.1.8",
+    "typescript": "^5.8.3"
+  }
+}

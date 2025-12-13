@@ -1,0 +1,37 @@
+{
+  "name": "@proj-airi/live2d-core",
+  "version": "0.1.0",
+  "description": "Live2D Cubism SDK integration utilities and core functionality for AIRI",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.mts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "live2d",
+    "cubism",
+    "avatar",
+    "vtuber",
+    "animation",
+    "facial-expressions"
+  ],
+  "author": "Moeru AI Project AIRI Team",
+  "license": "MIT",
+  "devDependencies": {
+    "tsdown": "^0.16.0",
+    "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "pixi-live2d-display": "^0.4.0"
+  }
+}

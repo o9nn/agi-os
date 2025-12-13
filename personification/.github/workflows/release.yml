@@ -1,0 +1,449 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+  packages: write
+
+jobs:
+  # Detect which projects have changes based on tag/commit
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      airi: ${{ steps.filter.outputs.airi }}
+      arpk: ${{ steps.filter.outputs.arpk }}
+      chat: ${{ steps.filter.outputs.chat }}
+      cosine-similarity: ${{ steps.filter.outputs.cosine-similarity }}
+      eventa: ${{ steps.filter.outputs.eventa }}
+      gpuu: ${{ steps.filter.outputs.gpuu }}
+      hfup: ${{ steps.filter.outputs.hfup }}
+      inventory: ${{ steps.filter.outputs.inventory }}
+      mcp-launcher: ${{ steps.filter.outputs.mcp-launcher }}
+      ortts: ${{ steps.filter.outputs.ortts }}
+      std: ${{ steps.filter.outputs.std }}
+      three-mmd: ${{ steps.filter.outputs.three-mmd }}
+      unspeech: ${{ steps.filter.outputs.unspeech }}
+      velin: ${{ steps.filter.outputs.velin }}
+      xsai: ${{ steps.filter.outputs.xsai }}
+      xsai-transformers: ${{ steps.filter.outputs.xsai-transformers }}
+      xsai-use: ${{ steps.filter.outputs.xsai-use }}
+      xsmcp: ${{ steps.filter.outputs.xsmcp }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            airi:
+              - 'airi/**'
+            arpk:
+              - 'arpk/**'
+            chat:
+              - 'chat/**'
+            cosine-similarity:
+              - 'cosine-similarity/**'
+            eventa:
+              - 'eventa/**'
+            gpuu:
+              - 'gpuu/**'
+            hfup:
+              - 'hfup/**'
+            inventory:
+              - 'inventory/**'
+            mcp-launcher:
+              - 'mcp-launcher/**'
+            ortts:
+              - 'ortts/**'
+            std:
+              - 'std/**'
+            three-mmd:
+              - 'three-mmd/**'
+            unspeech:
+              - 'unspeech/**'
+            velin:
+              - 'velin/**'
+            xsai:
+              - 'xsai/**'
+            xsai-transformers:
+              - 'xsai-transformers/**'
+            xsai-use:
+              - 'xsai-use/**'
+            xsmcp:
+              - 'xsmcp/**'
+
+  # NPM package releases - standard pattern
+  npm-release:
+    needs: changes
+    if: |
+      needs.changes.outputs.chat == 'true' ||
+      needs.changes.outputs.cosine-similarity == 'true' ||
+      needs.changes.outputs.eventa == 'true' ||
+      needs.changes.outputs.gpuu == 'true' ||
+      needs.changes.outputs.hfup == 'true' ||
+      needs.changes.outputs.std == 'true' ||
+      needs.changes.outputs.three-mmd == 'true' ||
+      needs.changes.outputs.velin == 'true' ||
+      needs.changes.outputs.xsai == 'true' ||
+      needs.changes.outputs.xsai-transformers == 'true' ||
+      needs.changes.outputs.xsai-use == 'true' ||
+      needs.changes.outputs.xsmcp == 'true'
+    runs-on: ubuntu-latest
+    concurrency: npm-release-${{ matrix.project }}-${{ github.ref }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: chat
+            node: latest
+          - project: cosine-similarity
+            node: lts/*
+          - project: eventa
+            node: lts/*
+          - project: gpuu
+            node: lts/*
+            freeze: true
+          - project: hfup
+            node: lts/*
+          - project: std
+            node: '24'
+            freeze: true
+          - project: three-mmd
+            node: lts/*
+          - project: velin
+            node: lts/*
+          - project: xsai
+            node: lts/*
+          - project: xsai-transformers
+            node: lts/*
+          - project: xsai-use
+            node: lts/*
+          - project: xsmcp
+            node: lts/*
+    name: Release ${{ matrix.project }} (npm)
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+          package_json_file: ${{ matrix.project }}/package.json
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          registry-url: 'https://registry.npmjs.org'
+          cache: pnpm
+          cache-dependency-path: ${{ matrix.project }}/pnpm-lock.yaml
+
+      - name: Install
+        run: |
+          if [ "${{ matrix.freeze }}" = "true" ]; then
+            pnpm install --frozen-lockfile
+          else
+            pnpm install
+          fi
+        working-directory: ${{ matrix.project }}
+
+      - name: Generate changelog
+        run: pnpm dlx changelogithub
+        working-directory: ${{ matrix.project }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build
+        run: pnpm -r build
+        working-directory: ${{ matrix.project }}
+
+      - name: Publish
+        run: pnpm -r publish --no-git-checks --access public
+        working-directory: ${{ matrix.project }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+
+  # airi NPM release (special - has build:packages)
+  airi-npm:
+    needs: changes
+    if: needs.changes.outputs.airi == 'true'
+    runs-on: ubuntu-24.04
+    concurrency: airi-npm-${{ github.ref }}
+    name: Release airi (npm)
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v3
+        with:
+          run_install: false
+          package_json_file: airi/package.json
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          registry-url: 'https://registry.npmjs.org'
+          cache: pnpm
+          cache-dependency-path: airi/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+        working-directory: airi
+
+      - run: pnpm run build:packages
+        working-directory: airi
+
+      - name: Dry run
+        run: pnpm publish -r --access public --no-git-checks --dry-run
+        working-directory: airi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+
+      - name: Publish
+        run: pnpm publish -r --access public --no-git-checks
+        working-directory: airi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+
+  # airi Crates.io release
+  airi-crates:
+    needs: changes
+    if: needs.changes.outputs.airi == 'true'
+    runs-on: ubuntu-24.04
+    concurrency: airi-crates-${{ github.ref }}
+    name: Release airi (crates.io)
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install system dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y libwebkit2gtk-4.1-dev
+        working-directory: airi
+
+      - name: Login to crates.io
+        run: echo ${{ secrets.CRATES_IO_API_TOKEN }} | cargo login
+        working-directory: airi
+
+      - name: Publish to crates.io
+        run: cargo publish -p tauri-plugin-mcp
+        working-directory: airi
+
+  # Go releases with goreleaser
+  go-release:
+    needs: changes
+    if: |
+      needs.changes.outputs.mcp-launcher == 'true' ||
+      needs.changes.outputs.unspeech == 'true'
+    runs-on: ubuntu-latest
+    concurrency: go-release-${{ matrix.project }}-${{ github.ref }}
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [mcp-launcher, unspeech]
+    name: Release ${{ matrix.project }} (Go)
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean
+          workdir: ${{ matrix.project }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Docker releases
+  docker-release:
+    needs: changes
+    if: |
+      needs.changes.outputs.airi == 'true' ||
+      needs.changes.outputs.mcp-launcher == 'true' ||
+      needs.changes.outputs.ortts == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: airi
+            context: ./airi
+            file: ./airi/apps/stage-web/Dockerfile
+            platforms: linux/amd64,linux/arm64,linux/arm64/v8
+          - project: mcp-launcher
+            context: ./mcp-launcher
+            file: ./mcp-launcher/Dockerfile
+            platforms: linux/amd64,linux/arm64
+          - project: ortts
+            context: ./ortts
+            file: ./ortts/Dockerfile
+            platforms: linux/amd64,linux/arm64,linux/arm64/v8
+    name: Release ${{ matrix.project }} (Docker)
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: docker/metadata-action@v5
+        id: meta
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/${{ matrix.project }}
+          flavor: |
+            latest=true
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
+
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.file }}
+          platforms: ${{ matrix.platforms }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  # inventory npm publish (TypeScript SDK)
+  inventory-npm:
+    needs: changes
+    if: needs.changes.outputs.inventory == 'true'
+    runs-on: ubuntu-latest
+    concurrency: inventory-npm-${{ github.ref }}
+    name: Release inventory (npm)
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          registry-url: 'https://registry.npmjs.org'
+          cache: pnpm
+          cache-dependency-path: inventory/pnpm-lock.yaml
+
+      - run: pnpm install
+        working-directory: inventory
+
+      - run: pnpm dlx changelogithub
+        working-directory: inventory
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: pnpm -r build
+        working-directory: inventory
+
+      - run: pnpm -r publish --no-git-checks --access public
+        working-directory: inventory
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+
+  # inventory Docker release
+  inventory-docker:
+    needs: changes
+    if: needs.changes.outputs.inventory == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    name: Release inventory (Docker)
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/metadata-action@v5
+        id: meta
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/inventory
+          flavor: |
+            latest=true
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
+
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./inventory
+          file: ./inventory/Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/arm64/v8
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  # arpk Release (special Go + Docker multi-target)
+  arpk-release:
+    needs: changes
+    if: needs.changes.outputs.arpk == 'true'
+    runs-on: ubuntu-latest
+    concurrency: arpk-${{ github.ref }}
+    name: Release arpk
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean
+          workdir: arpk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

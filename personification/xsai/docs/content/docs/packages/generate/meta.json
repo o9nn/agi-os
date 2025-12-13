@@ -1,0 +1,11 @@
+{
+  "title": "Generating",
+  "defaultOpen": true,
+  "pages": [
+    "text",
+    "object",
+    "speech",
+    "transcription",
+    "image"
+  ]
+}

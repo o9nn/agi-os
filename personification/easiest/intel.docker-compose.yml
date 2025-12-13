@@ -1,0 +1,26 @@
+services:
+  sillytavern:
+    container_name: easiest_sillytavern
+    image: ghcr.io/sillytavern/sillytavern:latest
+    network_mode: host
+    restart: unless-stopped
+    volumes:
+      # https://github.com/SillyTavern/SillyTavern/blob/release/docker/docker-compose.yml
+      - "./sillytavern/config:/home/node/app/config"
+      - "./sillytavern/data:/home/node/app/data"
+      - "./sillytavern/plugins:/home/node/app/plugins"
+
+  llama-cpp:
+    container_name: easiest_llama-cpp
+    image: ghcr.io/ggerganov/llama.cpp:server-intel
+    network_mode: host
+    devices:
+      - /dev/dri:/dev/dri
+    environment:
+      - ZES_ENABLE_SYSMAN=1
+      # temporary fix for https://github.com/intel/compute-runtime/issues/710
+      - NEOReadDebugKeys=1
+      - OverrideGpuAddressSpace=48
+    volumes:
+      - ./models:/models
+    command: -sm layer -c 8192 -ngl 33 -m /models/your-model-here.gguf

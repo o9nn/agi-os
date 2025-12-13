@@ -1,0 +1,40 @@
+[package]
+name = "ortts_model_chatterbox_multilingual"
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+readme.workspace = true
+license.workspace = true
+authors.workspace = true
+description.workspace = true
+documentation.workspace = true
+homepage.workspace = true
+repository.workspace = true
+
+[lib]
+name = "ortts_model_chatterbox_multilingual"
+path = "src/lib.rs"
+
+[dependencies]
+ortts_onnx.workspace = true
+ortts_shared.workspace = true
+anyhow.workspace = true
+axum.workspace = true
+jieba-rs.workspace = true
+kakasi.workspace = true
+ort.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+unicode-general-category.workspace = true
+utoipa.workspace = true
+utoipa-axum.workspace = true
+tokenizers = { version = "0.22.1", features = ["hf-hub", "http"] }
+tokio.workspace = true
+tracing.workspace = true
+tracing-test = "0.2.5"
+ndarray = "0.16.1"
+symphonia = "0.5.5"
+hound = "3.5.1"
+rubato = "0.16.2"
+unicode-normalization.workspace = true
+half.workspace = true

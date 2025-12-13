@@ -1,0 +1,41 @@
+{
+  "name": "@moeru/std-docs",
+  "type": "module",
+  "version": "0.1.0-beta.13",
+  "private": true,
+  "scripts": {
+    "build": "next build --turbopack",
+    "dev": "next dev --turbo",
+    "postinstall": "fumadocs-mdx",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@orama/orama": "catalog:",
+    "clsx": "catalog:",
+    "fumadocs-core": "catalog:",
+    "fumadocs-mdx": "catalog:",
+    "fumadocs-twoslash": "catalog:",
+    "fumadocs-ui": "catalog:",
+    "lucide-react": "catalog:",
+    "motion": "catalog:",
+    "next": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "tailwind-merge": "catalog:",
+    "twoslash": "catalog:"
+  },
+  "devDependencies": {
+    "@moeru/results": "workspace:^",
+    "@moeru/std": "workspace:^",
+    "@tailwindcss/postcss": "catalog:",
+    "@types/mdx": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "postcss": "catalog:",
+    "remark": "catalog:",
+    "remark-gfm": "catalog:",
+    "remark-mdx": "catalog:",
+    "tailwindcss": "catalog:",
+    "tw-animate-css": "catalog:"
+  }
+}

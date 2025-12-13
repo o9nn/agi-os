@@ -1,0 +1,40 @@
+{
+  "name": "@proj-airi/character-neuro",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Neuro-Sama character implementation - chaotic cognitive VTuber with multi-agent orchestration",
+  "author": {
+    "name": "Moeru AI Project AIRI Team",
+    "email": "airi@moeru.ai",
+    "url": "https://github.com/moeru-ai"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moeru-ai/airi.git",
+    "directory": "airi/packages/character-neuro"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "README.md",
+    "dist",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@moeru/std": "catalog:",
+    "@proj-airi/server-sdk": "workspace:*",
+    "@proj-airi/cognitive-core": "workspace:*"
+  },
+  "devDependencies": {}
+}

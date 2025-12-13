@@ -1,0 +1,61 @@
+{
+  "name": "@moeru/eslint-config",
+  "type": "module",
+  "version": "0.1.0-beta.13",
+  "description": "ESLint Configuration for Moeru AI.",
+  "author": "Moeru AI",
+  "license": "MIT",
+  "homepage": "https://std.moeru.ai",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moeru-ai/std.git",
+    "directory": "packages/eslint-config"
+  },
+  "bugs": "https://github.com/moeru-ai/std/issues",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "moeru-lint": "./src/moeru-lint.js"
+  },
+  "files": [
+    "dist",
+    "src/moeru-lint.js"
+  ],
+  "scripts": {
+    "build": "pkgroll"
+  },
+  "peerDependencies": {
+    "@antfu/eslint-config": "catalog:",
+    "eslint": "catalog:",
+    "eslint-plugin-oxlint": "catalog:"
+  },
+  "peerDependenciesMeta": {
+    "eslint-plugin-oxlint": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@masknet/eslint-plugin": "catalog:",
+    "@moeru/std": "workspace:^",
+    "eslint-flat-config-utils": "catalog:",
+    "eslint-plugin-de-morgan": "catalog:",
+    "eslint-plugin-depend": "catalog:",
+    "eslint-plugin-perfectionist": "catalog:",
+    "eslint-plugin-prefer-arrow": "catalog:",
+    "eslint-plugin-sonarjs": "catalog:",
+    "tinyexec": "catalog:"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "catalog:",
+    "eslint": "catalog:",
+    "eslint-plugin-oxlint": "catalog:"
+  }
+}

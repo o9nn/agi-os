@@ -1,0 +1,9 @@
+{
+  "references": [
+    { "path": "./playground/tsconfig.json" },
+    { "path": "./tsconfig.lib.json" },
+    { "path": "./tsconfig.node.json" },
+    { "path": "./tsconfig.vad.json" }
+  ],
+  "files": []
+}

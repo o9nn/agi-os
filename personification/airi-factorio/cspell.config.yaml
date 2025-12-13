@@ -1,0 +1,23 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - airi
+  - antfu
+  - AUTORIO
+  - dotenvx
+  - Factorio
+  - factoriotools
+  - guiiai
+  - LemonNeko
+  - LemonNekoGH
+  - logg
+  - moeru
+  - neuri
+  - rcon
+  - taze
+  - tstl
+  - xsai
+ignoreWords: []
+import: []

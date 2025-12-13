@@ -1,0 +1,47 @@
+{
+  "name": "@deditor-app/drizzle-orm-icons",
+  "type": "module",
+  "version": "0.0.1-alpha.2",
+  "packageManager": "pnpm@10.18.2",
+  "description": "Iconify JSON IconSet port for @drizzle-orm supported icons",
+  "author": {
+    "name": "Moeru AI - Project AIRI Team",
+    "email": "airi@moeru.ai",
+    "url": "https://github.com/moeru-ai"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/drizzle-team/drizzle-orm-docs/tree/main/public/svg",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moeru-ai/drizzle-orm-icons.git",
+    "directory": "packages/drizzle-orm-icons"
+  },
+  "exports": {
+    "./*": "./*",
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.mjs"
+    },
+    "./icons.json": "./dist/icons.json",
+    "./info.json": "./dist/info.json",
+    "./metadata.json": "./dist/metadata.json"
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "README.md",
+    "dist",
+    "package.json"
+  ],
+  "scripts": {
+    "dev": "tsdown",
+    "stub": "tsdown",
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@iconify/tools": "^4.1.4"
+  }
+}

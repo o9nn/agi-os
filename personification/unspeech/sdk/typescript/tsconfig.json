@@ -1,0 +1,10 @@
+{
+  "extends": "@importantimport/tsconfig/app.json",
+  "compilerOptions": {
+    "strictNullChecks": true
+  },
+  "include": [
+    "src",
+    "test"
+  ]
+}

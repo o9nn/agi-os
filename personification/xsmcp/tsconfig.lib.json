@@ -1,0 +1,19 @@
+{
+  "extends": "@importantimport/tsconfig/app.json",
+  "compilerOptions": {
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.AsyncIterable",
+      "DOM.Iterable"
+    ]
+  },
+  "include": [
+    "examples/**/src",
+    "examples/**/test",
+    "packages/**/src",
+    "packages/**/test",
+    "packages-top/**/src",
+    "packages-top/**/test"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "name": "@xsmcp/server-http",
+  "type": "module",
+  "version": "0.1.0-beta.3",
+  "description": "extra-small MCP SDK.",
+  "author": "Moeru AI",
+  "license": "MIT",
+  "homepage": "https://github.com/moeru-ai/xsmcp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moeru-ai/xsmcp.git",
+    "directory": "packages/server-http"
+  },
+  "bugs": "https://github.com/moeru-ai/xsmcp/issues",
+  "keywords": [
+    "xsmcp",
+    "mcp",
+    "modelcontextprotocol"
+  ],
+  "sideEffects": false,
+  "exports": "./src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./package.json": "./package.json"
+    },
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts"
+  },
+  "scripts": {
+    "build": "pkgroll",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@xsmcp/server-shared": "workspace:",
+    "@xsmcp/shared": "workspace:"
+  },
+  "devDependencies": {
+    "hono": "^4.7.10"
+  }
+}

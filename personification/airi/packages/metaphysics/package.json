@@ -1,0 +1,35 @@
+{
+  "name": "@proj-airi/metaphysics",
+  "version": "0.1.0",
+  "description": "Deep Tree Echo foundational metaphysics - ontology of identity, memory, and being",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.mts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch"
+  },
+  "keywords": [
+    "metaphysics",
+    "ontology",
+    "identity",
+    "memory",
+    "echo",
+    "deep-tree-echo",
+    "philosophy",
+    "being"
+  ],
+  "author": "Moeru AI Project AIRI Team",
+  "license": "MIT",
+  "devDependencies": {
+    "tsdown": "latest",
+    "typescript": "latest"
+  }
+}

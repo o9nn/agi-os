@@ -1,0 +1,29 @@
+version: '0.2'
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - chara
+  - eslintcache
+  - foxact
+  - generouted
+  - iconify
+  - importantimport
+  - janny
+  - kwaa
+  - kwaroran
+  - libsql
+  - masknet
+  - moeru
+  - moetalk
+  - ollama
+  - risu
+  - roleplay
+  - seraphina
+  - sonarjs
+  - sonner
+  - sqlocal
+  - virtua
+  - xsai
+ignoreWords: []
+import: []

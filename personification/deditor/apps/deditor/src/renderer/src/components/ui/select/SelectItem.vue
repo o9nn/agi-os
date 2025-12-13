@@ -1,0 +1,43 @@
+<script setup lang="ts">
+import type { SelectItemProps } from 'reka-ui'
+import type { HTMLAttributes } from 'vue'
+
+import { CheckIcon } from '@radix-icons/vue'
+import { reactiveOmit } from '@vueuse/core'
+import {
+  SelectItem,
+  SelectItemIndicator,
+
+  SelectItemText,
+  useForwardProps,
+} from 'reka-ui'
+
+import { cn } from '@/libs/shadcn/utils'
+
+const props = defineProps<SelectItemProps & { class?: HTMLAttributes['class'] }>()
+
+const delegatedProps = reactiveOmit(props, 'class')
+
+const forwardedProps = useForwardProps(delegatedProps)
+</script>
+
+<template>
+  <SelectItem
+    v-bind="forwardedProps"
+    :class="cn(
+      'cursor-pointer relative flex w-full select-none items-center rounded-md pl-2 pr-8 py-1.5 text-xs outline-none focus:bg-accent focus:text-accent-foreground',
+      'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'transition-background-color duration-100 ease-in-out',
+      props.class,
+    )"
+  >
+    <span class="absolute right-2 h-3.5 w-3.5 flex items-center justify-center">
+      <SelectItemIndicator>
+        <CheckIcon class="h-4 w-4" />
+      </SelectItemIndicator>
+    </span>
+    <SelectItemText>
+      <slot />
+    </SelectItemText>
+  </SelectItem>
+</template>

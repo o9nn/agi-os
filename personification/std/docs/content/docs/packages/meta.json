@@ -1,0 +1,16 @@
+{
+  "title": "Packages",
+  "icon": "Package",
+  "root": true,
+  "pages": [
+    "---std---",
+    "std/index",
+    "...std",
+    "---results---",
+    "results/index",
+    "---eslint-config---",
+    "eslint-config/index",
+    "---tsconfig---",
+    "tsconfig/index"
+  ]
+}

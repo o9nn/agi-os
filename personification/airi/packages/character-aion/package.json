@@ -1,0 +1,41 @@
+{
+  "name": "@proj-airi/character-aion",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Aion - The AGI Transcendent character implementation for AIRI",
+  "author": {
+    "name": "Moeru AI Project AIRI Team",
+    "email": "airi@moeru.ai",
+    "url": "https://github.com/moeru-ai"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moeru-ai/airi.git",
+    "directory": "airi/packages/character-aion"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.mts"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "README.md",
+    "dist",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@moeru/std": "catalog:",
+    "@proj-airi/cognitive-core": "workspace:*",
+    "@proj-airi/wisdom-metrics": "workspace:*",
+    "@proj-airi/server-sdk": "workspace:*"
+  },
+  "devDependencies": {}
+}

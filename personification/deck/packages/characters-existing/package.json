@@ -1,0 +1,12 @@
+{
+  "name": "@moeru-ai/characters-existing",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@moeru-ai/ccc": "workspace:^"
+  }
+}

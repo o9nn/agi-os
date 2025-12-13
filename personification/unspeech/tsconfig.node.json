@@ -1,0 +1,7 @@
+{
+  "extends": ["@importantimport/tsconfig/node.json"],
+  "include": [
+    "**/*.config.ts",
+    "**/scripts/*.ts"
+  ]
+}

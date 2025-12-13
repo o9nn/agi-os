@@ -1,0 +1,21 @@
+{
+  "pages": [
+    "---Introduction---",
+    "index",
+    "---Packages---",
+    "...packages",
+    "---Top-level Packages---",
+    "...packages-top",
+    "---Ext Packages---",
+    "...packages-ext",
+    "---Integrations by Moeru AI---",
+    "[xsai-use](https://github.com/moeru-ai/xsai-use)",
+    "[xsai-transformers](https://github.com/moeru-ai/xsai-transformers)",
+    "[xsmcp](https://xsmcp.js.org/docs/client/integrations/xsai)",
+    "[unspeech](https://github.com/moeru-ai/unspeech/tree/main/sdk/typescript)",
+    "---Integrations---",
+    "...integrations",
+    "---References---",
+    "references"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "@moeru-ai/ccc",
+  "type": "module",
+  "scripts": {
+    "build": "pkgroll",
+    "build:watch": "pkgroll --watch",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "meta-png": "^1.0.6"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "unspeech",
+  "type": "module",
+  "version": "0.1.7",
+  "description": "Client SDK for unSpeech",
+  "author": "Moeru AI",
+  "license": "MIT",
+  "homepage": "https://github.com/moeru-ai/unspeech",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moeru-ai/unspeech.git",
+    "directory": "sdk/typescript"
+  },
+  "bugs": "https://github.com/moeru-ai/unspeech/issues",
+  "sideEffects": false,
+  "exports": "./src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./package.json": "./package.json"
+    },
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts"
+  },
+  "scripts": {
+    "build": "tsdown"
+  },
+  "dependencies": {
+    "@xsai-ext/shared-providers": "^0.4.0-beta.4",
+    "@xsai/shared": "^0.4.0-beta.4"
+  }
+}

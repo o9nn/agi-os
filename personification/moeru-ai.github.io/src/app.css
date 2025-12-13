@@ -1,0 +1,17 @@
+@import url("@fontsource-variable/doto/rond.css");
+
+/* https://www.radix-ui.com/themes/docs/theme/typography#custom-fonts */
+/* .radix-themes {
+	--heading-font-family: "Doto Variable", sans-serif;
+  --heading-font-weight: 700;
+} */
+
+.font-doto {
+  font-variation-settings: "wght" 700, "ROND" 100;
+}
+
+#app {
+  max-width: 100dvw;
+  max-height: 100dvh;
+  overflow: hidden;
+}

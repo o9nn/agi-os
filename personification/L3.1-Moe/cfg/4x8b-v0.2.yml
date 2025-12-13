@@ -1,0 +1,34 @@
+base_model: Joseph717171/Llama-3.1-SuperNova-8B-Lite_TIES_with_Base
+gate_mode: hidden
+dtype: bfloat16
+experts:
+  - source_model: Joseph717171/Llama-3.1-SuperNova-8B-Lite_TIES_with_Base
+    positive_prompts: &chat_prompts
+      - "chat"
+      - "assistant"
+      - "tell me"
+      - "explain"
+      - "I want"
+    negative_prompts: &rp_prompts
+      - "storywriting"
+      - "write"
+      - "scene"
+      - "story"
+      - "character"
+  - source_model: ArliAI/Llama-3.1-8B-ArliAI-RPMax-v1.2
+    positive_prompts: *rp_prompts
+    negative_prompts: *chat_prompts
+  - source_model: rombodawg/rombos_Replete-Coder-Instruct-8b-Merged
+    positive_prompts:
+      - "code"
+      - "python"
+      - "javascript"
+      - "programming"
+      - "algorithm"
+  - source_model: 3rd-Degree-Burn/Llama-3.1-8B-Squareroot-v0
+    positive_prompts:
+      - "reason"
+      - "math"
+      - "mathematics"
+      - "solve"
+      - "count"

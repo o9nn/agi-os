@@ -1,0 +1,68 @@
+{
+  "name": "hfup",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "A collection of tools to help you deploy, bundle HuggingFace Spaces and related assets with ease.",
+  "keywords": [],
+  "packageManager": "pnpm@10.18.2",
+  "author": "Moeru AI",
+  "license": "MIT",
+  "homepage": "https://github.com/moeru-ai/hfup",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moeru-ai/hfup.git"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.mjs"
+    },
+    "./vite": "./dist/vite.mjs",
+    "./webpack": "./dist/webpack.mjs",
+    "./rspack": "./dist/rspack.mjs",
+    "./rollup": "./dist/rollup.mjs",
+    "./rolldown": "./dist/rolldown.mjs",
+    "./esbuild": "./dist/esbuild.mjs",
+    "./*": "./*"
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "README.md",
+    "dist",
+    "package.json"
+  ],
+  "scripts": {
+    "build": "rolldown -c",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint",
+    "attw": "attw --pack . --profile esm-only --ignore-rules cjs-resolves-to-esm",
+    "up": "taze -w -r -I -f && pnpm prune && pnpm dedupe"
+  },
+  "dependencies": {
+    "defu": "^6.1.4",
+    "gray-matter": "^4.0.3",
+    "unplugin": "^2.3.10"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.2",
+    "@importantimport/tsconfig": "^1.0.0-beta.2",
+    "@types/node": "^24.7.1",
+    "builtin-modules": "^5.0.0",
+    "bumpp": "^10.3.1",
+    "changelogithub": "^13.16.0",
+    "oxlint": "^1.22.0",
+    "rolldown": "^1.0.0-beta.42",
+    "taze": "^19.7.0",
+    "typescript": "^5.9.3",
+    "unplugin-isolated-decl": "^0.15.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "unrs-resolver"
+    ]
+  }
+}

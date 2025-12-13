@@ -1,0 +1,47 @@
+{
+  "name": "@proj-airi/server-sdk",
+  "type": "module",
+  "version": "0.7.2-beta.3",
+  "description": "Client-side SDK implementation for connecting to AIRI server components and runtimes",
+  "author": {
+    "name": "Moeru AI Project AIRI Team",
+    "email": "airi@moeru.ai",
+    "url": "https://github.com/moeru-ai"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moeru-ai/airi.git",
+    "directory": "packages/server-sdk"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./utils/node": {
+      "types": "./dist/utils/node/index.d.ts",
+      "default": "./dist/utils/node/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "README.md",
+    "dist",
+    "package.json"
+  ],
+  "scripts": {
+    "dev": "pnpm run build",
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@proj-airi/server-shared": "workspace:^",
+    "crossws": "^0.4.1",
+    "defu": "^6.1.4"
+  },
+  "devDependencies": {
+    "@moeru/std": "catalog:"
+  }
+}

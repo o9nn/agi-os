@@ -1,0 +1,597 @@
+(*
+  Moeru AI Monorepo - System State Formal Specification (Z++)
+  
+  This specification formally models the complete system state
+  including all running services, connections, and runtime data.
+*)
+
+(* Import data model schemas *)
+include "data_model.zpp"
+
+(* ============================================================================
+   AIRI SERVER RUNTIME STATE
+   ============================================================================ *)
+
+(* AIRI Server State *)
+schema AIRIServerState
+  (* Session Management *)
+  activeSessions: seq UserSession
+  activeConnections: seq WebSocketConnection
+  moduleRegistry: ModuleRegistry
+  
+  (* Conversation Management *)
+  conversations: seq ConversationContext
+  
+  (* Service Status *)
+  serverStatus: ServiceStatus
+  startTime: TIMESTAMP
+  uptime: ℕ (* seconds *)
+  
+  (* Authentication *)
+  authToken: STRING (* Server authentication token *)
+  
+  (* Invariants *)
+  (* All connections must reference active sessions *)
+  ∀ conn: WebSocketConnection @ conn ∈ activeConnections ⇒
+    conn.session ∈ activeSessions
+  
+  (* Connected connections have authenticated sessions *)
+  ∀ conn: WebSocketConnection @ 
+    conn ∈ activeConnections ∧ conn.state = connected ⇒
+    conn.session.authenticated = true
+  
+  (* Module peers must have connected connections *)
+  ∀ peer: ModulePeer @ peer ∈ moduleRegistry.modules ⇒
+    peer.connection ∈ activeConnections ∧
+    peer.connection.state = connected
+  
+  (* No duplicate conversation IDs *)
+  ∀ c1, c2: ConversationContext @
+    c1 ∈ conversations ∧ c2 ∈ conversations ∧ c1 ≠ c2 ⇒
+    c1.conversationId ≠ c2.conversationId
+  
+  (* Server must be running to have active connections *)
+  #activeConnections > 0 ⇒ serverStatus = running
+end AIRIServerState
+
+(* ============================================================================
+   INTEGRATION SERVICES STATE
+   ============================================================================ *)
+
+(* Discord Bot Service State *)
+schema DiscordServiceState
+  botState: DiscordBotState
+  activeChannels: seq STRING
+  messageQueue: seq ChatMessage
+  serverConnection: WebSocketConnection
+  
+  (* Invariants *)
+  botState.connectionState = connected ⇒ #activeChannels > 0
+  serverConnection.state = connected
+end DiscordServiceState
+
+(* Telegram Bot Service State *)
+schema TelegramServiceState
+  botState: TelegramBotState
+  activeChats: seq STRING
+  messageQueue: seq ChatMessage
+  serverConnection: WebSocketConnection
+  
+  (* Invariants *)
+  botState.connectionState = connected ⇒ #activeChats > 0
+  serverConnection.state = connected
+end TelegramServiceState
+
+(* Twitter Service State *)
+schema TwitterIntegrationState
+  serviceState: TwitterServiceState
+  tweetQueue: seq STRING
+  serverConnection: WebSocketConnection
+  
+  (* Invariants *)
+  serverConnection.state = connected
+  serviceState.rateLimitRemaining ≥ 0
+end TwitterIntegrationState
+
+(* Minecraft Integration State *)
+schema MinecraftIntegrationState
+  gameState: MinecraftState
+  actionQueue: seq JSON
+  serverConnection: WebSocketConnection
+  
+  (* Invariants *)
+  serverConnection.state = connected
+  gameState.connectionState = connected ⇒ gameState.botUsername ≠ ""
+end MinecraftIntegrationState
+
+(* Echo Service State *)
+schema EchoServiceState
+  serviceId: UUID
+  echoHistory: seq ChatMessage
+  serverConnection: WebSocketConnection
+  
+  (* Invariants *)
+  serverConnection.state = connected
+end EchoServiceState
+
+(* Aggregated Integration Services State *)
+schema IntegrationServicesState
+  discord: DiscordServiceState
+  telegram: TelegramServiceState
+  twitter: TwitterIntegrationState
+  minecraft: MinecraftIntegrationState
+  echo: EchoServiceState
+  
+  (* Invariants *)
+  (* All services must connect to the same AIRI server *)
+  discord.serverConnection.session = telegram.serverConnection.session ∨
+  discord.serverConnection.state = disconnected ∨
+  telegram.serverConnection.state = disconnected
+end IntegrationServicesState
+
+(* ============================================================================
+   xsAI SDK STATE
+   ============================================================================ *)
+
+(* Provider State *)
+schema ProviderState
+  providerId: UUID
+  providerType: ProviderType
+  config: ExternalServiceConfig
+  available: BOOLEAN
+  lastHealthCheck: TIMESTAMP
+  requestCount: ℕ
+  errorCount: ℕ
+  
+  (* Invariants *)
+  requestCount ≥ errorCount
+  available = true ⇒ config.endpoint ≠ ""
+end ProviderState
+
+(* xsAI SDK State *)
+schema XsAIState
+  (* Provider Management *)
+  providers: seq ProviderState
+  defaultProvider: ProviderType
+  
+  (* Model Registry *)
+  registeredModels: seq ModelConfig
+  
+  (* Active Requests *)
+  activeRequests: seq UUID
+  completedRequests: seq UUID
+  
+  (* Caching *)
+  responseCache: UUID ⇸ JSON
+  embeddingCache: STRING ⇸ seq ℝ
+  
+  (* Invariants *)
+  (* Default provider must be available *)
+  ∃ p: ProviderState @ 
+    p ∈ providers ∧ p.providerType = defaultProvider ⇒
+    p.available = true
+  
+  (* No duplicate provider types in available providers *)
+  ∀ p1, p2: ProviderState @
+    p1 ∈ providers ∧ p2 ∈ providers ∧ 
+    p1 ≠ p2 ∧ p1.available = true ∧ p2.available = true ⇒
+    p1.providerType ≠ p2.providerType ∨ true (* Multiple instances allowed *)
+  
+  (* Active and completed requests are disjoint *)
+  (ran activeRequests) ∩ (ran completedRequests) = ∅
+end XsAIState
+
+(* ============================================================================
+   ortts TTS SERVER STATE
+   ============================================================================ *)
+
+(* ONNX Model State *)
+schema ONNXModelState
+  modelPath: STRING
+  loaded: BOOLEAN
+  modelType: STRING
+  lastUsed: TIMESTAMP
+  
+  (* Invariants *)
+  loaded = true ⇒ modelPath ≠ ""
+end ONNXModelState
+
+(* ortts Server State *)
+schema ORTTSServerState
+  (* Server Configuration *)
+  listenAddress: STRING
+  listenPort: ℕ
+  serverStatus: ServiceStatus
+  
+  (* Model Management *)
+  loadedModels: seq ONNXModelState
+  
+  (* Request Processing *)
+  activeRequests: seq TTSRequest
+  requestQueue: seq TTSRequest
+  completedRequests: seq UUID
+  
+  (* Performance Metrics *)
+  totalRequests: ℕ
+  averageLatency: ℝ
+  
+  (* Concurrency Control *)
+  maxConcurrentRequests: ℕ
+  
+  (* Invariants *)
+  1024 ≤ listenPort ≤ 65535
+  maxConcurrentRequests > 0
+  serverStatus = running ⇒ ∃ m: ONNXModelState @ 
+    m ∈ loadedModels ∧ m.loaded = true
+  #activeRequests ≤ maxConcurrentRequests
+  #activeRequests + #requestQueue ≤ 1000 (* Queue limit *)
+  totalRequests ≥ #completedRequests
+  averageLatency ≥ 0
+end ORTTSServerState
+
+(* ============================================================================
+   INVENTORY SERVICE STATE (Go/gRPC)
+   ============================================================================ *)
+
+(* Inventory Service State *)
+schema InventoryServiceState
+  (* Service Configuration *)
+  grpcPort: ℕ
+  httpPort: ℕ
+  serviceStatus: ServiceStatus
+  
+  (* Model Catalog *)
+  catalog: seq CatalogEntry
+  
+  (* External API Configurations *)
+  huggingfaceConfig: HuggingFaceConfig
+  ollamaConfig: OllamaConfig
+  
+  (* Scheduled Tasks *)
+  lastCatalogSync: TIMESTAMP
+  syncInterval: ℕ (* seconds *)
+  
+  (* Performance Metrics *)
+  totalQueries: ℕ
+  cacheHits: ℕ
+  cacheMisses: ℕ
+  
+  (* Invariants *)
+  1024 ≤ grpcPort ≤ 65535
+  1024 ≤ httpPort ≤ 65535
+  grpcPort ≠ httpPort
+  
+  (* No duplicate model entries *)
+  ∀ e1, e2: CatalogEntry @
+    e1 ∈ catalog ∧ e2 ∈ catalog ∧ e1 ≠ e2 ⇒
+    e1.metadata.id ≠ e2.metadata.id
+  
+  totalQueries = cacheHits + cacheMisses
+  syncInterval > 0
+end InventoryServiceState
+
+(* ============================================================================
+   UNSPEECH TTS AGGREGATOR STATE (Go)
+   ============================================================================ *)
+
+(* TTS Provider Backend *)
+schema TTSBackend
+  backendId: UUID
+  backendType: STRING (* "ortts", "elevenlabs", "azure", etc. *)
+  endpoint: URL
+  available: BOOLEAN
+  priority: ℕ
+  
+  (* Invariants *)
+  backendType ≠ ""
+  endpoint ≠ ""
+end TTSBackend
+
+(* Unspeech Service State *)
+schema UnspeechServiceState
+  (* Service Configuration *)
+  httpPort: ℕ
+  serviceStatus: ServiceStatus
+  
+  (* Backend Management *)
+  backends: seq TTSBackend
+  
+  (* Request Routing *)
+  activeRequests: seq TTSRequest
+  backendMap: UUID ⇸ UUID (* request -> backend *)
+  
+  (* Performance Metrics *)
+  totalRequests: ℕ
+  successfulRequests: ℕ
+  failedRequests: ℕ
+  
+  (* Invariants *)
+  1024 ≤ httpPort ≤ 65535
+  
+  (* At least one backend must be available *)
+  serviceStatus = running ⇒
+    ∃ b: TTSBackend @ b ∈ backends ∧ b.available = true
+  
+  (* All active requests must be mapped to backends *)
+  ∀ req: TTSRequest @ req ∈ activeRequests ⇒
+    req.requestId ∈ dom(backendMap)
+  
+  (* Backend map references valid backends *)
+  ∀ reqId: UUID @ reqId ∈ dom(backendMap) ⇒
+    ∃ b: TTSBackend @ b ∈ backends ∧ b.backendId = backendMap(reqId)
+  
+  totalRequests = successfulRequests + failedRequests
+end UnspeechServiceState
+
+(* ============================================================================
+   DEMODEL DOWNLOAD SERVICE STATE (Go)
+   ============================================================================ *)
+
+(* Download Task *)
+schema DownloadTask
+  taskId: UUID
+  modelId: UUID
+  sourceUrl: URL
+  targetPath: STRING
+  progress: ℝ
+  status: STRING (* "queued", "downloading", "completed", "failed" *)
+  startTime: TIMESTAMP
+  endTime: TIMESTAMP
+  bytesDownloaded: ℕ
+  totalBytes: ℕ
+  
+  (* Invariants *)
+  0 ≤ progress ≤ 100
+  bytesDownloaded ≤ totalBytes
+  status = "completed" ⇒ progress = 100
+  status = "completed" ⇒ endTime ≥ startTime
+  status ∈ {"queued", "downloading", "completed", "failed"}
+end DownloadTask
+
+(* Demodel Service State *)
+schema DemodelServiceState
+  (* Service Configuration *)
+  httpPort: ℕ
+  serviceStatus: ServiceStatus
+  maxConcurrentDownloads: ℕ
+  
+  (* Download Management *)
+  queuedTasks: seq DownloadTask
+  activeTasks: seq DownloadTask
+  completedTasks: seq DownloadTask
+  
+  (* External Configurations *)
+  huggingfaceConfig: HuggingFaceConfig
+  ollamaConfig: OllamaConfig
+  
+  (* Performance Metrics *)
+  totalDownloads: ℕ
+  successfulDownloads: ℕ
+  failedDownloads: ℕ
+  totalBytesDownloaded: ℕ
+  
+  (* Invariants *)
+  1024 ≤ httpPort ≤ 65535
+  maxConcurrentDownloads > 0
+  
+  (* Active tasks limited by concurrency *)
+  #activeTasks ≤ maxConcurrentDownloads
+  
+  (* All active tasks are downloading *)
+  ∀ t: DownloadTask @ t ∈ activeTasks ⇒
+    t.status = "downloading"
+  
+  (* All queued tasks are queued *)
+  ∀ t: DownloadTask @ t ∈ queuedTasks ⇒
+    t.status = "queued"
+  
+  (* All completed tasks are completed or failed *)
+  ∀ t: DownloadTask @ t ∈ completedTasks ⇒
+    t.status ∈ {"completed", "failed"}
+  
+  (* No task appears in multiple states *)
+  (ran queuedTasks) ∩ (ran activeTasks) = ∅
+  (ran queuedTasks) ∩ (ran completedTasks) = ∅
+  (ran activeTasks) ∩ (ran completedTasks) = ∅
+  
+  totalDownloads = successfulDownloads + failedDownloads
+end DemodelServiceState
+
+(* ============================================================================
+   MCP LAUNCHER STATE (Go)
+   ============================================================================ *)
+
+(* MCP Server Instance *)
+schema MCPServerInstance
+  instanceId: UUID
+  serverName: STRING
+  imageUrl: STRING
+  containerPort: ℕ
+  hostPort: ℕ
+  status: STRING (* "running", "stopped", "starting", "error" *)
+  startTime: TIMESTAMP
+  
+  (* Invariants *)
+  1024 ≤ containerPort ≤ 65535
+  1024 ≤ hostPort ≤ 65535
+  serverName ≠ ""
+  status ∈ {"running", "stopped", "starting", "error"}
+end MCPServerInstance
+
+(* MCP Launcher State *)
+schema MCPLauncherState
+  (* Service Configuration *)
+  httpPort: ℕ
+  serviceStatus: ServiceStatus
+  
+  (* Server Management *)
+  runningServers: seq MCPServerInstance
+  stoppedServers: seq MCPServerInstance
+  
+  (* Registry *)
+  availableImages: seq STRING
+  
+  (* Performance Metrics *)
+  totalLaunches: ℕ
+  successfulLaunches: ℕ
+  failedLaunches: ℕ
+  
+  (* Invariants *)
+  1024 ≤ httpPort ≤ 65535
+  
+  (* All running servers have running status *)
+  ∀ s: MCPServerInstance @ s ∈ runningServers ⇒
+    s.status = "running"
+  
+  (* All stopped servers have stopped status *)
+  ∀ s: MCPServerInstance @ s ∈ stoppedServers ⇒
+    s.status = "stopped"
+  
+  (* No port conflicts among running servers *)
+  ∀ s1, s2: MCPServerInstance @
+    s1 ∈ runningServers ∧ s2 ∈ runningServers ∧ s1 ≠ s2 ⇒
+    s1.hostPort ≠ s2.hostPort
+  
+  totalLaunches = successfulLaunches + failedLaunches
+end MCPLauncherState
+
+(* ============================================================================
+   EVENT SYSTEM STATE (eventa)
+   ============================================================================ *)
+
+(* Eventa System State *)
+schema EventaState
+  (* Event Queue *)
+  eventQueue: EventQueue
+  
+  (* Handler Registry *)
+  handlers: seq EventHandler
+  handlersByType: EventType ⇸ seq EventHandler
+  
+  (* Processing State *)
+  processingEvent: BOOLEAN
+  currentEvent: Event
+  
+  (* Performance Metrics *)
+  totalEventsProcessed: ℕ
+  eventProcessingErrors: ℕ
+  
+  (* Invariants *)
+  (* All handlers are indexed by type *)
+  ∀ h: EventHandler @ h ∈ handlers ⇒
+    h ∈ handlersByType(h.eventType)
+  
+  (* Processing state consistency *)
+  processingEvent = true ⇒ currentEvent ∈ eventQueue.events
+  
+  (* Active handlers must be in registry *)
+  ∀ t: EventType @ t ∈ dom(handlersByType) ⇒
+    ∀ h: EventHandler @ h ∈ handlersByType(t) ⇒
+      h ∈ handlers ∧ h.active = true
+  
+  totalEventsProcessed ≥ eventProcessingErrors
+end EventaState
+
+(* ============================================================================
+   COMPLETE SYSTEM STATE
+   ============================================================================ *)
+
+(* Global System State *)
+schema MoeruAISystemState
+  (* Core AIRI System *)
+  airiServer: AIRIServerState
+  integrationServices: IntegrationServicesState
+  
+  (* AI Infrastructure *)
+  xsaiSDK: XsAIState
+  orttsServer: ORTTSServerState
+  inventoryService: InventoryServiceState
+  unspeechService: UnspeechServiceState
+  demodelService: DemodelServiceState
+  mcpLauncher: MCPLauncherState
+  
+  (* Infrastructure *)
+  eventSystem: EventaState
+  
+  (* System-Wide Metrics *)
+  systemStartTime: TIMESTAMP
+  systemUptime: ℕ
+  totalMemoryUsage: ℕ (* bytes *)
+  
+  (* GLOBAL INVARIANTS *)
+  
+  (* Integration services connect to AIRI server *)
+  integrationServices.discord.serverConnection ∈ airiServer.activeConnections
+  integrationServices.telegram.serverConnection ∈ airiServer.activeConnections
+  integrationServices.twitter.serverConnection ∈ airiServer.activeConnections
+  integrationServices.minecraft.serverConnection ∈ airiServer.activeConnections
+  integrationServices.echo.serverConnection ∈ airiServer.activeConnections
+  
+  (* AIRI server uses xsAI SDK *)
+  airiServer.serverStatus = running ⇒
+    ∃ p: ProviderState @ p ∈ xsaiSDK.providers ∧ p.available = true
+  
+  (* No port conflicts across services *)
+  orttsServer.listenPort ≠ inventoryService.grpcPort
+  orttsServer.listenPort ≠ inventoryService.httpPort
+  orttsServer.listenPort ≠ unspeechService.httpPort
+  orttsServer.listenPort ≠ demodelService.httpPort
+  orttsServer.listenPort ≠ mcpLauncher.httpPort
+  inventoryService.grpcPort ≠ inventoryService.httpPort
+  inventoryService.grpcPort ≠ unspeechService.httpPort
+  inventoryService.grpcPort ≠ demodelService.httpPort
+  inventoryService.grpcPort ≠ mcpLauncher.httpPort
+  inventoryService.httpPort ≠ unspeechService.httpPort
+  inventoryService.httpPort ≠ demodelService.httpPort
+  inventoryService.httpPort ≠ mcpLauncher.httpPort
+  unspeechService.httpPort ≠ demodelService.httpPort
+  unspeechService.httpPort ≠ mcpLauncher.httpPort
+  demodelService.httpPort ≠ mcpLauncher.httpPort
+  
+  (* System uptime consistency *)
+  systemUptime ≥ airiServer.uptime
+  
+  (* Total memory usage is positive when services are running *)
+  (airiServer.serverStatus = running ∨
+   orttsServer.serverStatus = running ∨
+   inventoryService.serviceStatus = running ∨
+   unspeechService.serviceStatus = running ∨
+   demodelService.serviceStatus = running) ⇒
+   totalMemoryUsage > 0
+end MoeruAISystemState
+
+(* ============================================================================
+   STATE INITIALIZATION
+   ============================================================================ *)
+
+(* Initial System State *)
+schema InitMoeruAISystemState
+  MoeruAISystemState'
+  
+  (* Initial state conditions *)
+  airiServer'.activeSessions = ⟨⟩
+  airiServer'.activeConnections = ⟨⟩
+  airiServer'.conversations = ⟨⟩
+  airiServer'.serverStatus = initializing
+  airiServer'.uptime = 0
+  
+  xsaiSDK'.activeRequests = ⟨⟩
+  xsaiSDK'.completedRequests = ⟨⟩
+  xsaiSDK'.responseCache = ∅
+  xsaiSDK'.embeddingCache = ∅
+  
+  orttsServer'.activeRequests = ⟨⟩
+  orttsServer'.requestQueue = ⟨⟩
+  orttsServer'.completedRequests = ⟨⟩
+  orttsServer'.serverStatus = initializing
+  
+  inventoryService'.catalog = ⟨⟩
+  inventoryService'.serviceStatus = initializing
+  
+  eventSystem'.totalEventsProcessed = 0
+  eventSystem'.eventProcessingErrors = 0
+  eventSystem'.processingEvent = false
+  
+  systemUptime' = 0
+  totalMemoryUsage' = 0
+end InitMoeruAISystemState

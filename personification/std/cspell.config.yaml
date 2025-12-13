@@ -1,0 +1,35 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - bumpp
+  - defu
+  - denoland
+  - ependencies
+  - eslintcache
+  - foxts
+  - fumadocs
+  - importantimport
+  - llms
+  - lume
+  - lumeland
+  - masknet
+  - moeru
+  - nolebase
+  - orama
+  - oxlint
+  - oxlintrc
+  - pkgroll
+  - qwik
+  - scule
+  - shadcn
+  - sonarjs
+  - sukka
+  - turbopack
+  - twoslash
+  - unjs
+  - vitepress
+  - xsai
+ignoreWords: []
+import: []

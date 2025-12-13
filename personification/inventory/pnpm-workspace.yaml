@@ -1,0 +1,10 @@
+packages:
+  - packages/**
+  - '!**/dist/**'
+
+onlyBuiltDependencies:
+  - esbuild
+
+catalog:
+  xsai: &xsai '^0.3.5'
+  '@xsai-ext/providers-cloud': *xsai

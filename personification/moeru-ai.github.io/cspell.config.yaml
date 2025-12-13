@@ -1,0 +1,34 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - angvel
+  - Catmull
+  - clearcoat
+  - doto
+  - drei
+  - eslintcache
+  - fontless
+  - fontsource
+  - GLTF
+  - gsap
+  - huggingface
+  - iconify
+  - importantimport
+  - lerp
+  - lerped
+  - Lightformer
+  - masknet
+  - meshline
+  - metalness
+  - moeru
+  - preflights
+  - reactbits
+  - ROND
+  - sonarjs
+  - unocss
+  - unproject
+  - wght
+ignoreWords: []
+import: []

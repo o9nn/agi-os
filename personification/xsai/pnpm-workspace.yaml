@@ -1,0 +1,27 @@
+packages:
+  - docs
+  - examples/*
+  - packages/*
+  - packages-ext/*
+  - packages-top/*
+
+catalog:
+  '@moeru/eslint-config': &std ^0.1.0-beta.7
+  '@moeru/std': *std
+  '@moeru/tsconfig': *std
+  '@vitest/coverage-v8': &vitest ^3.2.4
+  type-fest: ^4.41.0
+  vitest: *vitest
+
+catalogs:
+  schema:
+    '@valibot/to-json-schema': &valibot ^1.0.0
+    arktype: ^2.1.20
+    effect: ^3.16.0
+    sury: ^10.0.0
+    valibot: *valibot
+    zod: ^3.25.0 || ^4.0.0
+    zod-to-json-schema: ^3.24.5
+
+onlyBuiltDependencies:
+  - unrs-resolver

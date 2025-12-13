@@ -1,0 +1,8 @@
+{
+  "title": "Tools",
+  "defaultOpen": false,
+  "pages": [
+    "composio",
+    "model-context-protocol"
+  ]
+}

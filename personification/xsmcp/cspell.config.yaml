@@ -1,0 +1,37 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - arktype
+  - automd
+  - bumpp
+  - changelogithub
+  - crouchcd
+  - denoland
+  - elysia
+  - eslintcache
+  - eventsource
+  - fumadocs
+  - importantimport
+  - itty
+  - masknet
+  - modelcontextprotocol
+  - moeru
+  - PKCE
+  - pkgroll
+  - qwen
+  - sonarjs
+  - srvx
+  - streamable
+  - sury
+  - twoslash
+  - valibot
+  - vercel
+  - whatwg
+  - xsai
+  - xsmcp
+  - xsrpc
+  - xsschema
+ignoreWords: []
+import: []

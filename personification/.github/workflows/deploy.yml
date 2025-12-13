@@ -1,0 +1,284 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'airi/**'
+      - 'airi-factorio/**'
+      - 'blog/**'
+      - 'deck/**'
+      - 'hf-inspector/**'
+      - 'moeru-ai.github.io/**'
+      - 'std/**'
+      - 'talk/**'
+      - 'xsai/**'
+      - 'xsmcp/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  # Detect which projects have changes
+  changes:
+    # Skip if commit is from github-actions bot to prevent deployment loops
+    if: github.event.head_commit.author.name != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    outputs:
+      airi: ${{ steps.filter.outputs.airi }}
+      airi-factorio: ${{ steps.filter.outputs.airi-factorio }}
+      blog: ${{ steps.filter.outputs.blog }}
+      deck: ${{ steps.filter.outputs.deck }}
+      hf-inspector: ${{ steps.filter.outputs.hf-inspector }}
+      moeru-ai-github-io: ${{ steps.filter.outputs.moeru-ai-github-io }}
+      std: ${{ steps.filter.outputs.std }}
+      talk: ${{ steps.filter.outputs.talk }}
+      xsai: ${{ steps.filter.outputs.xsai }}
+      xsmcp: ${{ steps.filter.outputs.xsmcp }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            airi:
+              - 'airi/**'
+            airi-factorio:
+              - 'airi-factorio/**'
+            blog:
+              - 'blog/**'
+            deck:
+              - 'deck/**'
+            hf-inspector:
+              - 'hf-inspector/**'
+            moeru-ai-github-io:
+              - 'moeru-ai.github.io/**'
+            std:
+              - 'std/**'
+            talk:
+              - 'talk/**'
+            xsai:
+              - 'xsai/**'
+            xsmcp:
+              - 'xsmcp/**'
+
+  # HuggingFace Spaces deployments
+  hf-spaces:
+    needs: changes
+    if: |
+      needs.changes.outputs.airi == 'true' ||
+      needs.changes.outputs.airi-factorio == 'true' ||
+      needs.changes.outputs.hf-inspector == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    concurrency:
+      group: hf-deploy-${{ matrix.project }}
+      cancel-in-progress: true
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: airi
+            space: moeru-ai/airi
+            build-cmd: pnpm build
+            target-hf-space: true
+          - project: airi-factorio
+            space: moeru-ai/airi-factorio
+            build-cmd: pnpm build
+            target-hf-space: false
+          - project: hf-inspector
+            space: moeru-ai/hf-inspector
+            build-cmd: pnpm build
+            target-hf-space: false
+    name: Deploy ${{ matrix.project }} to HF Spaces
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Clone HF Space
+        run: |
+          git clone https://$HF_USERNAME:$HF_TOKEN@huggingface.co/spaces/${{ matrix.space }} \
+            --depth 1 --single-branch --branch main dist 2>&1 | grep -v "warning: current Git remote contains credentials" || true
+        working-directory: ${{ matrix.project }}
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USERNAME: ${{ secrets.HF_USERNAME }}
+
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: ${{ matrix.project }}/package.json
+      - uses: actions/setup-node@v5
+        with:
+          node-version: lts/*
+          cache: pnpm
+          cache-dependency-path: ${{ matrix.project }}/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: ${{ matrix.project }}
+
+      - name: Build
+        run: ${{ matrix.build-cmd }}
+        working-directory: ${{ matrix.project }}
+        env:
+          TARGET_HUGGINGFACE_SPACE: ${{ matrix.target-hf-space }}
+          VITE_APP_TARGET_HUGGINGFACE_SPACE: ${{ matrix.target-hf-space }}
+
+      - name: Check for changes
+        id: diff
+        run: |
+          cd dist
+          git lfs ls-files --all
+          git add .
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "changes=true" >> "$GITHUB_OUTPUT"
+          fi
+        working-directory: ${{ matrix.project }}
+
+      - name: Push to HF Space
+        if: steps.diff.outputs.changes == 'true'
+        run: |
+          cd dist
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "release: build ${{ github.sha }}" 2>&1 | grep -v "warning: current Git remote contains credentials" || true
+          git lfs push origin main --all 2>&1 | grep -v "warning: current Git remote contains credentials" || true
+          git push -f 2>&1 | grep -v "warning: current Git remote contains credentials" || true
+        working-directory: ${{ matrix.project }}
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_USERNAME: ${{ secrets.HF_USERNAME }}
+
+  # GitHub Pages deployments - pnpm projects
+  gh-pages-pnpm:
+    needs: changes
+    if: |
+      needs.changes.outputs.std == 'true' ||
+      needs.changes.outputs.talk == 'true' ||
+      needs.changes.outputs.xsai == 'true' ||
+      needs.changes.outputs.xsmcp == 'true'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pages-pnpm-${{ matrix.project }}
+      cancel-in-progress: false
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: std
+            node: '24'
+            pnpm-version: 10.15.0
+            build: pnpm -rF @moeru/std-docs build
+            path: std/docs/out
+          - project: talk
+            node: lts/*
+            build: pnpm build
+            path: talk/dist
+          - project: xsai
+            node: '24'
+            build: pnpm -r build
+            path: xsai/docs/out
+          - project: xsmcp
+            node: lts/*
+            build: pnpm build
+            path: xsmcp/dist
+    name: Deploy ${{ matrix.project }} to GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ matrix.pnpm-version || 'latest' }}
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+          cache-dependency-path: ${{ matrix.project }}/pnpm-lock.yaml
+
+      - name: Install
+        run: |
+          if [ "${{ matrix.project }}" = "std" ]; then
+            pnpm install --frozen-lockfile
+          else
+            pnpm install
+          fi
+        working-directory: ${{ matrix.project }}
+
+      - name: Build
+        run: ${{ matrix.build }}
+        working-directory: ${{ matrix.project }}
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ matrix.path }}
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  # GitHub Pages - Deno projects
+  gh-pages-deno:
+    needs: changes
+    if: needs.changes.outputs.blog == 'true'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pages-deno
+      cancel-in-progress: false
+    name: Deploy blog to GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+      - run: deno task build
+        working-directory: blog
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: blog/_site
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  # GitHub Pages - simple static sites
+  gh-pages-static:
+    needs: changes
+    if: |
+      needs.changes.outputs.deck == 'true' ||
+      needs.changes.outputs.moeru-ai-github-io == 'true'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: pages-static-${{ matrix.project }}
+      cancel-in-progress: false
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: deck
+            path: deck
+          - project: moeru-ai.github.io
+            path: moeru-ai.github.io
+    name: Deploy ${{ matrix.project }} to GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ matrix.path }}
+      - id: deployment
+        uses: actions/deploy-pages@v4

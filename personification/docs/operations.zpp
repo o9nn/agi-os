@@ -1,0 +1,779 @@
+(*
+  Moeru AI Monorepo - Operations Formal Specification (Z++)
+  
+  This specification formally models the key operations and state transitions
+  within the Moeru AI ecosystem.
+*)
+
+(* Import data model and system state *)
+include "data_model.zpp"
+include "system_state.zpp"
+
+(* ============================================================================
+   AIRI SERVER RUNTIME OPERATIONS
+   ============================================================================ *)
+
+(* Authenticate User Session *)
+schema AuthenticateSession
+  ΔAIRIServerState
+  token?: STRING
+  sessionId!: UUID
+  authenticated!: BOOLEAN
+  
+  (* Preconditions *)
+  pre token? ≠ ""
+  pre token? = authToken ∨ authToken = ""
+  
+  (* Postconditions *)
+  post authenticated! = (token? = authToken ∨ authToken = "")
+  post authenticated! = true ⇒
+    ∃ s: UserSession @
+      s.sessionId = sessionId! ∧
+      s.authToken = token? ∧
+      s.authenticated = true ∧
+      s ∈ activeSessions'
+end AuthenticateSession
+
+(* Establish WebSocket Connection *)
+schema EstablishConnection
+  ΔAIRIServerState
+  session?: UserSession
+  connectionId!: UUID
+  success!: BOOLEAN
+  
+  (* Preconditions *)
+  pre session? ∈ activeSessions
+  pre session?.authenticated = true
+  pre serverStatus = running
+  
+  (* Postconditions *)
+  post success! = true ⇒
+    ∃ conn: WebSocketConnection @
+      conn.connectionId = connectionId! ∧
+      conn.session = session? ∧
+      conn.state = connected ∧
+      conn ∈ activeConnections' ∧
+      conn ∉ activeConnections
+  
+  post success! = false ⇒
+    activeConnections' = activeConnections
+end EstablishConnection
+
+(* Close WebSocket Connection *)
+schema CloseConnection
+  ΔAIRIServerState
+  connectionId?: UUID
+  success!: BOOLEAN
+  
+  (* Preconditions *)
+  pre ∃ conn: WebSocketConnection @
+    conn ∈ activeConnections ∧
+    conn.connectionId = connectionId?
+  
+  (* Postconditions *)
+  post success! = true ⇒
+    ∀ conn: WebSocketConnection @
+      conn.connectionId = connectionId? ⇒
+      conn ∉ activeConnections' ∧
+      conn ∈ activeConnections
+  
+  (* Remove associated module peers *)
+  post success! = true ⇒
+    ∀ peer: ModulePeer @
+      peer.connection.connectionId = connectionId? ⇒
+      peer ∉ moduleRegistry'.modules
+end CloseConnection
+
+(* Register Module Peer *)
+schema RegisterModulePeer
+  ΔAIRIServerState
+  connection?: WebSocketConnection
+  moduleName?: STRING
+  moduleIndex?: ℕ
+  capabilities?: seq STRING
+  peerId!: UUID
+  success!: BOOLEAN
+  
+  (* Preconditions *)
+  pre connection? ∈ activeConnections
+  pre connection?.state = connected
+  pre moduleName? ≠ ""
+  
+  (* Check for unique module index per module name *)
+  pre ¬∃ p: ModulePeer @
+    p ∈ moduleRegistry.modules ∧
+    p.moduleName = moduleName? ∧
+    p.moduleIndex = moduleIndex?
+  
+  (* Postconditions *)
+  post success! = true ⇒
+    ∃ peer: ModulePeer @
+      peer.peerId = peerId! ∧
+      peer.moduleName = moduleName? ∧
+      peer.moduleIndex = moduleIndex? ∧
+      peer.connection = connection? ∧
+      peer.capabilities = capabilities? ∧
+      peer ∈ moduleRegistry'.modules ∧
+      peer ∉ moduleRegistry.modules
+end RegisterModulePeer
+
+(* Send WebSocket Message *)
+schema SendWebSocketMessage
+  ΞAIRIServerState
+  connectionId?: UUID
+  event?: Event
+  success!: BOOLEAN
+  
+  (* Preconditions *)
+  pre ∃ conn: WebSocketConnection @
+    conn ∈ activeConnections ∧
+    conn.connectionId = connectionId? ∧
+    conn.state = connected
+  
+  (* Postconditions *)
+  post success! = true ⇒ event?.eventId ∈ ran completedEvents
+  
+  (* State is unchanged (read-only operation) *)
+  post activeSessions' = activeSessions
+  post activeConnections' = activeConnections
+end SendWebSocketMessage
+
+(* ============================================================================
+   CONVERSATION & MESSAGE OPERATIONS
+   ============================================================================ *)
+
+(* Start New Conversation *)
+schema StartConversation
+  ΔAIRIServerState
+  userId?: UUID
+  systemPrompt?: STRING
+  modelConfig?: ModelConfig
+  conversationId!: UUID
+  
+  (* Preconditions *)
+  pre userId? ≠ nil
+  pre modelConfig?.modelId ≠ ""
+  
+  (* Postconditions *)
+  post ∃ conv: ConversationContext @
+    conv.conversationId = conversationId! ∧
+    conv.userId = userId? ∧
+    conv.activeModel = modelConfig? ∧
+    conv ∈ conversations' ∧
+    conv ∉ conversations ∧
+    (systemPrompt? ≠ "" ⇒
+      ∃ msg: ChatMessage @
+        msg ∈ conv.messages ∧
+        msg.role = system ∧
+        msg.content.text = systemPrompt?)
+end StartConversation
+
+(* Add Message to Conversation *)
+schema AddMessage
+  ΔAIRIServerState
+  conversationId?: UUID
+  message?: ChatMessage
+  success!: BOOLEAN
+  
+  (* Preconditions *)
+  pre ∃ conv: ConversationContext @
+    conv ∈ conversations ∧
+    conv.conversationId = conversationId?
+  
+  pre message?.role ∈ {user, assistant, system}
+  pre message?.content.text ≠ "" ∨ #message?.toolCalls > 0
+  
+  (* Postconditions *)
+  post success! = true ⇒
+    ∃ conv, conv': ConversationContext @
+      conv ∈ conversations ∧
+      conv' ∈ conversations' ∧
+      conv.conversationId = conv'.conversationId ∧
+      conv.conversationId = conversationId? ∧
+      message? ∈ conv'.messages ∧
+      message? ∉ conv.messages
+end AddMessage
+
+(* ============================================================================
+   xsAI SDK OPERATIONS
+   ============================================================================ *)
+
+(* Generate Text *)
+schema GenerateText
+  ΔXsAIState
+  messages?: seq ChatMessage
+  model?: ModelConfig
+  maxSteps?: ℕ
+  requestId!: UUID
+  response!: ChatMessage
+  usage!: UsageMetrics
+  
+  (* Preconditions *)
+  pre #messages? > 0
+  pre model?.provider ∈ {openai, anthropic, deepseek, groq, google}
+  pre ∃ p: ProviderState @
+    p ∈ providers ∧
+    p.providerType = model?.provider ∧
+    p.available = true
+  pre maxSteps? ≥ 1
+  
+  (* Postconditions *)
+  post requestId! ∈ activeRequests ∨ requestId! ∈ completedRequests'
+  post response!.role = assistant
+  post usage!.totalTokens > 0
+  
+  (* Request tracking *)
+  post requestId! ∈ completedRequests' ∧ requestId! ∉ completedRequests
+end GenerateText
+
+(* Stream Text *)
+schema StreamText
+  ΔXsAIState
+  messages?: seq ChatMessage
+  model?: ModelConfig
+  requestId!: UUID
+  stream!: seq STRING
+  
+  (* Preconditions *)
+  pre #messages? > 0
+  pre model?.provider ∈ {openai, anthropic, deepseek, groq}
+  pre ∃ p: ProviderState @
+    p ∈ providers ∧
+    p.providerType = model?.provider ∧
+    p.available = true
+  
+  (* Postconditions *)
+  post requestId! ∈ activeRequests' ∨ requestId! ∈ completedRequests'
+  post #stream! > 0
+end StreamText
+
+(* Generate Embeddings *)
+schema GenerateEmbeddings
+  ΔXsAIState
+  text?: STRING
+  model?: ModelConfig
+  embedding!: seq ℝ
+  cached!: BOOLEAN
+  
+  (* Preconditions *)
+  pre text? ≠ ""
+  pre model?.modelType = text_embedding
+  
+  (* Postconditions *)
+  post #embedding! > 0
+  
+  (* Check cache *)
+  post text? ∈ dom(embeddingCache) ⇒
+    embedding! = embeddingCache(text?) ∧
+    cached! = true
+  
+  (* Update cache on cache miss *)
+  post text? ∉ dom(embeddingCache) ⇒
+    text? ∈ dom(embeddingCache') ∧
+    embeddingCache'(text?) = embedding! ∧
+    cached! = false
+end GenerateEmbeddings
+
+(* Call Tool *)
+schema CallTool
+  ΞXsAIState
+  toolCall?: ToolCall
+  result!: ToolResult
+  
+  (* Preconditions *)
+  pre toolCall?.name ≠ ""
+  
+  (* Postconditions *)
+  post result!.toolCallId = toolCall?.id
+  post result!.success = true ⇒ result!.errorMessage = ""
+  post result!.success = false ⇒ result!.errorMessage ≠ ""
+  
+  (* State is unchanged (read-only operation) *)
+end CallTool
+
+(* ============================================================================
+   TTS OPERATIONS
+   ============================================================================ *)
+
+(* Submit TTS Request (ortts) *)
+schema SubmitTTSRequest
+  ΔORTTSServerState
+  request?: TTSRequest
+  requestId!: UUID
+  queued!: BOOLEAN
+  
+  (* Preconditions *)
+  pre serverStatus = running
+  pre request?.text ≠ ""
+  pre ∃ m: ONNXModelState @
+    m ∈ loadedModels ∧ m.loaded = true
+  
+  (* Postconditions *)
+  post requestId! = request?.requestId
+  post queued! = true ⇒
+    (request? ∈ activeRequests' ∨ request? ∈ requestQueue')
+  
+  (* Queue if at capacity, otherwise process immediately *)
+  post #activeRequests < maxConcurrentRequests ⇒
+    request? ∈ activeRequests' ∧ request? ∉ activeRequests
+  post #activeRequests ≥ maxConcurrentRequests ⇒
+    request? ∈ requestQueue' ∧ request? ∉ requestQueue
+end SubmitTTSRequest
+
+(* Process TTS Request *)
+schema ProcessTTSRequest
+  ΔORTTSServerState
+  request?: TTSRequest
+  response!: TTSResponse
+  success!: BOOLEAN
+  
+  (* Preconditions *)
+  pre request? ∈ activeRequests
+  pre ∃ m: ONNXModelState @
+    m ∈ loadedModels ∧ m.loaded = true
+  
+  (* Postconditions *)
+  post success! = true ⇒
+    response!.requestId = request?.requestId ∧
+    #response!.audioData > 0 ∧
+    response!.duration > 0 ∧
+    request?.requestId ∈ completedRequests' ∧
+    request? ∉ activeRequests'
+  
+  post success! = false ⇒
+    request? ∉ activeRequests'
+  
+  (* Move next queued request to active if available *)
+  post #requestQueue > 0 ∧ #activeRequests' < maxConcurrentRequests ⇒
+    ∃ nextReq: TTSRequest @
+      nextReq = head(requestQueue) ∧
+      nextReq ∈ activeRequests' ∧
+      nextReq ∉ requestQueue'
+end ProcessTTSRequest
+
+(* Aggregate TTS Request (unspeech) *)
+schema AggregateTTSRequest
+  ΔUnspeechServiceState
+  request?: TTSRequest
+  response!: TTSResponse
+  backend!: UUID
+  
+  (* Preconditions *)
+  pre serviceStatus = running
+  pre request?.text ≠ ""
+  pre ∃ b: TTSBackend @
+    b ∈ backends ∧ b.available = true
+  
+  (* Postconditions *)
+  (* Select available backend with highest priority *)
+  post ∃ b: TTSBackend @
+    b ∈ backends ∧
+    b.available = true ∧
+    b.backendId = backend! ∧
+    (∀ other: TTSBackend @
+      other ∈ backends ∧ other.available = true ⇒
+      b.priority ≥ other.priority)
+  
+  post request?.requestId ∈ dom(backendMap')
+  post backendMap'(request?.requestId) = backend!
+  post response!.requestId = request?.requestId
+end AggregateTTSRequest
+
+(* ============================================================================
+   MODEL CATALOG OPERATIONS (inventory)
+   ============================================================================ *)
+
+(* List Models *)
+schema ListModels
+  ΞInventoryServiceState
+  modelType?: ModelType
+  provider?: ProviderType
+  results!: seq ModelMetadata
+  
+  (* Preconditions *)
+  pre serviceStatus = running
+  
+  (* Postconditions *)
+  (* Filter by type if specified *)
+  post modelType? ≠ nil ⇒
+    ∀ m: ModelMetadata @
+      m ∈ results! ⇒
+      ∃ e: CatalogEntry @
+        e ∈ catalog ∧
+        e.metadata = m ∧
+        m.modelType = modelType?
+  
+  (* Filter by provider if specified *)
+  post provider? ≠ nil ⇒
+    ∀ m: ModelMetadata @
+      m ∈ results! ⇒
+      ∃ e: CatalogEntry @
+        e ∈ catalog ∧
+        e.metadata = m ∧
+        m.provider = provider?
+  
+  (* State is unchanged (read-only operation) *)
+end ListModels
+
+(* Get Model Metadata *)
+schema GetModelMetadata
+  ΞInventoryServiceState
+  modelId?: UUID
+  metadata!: ModelMetadata
+  found!: BOOLEAN
+  
+  (* Preconditions *)
+  pre serviceStatus = running
+  pre modelId? ≠ nil
+  
+  (* Postconditions *)
+  post found! = true ⇔
+    ∃ e: CatalogEntry @
+      e ∈ catalog ∧
+      e.metadata.id = modelId? ∧
+      metadata! = e.metadata
+  
+  post found! = false ⇒ metadata! = nil
+  
+  (* State is unchanged (read-only operation) *)
+end GetModelMetadata
+
+(* Sync Catalog *)
+schema SyncModelCatalog
+  ΔInventoryServiceState
+  source?: STRING (* "huggingface" or "ollama" *)
+  newModels!: ℕ
+  updatedModels!: ℕ
+  
+  (* Preconditions *)
+  pre serviceStatus = running
+  pre source? ∈ {"huggingface", "ollama"}
+  
+  (* Postconditions *)
+  post lastCatalogSync' > lastCatalogSync
+  post #catalog' ≥ #catalog
+  post newModels! = (#catalog' - #catalog)
+  
+  (* Existing models are preserved *)
+  post ∀ e: CatalogEntry @
+    e ∈ catalog ⇒
+    ∃ e': CatalogEntry @
+      e' ∈ catalog' ∧
+      e'.metadata.id = e.metadata.id
+end SyncModelCatalog
+
+(* ============================================================================
+   MODEL DOWNLOAD OPERATIONS (demodel)
+   ============================================================================ *)
+
+(* Queue Download *)
+schema QueueDownload
+  ΔDemodelServiceState
+  modelId?: UUID
+  sourceUrl?: URL
+  targetPath?: STRING
+  taskId!: UUID
+  
+  (* Preconditions *)
+  pre serviceStatus = running
+  pre sourceUrl? ≠ ""
+  pre targetPath? ≠ ""
+  
+  (* No duplicate downloads for same model *)
+  pre ¬∃ t: DownloadTask @
+    (t ∈ queuedTasks ∨ t ∈ activeTasks) ∧
+    t.modelId = modelId?
+  
+  (* Postconditions *)
+  post ∃ task: DownloadTask @
+    task.taskId = taskId! ∧
+    task.modelId = modelId? ∧
+    task.sourceUrl = sourceUrl? ∧
+    task.targetPath = targetPath? ∧
+    task.status = "queued" ∧
+    task.progress = 0 ∧
+    task ∈ queuedTasks' ∧
+    task ∉ queuedTasks
+end QueueDownload
+
+(* Start Download *)
+schema StartDownload
+  ΔDemodelServiceState
+  taskId?: UUID
+  success!: BOOLEAN
+  
+  (* Preconditions *)
+  pre ∃ t: DownloadTask @
+    t ∈ queuedTasks ∧ t.taskId = taskId?
+  pre #activeTasks < maxConcurrentDownloads
+  
+  (* Postconditions *)
+  post success! = true ⇒
+    ∃ task, task': DownloadTask @
+      task ∈ queuedTasks ∧
+      task.taskId = taskId? ∧
+      task' ∈ activeTasks' ∧
+      task'.taskId = taskId? ∧
+      task' ∉ activeTasks ∧
+      task ∉ queuedTasks' ∧
+      task'.status = "downloading"
+end StartDownload
+
+(* Update Download Progress *)
+schema UpdateDownloadProgress
+  ΔDemodelServiceState
+  taskId?: UUID
+  bytesDownloaded?: ℕ
+  
+  (* Preconditions *)
+  pre ∃ t: DownloadTask @
+    t ∈ activeTasks ∧ t.taskId = taskId?
+  
+  (* Postconditions *)
+  post ∃ task': DownloadTask @
+    task' ∈ activeTasks' ∧
+    task'.taskId = taskId? ∧
+    task'.bytesDownloaded = bytesDownloaded? ∧
+    task'.progress = (bytesDownloaded? / task'.totalBytes) × 100
+end UpdateDownloadProgress
+
+(* Complete Download *)
+schema CompleteDownload
+  ΔDemodelServiceState
+  taskId?: UUID
+  success?: BOOLEAN
+  errorMessage?: STRING
+  
+  (* Preconditions *)
+  pre ∃ t: DownloadTask @
+    t ∈ activeTasks ∧ t.taskId = taskId?
+  
+  (* Postconditions *)
+  post ∃ task': DownloadTask @
+    task' ∈ completedTasks' ∧
+    task' ∉ completedTasks ∧
+    task'.taskId = taskId? ∧
+    (success? = true ⇒
+      task'.status = "completed" ∧
+      task'.progress = 100) ∧
+    (success? = false ⇒
+      task'.status = "failed")
+  
+  post ¬∃ t: DownloadTask @
+    t ∈ activeTasks' ∧ t.taskId = taskId?
+  
+  post success? = true ⇒ successfulDownloads' = successfulDownloads + 1
+  post success? = false ⇒ failedDownloads' = failedDownloads + 1
+  
+  (* Start next queued download if available *)
+  post #queuedTasks > 0 ∧ #activeTasks' < maxConcurrentDownloads ⇒
+    ∃ nextTask: DownloadTask @
+      nextTask = head(queuedTasks) ∧
+      nextTask ∈ activeTasks' ∧
+      nextTask ∉ queuedTasks'
+end CompleteDownload
+
+(* ============================================================================
+   MCP LAUNCHER OPERATIONS
+   ============================================================================ *)
+
+(* Launch MCP Server *)
+schema LaunchMCPServer
+  ΔMCPLauncherState
+  serverName?: STRING
+  imageUrl?: STRING
+  hostPort?: ℕ
+  instanceId!: UUID
+  success!: BOOLEAN
+  
+  (* Preconditions *)
+  pre serviceStatus = running
+  pre serverName? ≠ ""
+  pre imageUrl? ≠ ""
+  pre 1024 ≤ hostPort? ≤ 65535
+  
+  (* No port conflicts *)
+  pre ¬∃ s: MCPServerInstance @
+    s ∈ runningServers ∧ s.hostPort = hostPort?
+  
+  (* Postconditions *)
+  post success! = true ⇒
+    ∃ instance: MCPServerInstance @
+      instance.instanceId = instanceId! ∧
+      instance.serverName = serverName? ∧
+      instance.imageUrl = imageUrl? ∧
+      instance.hostPort = hostPort? ∧
+      instance.status = "running" ∧
+      instance ∈ runningServers' ∧
+      instance ∉ runningServers
+  
+  post success! = true ⇒
+    successfulLaunches' = successfulLaunches + 1
+  
+  post success! = false ⇒
+    failedLaunches' = failedLaunches + 1
+end LaunchMCPServer
+
+(* Stop MCP Server *)
+schema StopMCPServer
+  ΔMCPLauncherState
+  instanceId?: UUID
+  success!: BOOLEAN
+  
+  (* Preconditions *)
+  pre ∃ s: MCPServerInstance @
+    s ∈ runningServers ∧ s.instanceId = instanceId?
+  
+  (* Postconditions *)
+  post success! = true ⇒
+    ∃ instance, instance': MCPServerInstance @
+      instance ∈ runningServers ∧
+      instance.instanceId = instanceId? ∧
+      instance' ∈ stoppedServers' ∧
+      instance'.instanceId = instanceId? ∧
+      instance' ∉ stoppedServers ∧
+      instance ∉ runningServers' ∧
+      instance'.status = "stopped"
+end StopMCPServer
+
+(* ============================================================================
+   EVENT SYSTEM OPERATIONS (eventa)
+   ============================================================================ *)
+
+(* Publish Event *)
+schema PublishEvent
+  ΔEventaState
+  event?: Event
+  success!: BOOLEAN
+  
+  (* Preconditions *)
+  pre event?.source ≠ ""
+  pre #eventQueue.events < eventQueue.maxSize
+  
+  (* Postconditions *)
+  post success! = true ⇒
+    event? ∈ eventQueue'.events ∧
+    event? ∉ eventQueue.events
+  
+  post success! = false ⇒
+    eventQueue'.events = eventQueue.events
+end PublishEvent
+
+(* Process Event *)
+schema ProcessEvent
+  ΔEventaState
+  handlerResults!: seq BOOLEAN
+  
+  (* Preconditions *)
+  pre #eventQueue.events > 0
+  pre processingEvent = false
+  
+  (* Postconditions *)
+  post processingEvent' = false
+  post totalEventsProcessed' = totalEventsProcessed + 1
+  
+  (* Remove processed event from queue *)
+  post ∃ event: Event @
+    event = head(eventQueue.events) ∧
+    event ∉ eventQueue'.events
+  
+  (* Invoke all active handlers for event type *)
+  post ∃ event: Event @
+    event = head(eventQueue.events) ∧
+    #handlerResults! = #{h: EventHandler |
+      h ∈ handlers ∧
+      h.eventType = event.eventType ∧
+      h.active = true}
+end ProcessEvent
+
+(* Register Event Handler *)
+schema RegisterEventHandler
+  ΔEventaState
+  eventType?: EventType
+  callbackEndpoint?: URL
+  priority?: ℕ
+  handlerId!: UUID
+  
+  (* Preconditions *)
+  pre callbackEndpoint? ≠ ""
+  
+  (* Postconditions *)
+  post ∃ handler: EventHandler @
+    handler.handlerId = handlerId! ∧
+    handler.eventType = eventType? ∧
+    handler.callbackEndpoint = callbackEndpoint? ∧
+    handler.priority = priority? ∧
+    handler.active = true ∧
+    handler ∈ handlers' ∧
+    handler ∉ handlers
+end RegisterEventHandler
+
+(* ============================================================================
+   COMPOSITE OPERATIONS
+   ============================================================================ *)
+
+(* AIRI Chat Flow: Receive Message and Generate Response *)
+schema AIRIChatFlow
+  ΔMoeruAISystemState
+  connectionId?: UUID
+  userMessage?: STRING
+  response!: STRING
+  audioData!: seq BYTE
+  
+  (* Preconditions *)
+  pre ∃ conn: WebSocketConnection @
+    conn ∈ airiServer.activeConnections ∧
+    conn.connectionId = connectionId? ∧
+    conn.state = connected
+  
+  pre userMessage? ≠ ""
+  
+  (* Postconditions *)
+  (* 1. Message added to conversation *)
+  post ∃ conv: ConversationContext @
+    conv ∈ airiServer'.conversations ∧
+    ∃ msg: ChatMessage @
+      msg ∈ conv.messages ∧
+      msg.role = user ∧
+      msg.content.text = userMessage?
+  
+  (* 2. Response generated via xsAI *)
+  post ∃ conv: ConversationContext, msg: ChatMessage @
+    conv ∈ airiServer'.conversations ∧
+    msg ∈ conv.messages ∧
+    msg.role = assistant ∧
+    msg.content.text = response! ∧
+    response! ≠ ""
+  
+  (* 3. TTS audio generated *)
+  post #audioData! > 0
+  
+  (* Operation composition: AddMessage → GenerateText → ProcessTTSRequest *)
+end AIRIChatFlow
+
+(* Model Discovery and Download Flow *)
+schema ModelDiscoveryDownloadFlow
+  ΔMoeruAISystemState
+  modelName?: STRING
+  modelId!: UUID
+  downloaded!: BOOLEAN
+  
+  (* Preconditions *)
+  pre modelName? ≠ ""
+  
+  (* Postconditions *)
+  (* 1. Model found in inventory *)
+  post ∃ e: CatalogEntry @
+    e ∈ inventoryService'.catalog ∧
+    e.metadata.name = modelName? ∧
+    modelId! = e.metadata.id
+  
+  (* 2. Download initiated via demodel *)
+  post downloaded! = true ⇒
+    ∃ task: DownloadTask @
+      task ∈ demodelService'.completedTasks ∧
+      task.modelId = modelId! ∧
+      task.status = "completed"
+  
+  (* Operation composition: GetModelMetadata → QueueDownload → CompleteDownload *)
+end ModelDiscoveryDownloadFlow

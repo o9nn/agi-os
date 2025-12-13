@@ -1,0 +1,21 @@
+{
+  "name": "@xsmcp/everything",
+  "type": "module",
+  "version": "0.1.0-beta.3",
+  "private": true,
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@valibot/to-json-schema": "catalog:",
+    "@xsmcp/server-http": "workspace:",
+    "@xsmcp/server-shared": "workspace:",
+    "@xsmcp/shared": "workspace:",
+    "srvx": "^0.7.2",
+    "valibot": "catalog:"
+  },
+  "devDependencies": {
+    "@xsmcp/client-http": "workspace:"
+  }
+}

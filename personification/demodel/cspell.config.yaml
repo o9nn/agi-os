@@ -1,0 +1,27 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - certifi
+  - clippy
+  - demodel
+  - direnv
+  - elazarl
+  - goproxy
+  - hudsucker
+  - huggingface
+  - moeru
+  - nixpkgs
+  - pkey
+  - pkgs
+  - pname
+  - rcgen
+  - rustc
+  - rustls
+  - samber
+  - smallstep
+  - spki
+  - truststore
+ignoreWords: []
+import: []

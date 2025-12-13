@@ -1,0 +1,20 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - attw
+  - bumpp
+  - changelogithub
+  - defu
+  - hfup
+  - importantimport
+  - Moeru
+  - oxlint
+  - rolldown
+  - rspack
+  - spacecard
+  - taze
+  - unplugin
+ignoreWords: []
+import: []

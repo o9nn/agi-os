@@ -1,0 +1,32 @@
+---
+title: moeChat <br /> by Moeru AI
+description: XR Voice Call WebUI, Make AI-Powered characters appear to you.
+template: splash
+hero:
+  tagline: XR Voice Call WebUI, <br /> Make AI-Powered characters appear to you.
+  actions:
+    - text: Play
+      link: https://chat.moeru.ai
+      icon: external
+    - text: Guides
+      link: /docs/guides
+      icon: right-arrow
+      variant: minimal
+    - text: Contributing
+      link: /docs/contributing
+      icon: right-arrow
+      variant: minimal
+head:
+  - tag: title
+    content: moeChat by Moeru AI | moeChat Docs
+---
+
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components'
+
+## Packages
+
+<CardGrid stagger>
+	<LinkCard title="@n3p6/react-three-vrm" description="useful helpers for `@pixiv/three-vrm` to make your life easier." href="packages/react-three-vrm" />
+	<LinkCard title="@n3p6/react-three-yuka" description="useful helpers for `yuka` to make your life easier." href="packages/react-three-yuka" />
+  <LinkCard title="@n3p6/use-illuminance" description="A very small React Hook to help you get illuminance from Ambient Light Sensor API." href="packages/use-illuminance" />
+</CardGrid>

@@ -1,0 +1,21 @@
+packages:
+  - apps/**
+  - packages/**
+  - '!**/dist/**'
+
+catalog:
+  '@proj-airi/drizzle-duckdb-wasm': ^0.4.28
+  '@xsai/shared': &xsai ^0.4.0-beta.4
+  '@xsai/embed': *xsai
+  '@xsai/shared-chat': *xsai
+  '@xsai/utils-chat': *xsai
+
+onlyBuiltDependencies:
+  - electron
+  - electron-winstaller
+  - esbuild
+  - onnxruntime-node
+  - protobufjs
+  - sharp
+  - unrs-resolver
+  - vue-demi
