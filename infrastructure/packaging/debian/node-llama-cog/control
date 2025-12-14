@@ -1,0 +1,9 @@
+Package: node-llama-cog
+Version: 3.0.0
+Section: devel
+Priority: optional
+Architecture: amd64
+Depends: nodejs (>= 18.0.0)
+Maintainer: AGI-OS Team
+Description: Node.js bindings for llama.cpp
+ Local LLM execution with TypeScript bindings

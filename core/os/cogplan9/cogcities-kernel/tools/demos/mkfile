@@ -1,0 +1,9 @@
+</$objtype/mkfile
+
+TARG=traffic-demo energy-demo governance-demo integration-demo rooted-shell-demo matula-demo matula-test parallel-complexity-demo esn-demo
+OFILES=traffic-demo.$O energy-demo.$O governance-demo.$O integration-demo.$O rooted-shell-demo.$O matula-demo.$O matula-test.$O parallel-complexity-demo.$O esn-demo.$O
+
+<//$objtype/mkone
+
+clean:V:
+	rm -f [$OS].out *.[$OS] y.tab.? y.debug y.output $TARG

@@ -1,0 +1,9 @@
+Package: deltecho
+Version: 1.0.0
+Section: net
+Priority: optional
+Architecture: amd64
+Depends: d81p9p9, deltachat-core, dovecot-core
+Maintainer: AGI-OS Team
+Description: Deep Tree Echo core implementation
+ Deep Tree Echo orchestrator and communication core

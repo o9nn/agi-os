@@ -1,0 +1,28 @@
+# Cognitive Cities Tools Build Configuration
+
+DIRS=\
+	cogctl\
+	cogmon\
+	demos\
+
+all:V:
+	for(i in $DIRS)@{
+		echo Building $i...
+		cd $i
+		mk
+		cd ..
+	}
+
+install:V:
+	for(i in $DIRS)@{
+		cd $i
+		mk install
+		cd ..
+	}
+
+clean:V:
+	for(i in $DIRS)@{
+		cd $i
+		mk clean
+		cd ..
+	}

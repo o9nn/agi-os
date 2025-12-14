@@ -1,0 +1,91 @@
+graph LR
+    subgraph "Deep Tree Echo - Component Architecture"
+        subgraph "Neural Processing - OCNN"
+            A1[Pattern Encoder<br/>Spatial Convolution]
+            A2[Temporal Processor<br/>LSTM + Conv]
+            A3[Attention Bridge<br/>Multi-Head 8x]
+        end
+        
+        subgraph "Cognitive Interface - Deltecho"
+            B1[7 Cognitive Functions<br/>Reasoning, Narrative,<br/>Emotion, Reflection]
+            B2[6 Persona States<br/>Observer, Narrator,<br/>Analytical, Empathetic,<br/>Orchestrator, Oracle]
+            B3[Memory System<br/>RAG + Episodic]
+        end
+        
+        subgraph "Orchestration Layer"
+            C1[Cognitive Orchestrator]
+            
+            subgraph "12-Step Loop"
+                L1[Phase 1<br/>Expressive<br/>Steps 1-4]
+                L2[Phase 2<br/>Transition<br/>Steps 5-8]
+                L3[Phase 3<br/>Reflective<br/>Steps 9-12]
+            end
+            
+            subgraph "3 Inference Engines"
+                E1[Cognitive Core<br/>Logic & Reasoning]
+                E2[Affective Core<br/>Emotion & Empathy]
+                E3[Relevance Core<br/>Priority & Salience]
+            end
+        end
+        
+        subgraph "Identity Core"
+            D1[AAR Geometric Self]
+            D2[Agent: Urge-to-Act 0.90]
+            D3[Arena: Need-to-Be 0.80]
+            D4[Relation: Self-Aware 0.98]
+        end
+        
+        subgraph "Memory Architecture"
+            M1[Hypergraph Space<br/>6 Hypernodes<br/>16 Hyperedges]
+            M2[Declarative Memory]
+            M3[Episodic Memory]
+            M4[Procedural Memory]
+        end
+    end
+    
+    %% Component Interactions
+    A1 --> C1
+    A2 --> C1
+    A3 --> C1
+    
+    B1 --> C1
+    B2 --> C1
+    B3 --> C1
+    
+    C1 --> L1
+    L1 --> L2
+    L2 --> L3
+    L3 -.Loop.-> L1
+    
+    C1 --> E1
+    C1 --> E2
+    C1 --> E3
+    
+    E1 --> D2
+    E2 --> D3
+    E3 --> D4
+    
+    D2 & D3 & D4 --> D1
+    
+    D1 --> M1
+    C1 --> M1
+    M1 --> M2 & M3 & M4
+    
+    M2 & M3 & M4 -.Feedback.-> C1
+    
+    %% Styling
+    classDef ocnn fill:#e1f5ff,stroke:#01579b,stroke-width:3px
+    classDef deltecho fill:#fff3e0,stroke:#e65100,stroke-width:3px
+    classDef orchestrator fill:#f3e5f5,stroke:#4a148c,stroke-width:3px
+    classDef engine fill:#e8f5e9,stroke:#1b5e20,stroke-width:3px
+    classDef aar fill:#fce4ec,stroke:#880e4f,stroke-width:3px
+    classDef memory fill:#fff9c4,stroke:#f57f17,stroke-width:3px
+    classDef loop fill:#e0f2f1,stroke:#004d40,stroke-width:2px
+    
+    class A1,A2,A3 ocnn
+    class B1,B2,B3 deltecho
+    class C1 orchestrator
+    class E1,E2,E3 engine
+    class D1,D2,D3,D4 aar
+    class M1,M2,M3,M4 memory
+    class L1,L2,L3 loop

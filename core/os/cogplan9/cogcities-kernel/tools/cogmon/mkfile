@@ -1,0 +1,9 @@
+</$objtype/mkfile
+
+TARG=cogmon
+OFILES=cogmon.$O
+
+<//$objtype/mkone
+
+clean:V:
+	rm -f [$OS].out *.[$OS] y.tab.? y.debug y.output $TARG

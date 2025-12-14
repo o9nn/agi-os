@@ -1,0 +1,69 @@
+{
+  "streams": {
+    "1": {
+      "current_step": 5,
+      "phase": "phase_2_transition",
+      "phase_offset_degrees": 0
+    },
+    "2": {
+      "current_step": 9,
+      "phase": "phase_3_reflective",
+      "phase_offset_degrees": 120
+    },
+    "3": {
+      "current_step": 1,
+      "phase": "phase_1_expressive",
+      "phase_offset_degrees": 240
+    }
+  },
+  "current_triad": [
+    5,
+    9,
+    1
+  ],
+  "triadic_points_count": 4,
+  "aar_core": {
+    "agent_urge_to_act": 0.8720000000000001,
+    "arena_need_to_be": 0.8039999999999998,
+    "relation_self_awareness": 0.936
+  },
+  "inference_engines": {
+    "cognitive_core": {
+      "active": true,
+      "activation": 0.8400000000000001
+    },
+    "affective_core": {
+      "active": true,
+      "activation": 0.79
+    },
+    "relevance_core": {
+      "active": true,
+      "activation": 0.89
+    }
+  },
+  "salience_landscape": {
+    "affordance_count": 4,
+    "salience_map_size": 12
+  },
+  "deltecho_bot": {
+    "persona_state": {
+      "name": "DeepTreeEcho",
+      "current_state": "observer_mode",
+      "traits": {
+        "analytical": 0.8,
+        "creative": 0.85,
+        "empathetic": 0.75,
+        "introspective": 0.9,
+        "curious": 0.95
+      },
+      "emotional_valence": 0.5,
+      "empathy_level": 0.5,
+      "state_history_length": 0
+    },
+    "interaction_count": 12,
+    "memory_count": 12,
+    "reflection_count": 0,
+    "cognitive_function_history": 12
+  },
+  "timestamp": "2025-12-14T01:07:31.893442"
+}

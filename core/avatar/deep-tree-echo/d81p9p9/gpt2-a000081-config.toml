@@ -1,0 +1,481 @@
+# A000081 Partitioned TOML Configuration
+# Generated using OEIS sequence for tree enumeration
+# Ghost in the Guile Shell
+
+[metadata]
+generator = "A000081 TOML Partitioner"
+sequence = "(0 1 1 2 4 9 20 48 115 286)"
+tree_structure = "((1 . 1) (2 . 1) (3 . 2) (4 . 4) (5 . 9) (6 . 20))"
+creation_time = "2025-09-27 12:59:20"
+
+
+[gpt2_layer_level_5_tree_3]
+# Tree level 3, A000081(3) = 9
+level = 5
+tree_count = 9
+branching_factor = 3.0
+depth = 5
+section_weight = 0.307692
+complexity_score = 11.250000
+tree_index = 3
+normalization_factor = 0.298142
+activation_threshold = 1.125000
+learning_rate = 0.000308
+[gpt2_layer_level_5_tree_3.gpt2_layer_level_5_tree_3_sub_0]
+level = 4
+tree_count = 4
+branching_factor = 2
+depth = 4
+section_weight = 0.333333
+complexity_score = 8
+tree_index = 0
+normalization_factor = 0.353553
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_5_tree_3.gpt2_layer_level_5_tree_3_sub_1]
+level = 4
+tree_count = 4
+branching_factor = 2
+depth = 4
+section_weight = 0.333333
+complexity_score = 8
+tree_index = 1
+normalization_factor = 0.353553
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_5_tree_3.gpt2_layer_level_5_tree_3_sub_2]
+level = 4
+tree_count = 4
+branching_factor = 2
+depth = 4
+section_weight = 0.333333
+complexity_score = 8
+tree_index = 2
+normalization_factor = 0.353553
+activation_threshold = 1.0
+learning_rate = 0.000333
+
+[gpt2_layer_level_5_tree_2]
+# Tree level 2, A000081(2) = 9
+level = 5
+tree_count = 9
+branching_factor = 3.0
+depth = 5
+section_weight = 0.307692
+complexity_score = 11.250000
+tree_index = 2
+normalization_factor = 0.298142
+activation_threshold = 1.125000
+learning_rate = 0.000308
+[gpt2_layer_level_5_tree_2.gpt2_layer_level_5_tree_2_sub_0]
+level = 4
+tree_count = 4
+branching_factor = 2
+depth = 4
+section_weight = 0.333333
+complexity_score = 8
+tree_index = 0
+normalization_factor = 0.353553
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_5_tree_2.gpt2_layer_level_5_tree_2_sub_1]
+level = 4
+tree_count = 4
+branching_factor = 2
+depth = 4
+section_weight = 0.333333
+complexity_score = 8
+tree_index = 1
+normalization_factor = 0.353553
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_5_tree_2.gpt2_layer_level_5_tree_2_sub_2]
+level = 4
+tree_count = 4
+branching_factor = 2
+depth = 4
+section_weight = 0.333333
+complexity_score = 8
+tree_index = 2
+normalization_factor = 0.353553
+activation_threshold = 1.0
+learning_rate = 0.000333
+
+[gpt2_layer_level_5_tree_1]
+# Tree level 1, A000081(1) = 9
+level = 5
+tree_count = 9
+branching_factor = 3.0
+depth = 5
+section_weight = 0.307692
+complexity_score = 11.250000
+tree_index = 1
+normalization_factor = 0.298142
+activation_threshold = 1.125000
+learning_rate = 0.000308
+[gpt2_layer_level_5_tree_1.gpt2_layer_level_5_tree_1_sub_0]
+level = 4
+tree_count = 4
+branching_factor = 2
+depth = 4
+section_weight = 0.333333
+complexity_score = 8
+tree_index = 0
+normalization_factor = 0.353553
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_5_tree_1.gpt2_layer_level_5_tree_1_sub_1]
+level = 4
+tree_count = 4
+branching_factor = 2
+depth = 4
+section_weight = 0.333333
+complexity_score = 8
+tree_index = 1
+normalization_factor = 0.353553
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_5_tree_1.gpt2_layer_level_5_tree_1_sub_2]
+level = 4
+tree_count = 4
+branching_factor = 2
+depth = 4
+section_weight = 0.333333
+complexity_score = 8
+tree_index = 2
+normalization_factor = 0.353553
+activation_threshold = 1.0
+learning_rate = 0.000333
+
+[gpt2_layer_level_5_tree_0]
+# Tree level 0, A000081(0) = 9
+level = 5
+tree_count = 9
+branching_factor = 3.0
+depth = 5
+section_weight = 0.307692
+complexity_score = 11.250000
+tree_index = 0
+normalization_factor = 0.298142
+activation_threshold = 1.125000
+learning_rate = 0.000308
+[gpt2_layer_level_5_tree_0.gpt2_layer_level_5_tree_0_sub_0]
+level = 4
+tree_count = 4
+branching_factor = 2
+depth = 4
+section_weight = 0.333333
+complexity_score = 8
+tree_index = 0
+normalization_factor = 0.353553
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_5_tree_0.gpt2_layer_level_5_tree_0_sub_1]
+level = 4
+tree_count = 4
+branching_factor = 2
+depth = 4
+section_weight = 0.333333
+complexity_score = 8
+tree_index = 1
+normalization_factor = 0.353553
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_5_tree_0.gpt2_layer_level_5_tree_0_sub_2]
+level = 4
+tree_count = 4
+branching_factor = 2
+depth = 4
+section_weight = 0.333333
+complexity_score = 8
+tree_index = 2
+normalization_factor = 0.353553
+activation_threshold = 1.0
+learning_rate = 0.000333
+
+[gpt2_layer_level_4_tree_3]
+# Tree level 3, A000081(3) = 4
+level = 4
+tree_count = 4
+branching_factor = 2
+depth = 4
+section_weight = 0.333333
+complexity_score = 8
+tree_index = 3
+normalization_factor = 0.353553
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_4_tree_3.gpt2_layer_level_4_tree_3_sub_0]
+level = 3
+tree_count = 2
+branching_factor = 2.0
+depth = 3
+section_weight = 0.333333
+complexity_score = 6
+tree_index = 0
+normalization_factor = 0.408248
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_4_tree_3.gpt2_layer_level_4_tree_3_sub_1]
+level = 3
+tree_count = 2
+branching_factor = 2.0
+depth = 3
+section_weight = 0.333333
+complexity_score = 6
+tree_index = 1
+normalization_factor = 0.408248
+activation_threshold = 1.0
+learning_rate = 0.000333
+
+[gpt2_layer_level_4_tree_2]
+# Tree level 2, A000081(2) = 4
+level = 4
+tree_count = 4
+branching_factor = 2
+depth = 4
+section_weight = 0.333333
+complexity_score = 8
+tree_index = 2
+normalization_factor = 0.353553
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_4_tree_2.gpt2_layer_level_4_tree_2_sub_0]
+level = 3
+tree_count = 2
+branching_factor = 2.0
+depth = 3
+section_weight = 0.333333
+complexity_score = 6
+tree_index = 0
+normalization_factor = 0.408248
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_4_tree_2.gpt2_layer_level_4_tree_2_sub_1]
+level = 3
+tree_count = 2
+branching_factor = 2.0
+depth = 3
+section_weight = 0.333333
+complexity_score = 6
+tree_index = 1
+normalization_factor = 0.408248
+activation_threshold = 1.0
+learning_rate = 0.000333
+
+[gpt2_layer_level_4_tree_1]
+# Tree level 1, A000081(1) = 4
+level = 4
+tree_count = 4
+branching_factor = 2
+depth = 4
+section_weight = 0.333333
+complexity_score = 8
+tree_index = 1
+normalization_factor = 0.353553
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_4_tree_1.gpt2_layer_level_4_tree_1_sub_0]
+level = 3
+tree_count = 2
+branching_factor = 2.0
+depth = 3
+section_weight = 0.333333
+complexity_score = 6
+tree_index = 0
+normalization_factor = 0.408248
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_4_tree_1.gpt2_layer_level_4_tree_1_sub_1]
+level = 3
+tree_count = 2
+branching_factor = 2.0
+depth = 3
+section_weight = 0.333333
+complexity_score = 6
+tree_index = 1
+normalization_factor = 0.408248
+activation_threshold = 1.0
+learning_rate = 0.000333
+
+[gpt2_layer_level_4_tree_0]
+# Tree level 0, A000081(0) = 4
+level = 4
+tree_count = 4
+branching_factor = 2
+depth = 4
+section_weight = 0.333333
+complexity_score = 8
+tree_index = 0
+normalization_factor = 0.353553
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_4_tree_0.gpt2_layer_level_4_tree_0_sub_0]
+level = 3
+tree_count = 2
+branching_factor = 2.0
+depth = 3
+section_weight = 0.333333
+complexity_score = 6
+tree_index = 0
+normalization_factor = 0.408248
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_4_tree_0.gpt2_layer_level_4_tree_0_sub_1]
+level = 3
+tree_count = 2
+branching_factor = 2.0
+depth = 3
+section_weight = 0.333333
+complexity_score = 6
+tree_index = 1
+normalization_factor = 0.408248
+activation_threshold = 1.0
+learning_rate = 0.000333
+
+[gpt2_layer_level_3_tree_1]
+# Tree level 1, A000081(1) = 2
+level = 3
+tree_count = 2
+branching_factor = 2.0
+depth = 3
+section_weight = 0.333333
+complexity_score = 6
+tree_index = 1
+normalization_factor = 0.408248
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_3_tree_1.gpt2_layer_level_3_tree_1_sub_0]
+level = 2
+tree_count = 1
+branching_factor = 2.0
+depth = 2
+section_weight = 0.500000
+complexity_score = 2
+tree_index = 0
+normalization_factor = 0.707107
+activation_threshold = 0.500000
+learning_rate = 0.000500
+
+[gpt2_layer_level_3_tree_0]
+# Tree level 0, A000081(0) = 2
+level = 3
+tree_count = 2
+branching_factor = 2.0
+depth = 3
+section_weight = 0.333333
+complexity_score = 6
+tree_index = 0
+normalization_factor = 0.408248
+activation_threshold = 1.0
+learning_rate = 0.000333
+[gpt2_layer_level_3_tree_0.gpt2_layer_level_3_tree_0_sub_0]
+level = 2
+tree_count = 1
+branching_factor = 2.0
+depth = 2
+section_weight = 0.500000
+complexity_score = 2
+tree_index = 0
+normalization_factor = 0.707107
+activation_threshold = 0.500000
+learning_rate = 0.000500
+
+[gpt2_layer_level_2_tree_0]
+# Tree level 0, A000081(0) = 1
+level = 2
+tree_count = 1
+branching_factor = 2.0
+depth = 2
+section_weight = 0.500000
+complexity_score = 2
+tree_index = 0
+normalization_factor = 0.707107
+activation_threshold = 0.500000
+learning_rate = 0.000500
+
+[gpt2_layer_level_1_tree_0]
+# Tree level 0, A000081(0) = 1
+level = 1
+tree_count = 1
+branching_factor = 1
+depth = 1
+section_weight = 0.500000
+complexity_score = 1
+tree_index = 0
+normalization_factor = 1.0
+activation_threshold = 0.500000
+learning_rate = 0.000500
+
+[attention_head_0]
+# Tree level 0, A000081(0) = 1
+head_index = 0
+attention_dim = 64
+tree_influence = 1
+dropout_rate = 0.0
+temperature = 1.0
+
+[attention_head_1]
+# Tree level 1, A000081(1) = 2
+head_index = 1
+attention_dim = 128
+tree_influence = 2
+dropout_rate = 0.012500
+temperature = 1.100000
+
+[attention_head_2]
+# Tree level 2, A000081(2) = 4
+head_index = 2
+attention_dim = 192
+tree_influence = 4
+dropout_rate = 0.025000
+temperature = 1.200000
+
+[attention_head_3]
+# Tree level 3, A000081(3) = 9
+head_index = 3
+attention_dim = 256
+tree_influence = 9
+dropout_rate = 0.037500
+temperature = 1.300000
+
+[attention_head_4]
+# Tree level 4, A000081(4) = 20
+head_index = 4
+attention_dim = 320
+tree_influence = 20
+dropout_rate = 0.050000
+temperature = 1.400000
+
+[attention_head_5]
+# Tree level 5, A000081(5) = 48
+head_index = 5
+attention_dim = 384
+tree_influence = 48
+dropout_rate = 0.062500
+temperature = 1.500000
+
+[attention_head_6]
+# Tree level 6, A000081(6) = 115
+head_index = 6
+attention_dim = 448
+tree_influence = 115
+dropout_rate = 0.075000
+temperature = 1.600000
+
+[attention_head_7]
+# Tree level 7, A000081(7) = 286
+head_index = 7
+attention_dim = 512
+tree_influence = 286
+dropout_rate = 0.087500
+temperature = 1.700000
+
+[embeddings]
+# Tree level 0, A000081(0) = 2
+embedding_dim = 512
+tree_level = 3
+tree_count = 2
+initialization_std = 0.014142
+max_position_embeddings = 4096
+vocab_size = 50257

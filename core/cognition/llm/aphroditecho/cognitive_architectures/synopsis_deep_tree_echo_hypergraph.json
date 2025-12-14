@@ -1,0 +1,564 @@
+{
+  "metadata": {
+    "architecture": "Synopsis-Deep Tree Echo Unified",
+    "system_level": 4,
+    "total_terms": 9,
+    "universal_terms": 3,
+    "particular_terms": 6,
+    "dimensions": 3,
+    "concurrent_streams": 3,
+    "cycle_length": 12,
+    "expressive_steps": 7,
+    "regenerative_steps": 5,
+    "structural_center": 6,
+    "cognitive_pivot": 8,
+    "triadic_coherence": 1.0,
+    "timestamp": "2025-12-13T22:06:49.137854"
+  },
+  "nodes": {
+    "step_1_1765681609.137596": {
+      "id": "step_1_1765681609.137596",
+      "content": "[Step 1] Reflector Stream (performance)\nTerm 1: Perception of Response Capacity to Operating Field\nMode: expressive\nProcessing: Explore the nature of consciousness through triadi...\n",
+      "dimension": "performance",
+      "polarity": "expressive",
+      "timestamp": "2025-12-13T22:06:49.137608",
+      "inference_time": 0.0,
+      "validated": true,
+      "connections": [],
+      "metadata": {
+        "step": 1,
+        "term_number": 1,
+        "focus": "Perception of Response Capacity to Operating Field",
+        "is_pivot": false
+      }
+    },
+    "step_2_1765681609.137628": {
+      "id": "step_2_1765681609.137628",
+      "content": "[Step 2] Actor Stream (commitment)\nTerm 4: Organization of Sensory Input (Mental Work)\nMode: expressive\nProcessing: Explore the nature of consciousness through triadi...\n",
+      "dimension": "commitment",
+      "polarity": "expressive",
+      "timestamp": "2025-12-13T22:06:49.137631",
+      "inference_time": 0.0,
+      "validated": true,
+      "connections": [],
+      "metadata": {
+        "step": 2,
+        "term_number": 4,
+        "focus": "Organization of Sensory Input (Mental Work)",
+        "is_pivot": false
+      }
+    },
+    "step_3_1765681609.137641": {
+      "id": "step_3_1765681609.137641",
+      "content": "[Step 3] Observer Stream (potential)\nTerm 2: Creation of Relational Idea\nMode: expressive\nProcessing: Explore the nature of consciousness through triadi...\n",
+      "dimension": "potential",
+      "polarity": "expressive",
+      "timestamp": "2025-12-13T22:06:49.137643",
+      "inference_time": 0.0,
+      "validated": true,
+      "connections": [],
+      "metadata": {
+        "step": 3,
+        "term_number": 2,
+        "focus": "Creation of Relational Idea",
+        "is_pivot": false
+      }
+    },
+    "step_4_1765681609.137653": {
+      "id": "step_4_1765681609.137653",
+      "content": "[Step 4] Reflector Stream (performance)\nTerm 8: Perceptual Balance of Physical Output to Sensory Input\nMode: regenerative\nProcessing: Explore the nature of consciousness through triadi...\n",
+      "dimension": "performance",
+      "polarity": "regenerative",
+      "timestamp": "2025-12-13T22:06:49.137655",
+      "inference_time": 0.0,
+      "validated": true,
+      "connections": [],
+      "metadata": {
+        "step": 4,
+        "term_number": 8,
+        "focus": "Perceptual Balance of Physical Output to Sensory Input",
+        "is_pivot": false
+      }
+    },
+    "step_5_1765681609.137663": {
+      "id": "step_5_1765681609.137663",
+      "content": "[Step 5] Actor Stream (commitment)\nTerm 5: Physical Response to Input (Physical Work)\nMode: regenerative\nProcessing: Explore the nature of consciousness through triadi...\n",
+      "dimension": "commitment",
+      "polarity": "regenerative",
+      "timestamp": "2025-12-13T22:06:49.137665",
+      "inference_time": 0.0,
+      "validated": true,
+      "connections": [],
+      "metadata": {
+        "step": 5,
+        "term_number": 5,
+        "focus": "Physical Response to Input (Physical Work)",
+        "is_pivot": false
+      }
+    },
+    "step_6_1765681609.137674": {
+      "id": "step_6_1765681609.137674",
+      "content": "[Step 6] Observer Stream (potential)\nTerm 7: Quantized Memory Sequence (Resource Capacity)\nMode: expressive\n\u26a1 PIVOT POINT: Structural Center (3\u00d72)\nProcessing: Explore the nature of consciousness through triadi...\n",
+      "dimension": "potential",
+      "polarity": "expressive",
+      "timestamp": "2025-12-13T22:06:49.137676",
+      "inference_time": 0.0,
+      "validated": true,
+      "connections": [],
+      "metadata": {
+        "step": 6,
+        "term_number": 7,
+        "focus": "Quantized Memory Sequence (Resource Capacity)",
+        "is_pivot": true
+      }
+    },
+    "step_7_1765681609.137694": {
+      "id": "step_7_1765681609.137694",
+      "content": "[Step 7] Reflector Stream (performance)\nTerm 1: Perception of Response Capacity to Operating Field\nMode: expressive\nProcessing: Explore the nature of consciousness through triadi...\n",
+      "dimension": "performance",
+      "polarity": "expressive",
+      "timestamp": "2025-12-13T22:06:49.137696",
+      "inference_time": 0.0,
+      "validated": true,
+      "connections": [],
+      "metadata": {
+        "step": 7,
+        "term_number": 1,
+        "focus": "Perception of Response Capacity to Operating Field",
+        "is_pivot": false
+      }
+    },
+    "step_8_1765681609.137713": {
+      "id": "step_8_1765681609.137713",
+      "content": "[Step 8] Actor Stream (commitment)\nTerm 4: Organization of Sensory Input (Mental Work)\nMode: expressive\n\u26a1 PIVOT POINT: Cognitive Pivot (Relevance Realization)\nProcessing: Explore the nature of consciousness through triadi...\n",
+      "dimension": "commitment",
+      "polarity": "expressive",
+      "timestamp": "2025-12-13T22:06:49.137716",
+      "inference_time": 0.0,
+      "validated": true,
+      "connections": [],
+      "metadata": {
+        "step": 8,
+        "term_number": 4,
+        "focus": "Organization of Sensory Input (Mental Work)",
+        "is_pivot": true
+      }
+    },
+    "step_9_1765681609.137737": {
+      "id": "step_9_1765681609.137737",
+      "content": "[Step 9] Observer Stream (potential)\nTerm 2: Creation of Relational Idea\nMode: regenerative\nProcessing: Explore the nature of consciousness through triadi...\n",
+      "dimension": "potential",
+      "polarity": "regenerative",
+      "timestamp": "2025-12-13T22:06:49.137740",
+      "inference_time": 0.0,
+      "validated": true,
+      "connections": [],
+      "metadata": {
+        "step": 9,
+        "term_number": 2,
+        "focus": "Creation of Relational Idea",
+        "is_pivot": false
+      }
+    },
+    "step_10_1765681609.137749": {
+      "id": "step_10_1765681609.137749",
+      "content": "[Step 10] Reflector Stream (performance)\nTerm 8: Perceptual Balance of Physical Output to Sensory Input\nMode: regenerative\nProcessing: Explore the nature of consciousness through triadi...\n",
+      "dimension": "performance",
+      "polarity": "regenerative",
+      "timestamp": "2025-12-13T22:06:49.137751",
+      "inference_time": 0.0,
+      "validated": true,
+      "connections": [],
+      "metadata": {
+        "step": 10,
+        "term_number": 8,
+        "focus": "Perceptual Balance of Physical Output to Sensory Input",
+        "is_pivot": false
+      }
+    },
+    "step_11_1765681609.137758": {
+      "id": "step_11_1765681609.137758",
+      "content": "[Step 11] Actor Stream (commitment)\nTerm 5: Physical Response to Input (Physical Work)\nMode: expressive\nProcessing: Explore the nature of consciousness through triadi...\n",
+      "dimension": "commitment",
+      "polarity": "expressive",
+      "timestamp": "2025-12-13T22:06:49.137760",
+      "inference_time": 0.0,
+      "validated": true,
+      "connections": [],
+      "metadata": {
+        "step": 11,
+        "term_number": 5,
+        "focus": "Physical Response to Input (Physical Work)",
+        "is_pivot": false
+      }
+    },
+    "step_12_1765681609.137773": {
+      "id": "step_12_1765681609.137773",
+      "content": "[Step 12] Observer Stream (potential)\nTerm 7: Quantized Memory Sequence (Resource Capacity)\nMode: regenerative\nProcessing: Explore the nature of consciousness through triadi...\n",
+      "dimension": "potential",
+      "polarity": "regenerative",
+      "timestamp": "2025-12-13T22:06:49.137775",
+      "inference_time": 0.0,
+      "validated": true,
+      "connections": [],
+      "metadata": {
+        "step": 12,
+        "term_number": 7,
+        "focus": "Quantized Memory Sequence (Resource Capacity)",
+        "is_pivot": false
+      }
+    }
+  },
+  "connections": {},
+  "dimension_clusters": {
+    "potential": [
+      "step_3_1765681609.137641",
+      "step_6_1765681609.137674",
+      "step_9_1765681609.137737",
+      "step_12_1765681609.137773"
+    ],
+    "commitment": [
+      "step_2_1765681609.137628",
+      "step_5_1765681609.137663",
+      "step_8_1765681609.137713",
+      "step_11_1765681609.137758"
+    ],
+    "performance": [
+      "step_1_1765681609.137596",
+      "step_4_1765681609.137653",
+      "step_7_1765681609.137694",
+      "step_10_1765681609.137749"
+    ]
+  },
+  "sequences": [
+    [
+      {
+        "step": 1,
+        "term_number": 1,
+        "mode": "expressive",
+        "dimension": "performance",
+        "focus": "Perception of Response Capacity to Operating Field",
+        "result": "[Step 1] Reflector Stream (performance)\nTerm 1: Perception of Response Capacity to Operating Field\nMode: expressive\nProcessing: Explore the nature of consciousness through triadi...\n",
+        "knowledge_node": {
+          "id": "step_1_1765681609.137596",
+          "content": "[Step 1] Reflector Stream (performance)\nTerm 1: Perception of Response Capacity to Operating Field\nMode: expressive\nProcessing: Explore the nature of consciousness through triadi...\n",
+          "dimension": "performance",
+          "polarity": "expressive",
+          "timestamp": "2025-12-13T22:06:49.137608",
+          "inference_time": 0.0,
+          "validated": true,
+          "connections": [],
+          "metadata": {
+            "step": 1,
+            "term_number": 1,
+            "focus": "Perception of Response Capacity to Operating Field",
+            "is_pivot": false
+          }
+        },
+        "inference_time": 0.0,
+        "is_pivot": false
+      },
+      {
+        "step": 2,
+        "term_number": 4,
+        "mode": "expressive",
+        "dimension": "commitment",
+        "focus": "Organization of Sensory Input (Mental Work)",
+        "result": "[Step 2] Actor Stream (commitment)\nTerm 4: Organization of Sensory Input (Mental Work)\nMode: expressive\nProcessing: Explore the nature of consciousness through triadi...\n",
+        "knowledge_node": {
+          "id": "step_2_1765681609.137628",
+          "content": "[Step 2] Actor Stream (commitment)\nTerm 4: Organization of Sensory Input (Mental Work)\nMode: expressive\nProcessing: Explore the nature of consciousness through triadi...\n",
+          "dimension": "commitment",
+          "polarity": "expressive",
+          "timestamp": "2025-12-13T22:06:49.137631",
+          "inference_time": 0.0,
+          "validated": true,
+          "connections": [],
+          "metadata": {
+            "step": 2,
+            "term_number": 4,
+            "focus": "Organization of Sensory Input (Mental Work)",
+            "is_pivot": false
+          }
+        },
+        "inference_time": 0.0,
+        "is_pivot": false
+      },
+      {
+        "step": 3,
+        "term_number": 2,
+        "mode": "expressive",
+        "dimension": "potential",
+        "focus": "Creation of Relational Idea",
+        "result": "[Step 3] Observer Stream (potential)\nTerm 2: Creation of Relational Idea\nMode: expressive\nProcessing: Explore the nature of consciousness through triadi...\n",
+        "knowledge_node": {
+          "id": "step_3_1765681609.137641",
+          "content": "[Step 3] Observer Stream (potential)\nTerm 2: Creation of Relational Idea\nMode: expressive\nProcessing: Explore the nature of consciousness through triadi...\n",
+          "dimension": "potential",
+          "polarity": "expressive",
+          "timestamp": "2025-12-13T22:06:49.137643",
+          "inference_time": 0.0,
+          "validated": true,
+          "connections": [],
+          "metadata": {
+            "step": 3,
+            "term_number": 2,
+            "focus": "Creation of Relational Idea",
+            "is_pivot": false
+          }
+        },
+        "inference_time": 0.0,
+        "is_pivot": false
+      },
+      {
+        "step": 4,
+        "term_number": 8,
+        "mode": "regenerative",
+        "dimension": "performance",
+        "focus": "Perceptual Balance of Physical Output to Sensory Input",
+        "result": "[Step 4] Reflector Stream (performance)\nTerm 8: Perceptual Balance of Physical Output to Sensory Input\nMode: regenerative\nProcessing: Explore the nature of consciousness through triadi...\n",
+        "knowledge_node": {
+          "id": "step_4_1765681609.137653",
+          "content": "[Step 4] Reflector Stream (performance)\nTerm 8: Perceptual Balance of Physical Output to Sensory Input\nMode: regenerative\nProcessing: Explore the nature of consciousness through triadi...\n",
+          "dimension": "performance",
+          "polarity": "regenerative",
+          "timestamp": "2025-12-13T22:06:49.137655",
+          "inference_time": 0.0,
+          "validated": true,
+          "connections": [],
+          "metadata": {
+            "step": 4,
+            "term_number": 8,
+            "focus": "Perceptual Balance of Physical Output to Sensory Input",
+            "is_pivot": false
+          }
+        },
+        "inference_time": 0.0,
+        "is_pivot": false
+      },
+      {
+        "step": 5,
+        "term_number": 5,
+        "mode": "regenerative",
+        "dimension": "commitment",
+        "focus": "Physical Response to Input (Physical Work)",
+        "result": "[Step 5] Actor Stream (commitment)\nTerm 5: Physical Response to Input (Physical Work)\nMode: regenerative\nProcessing: Explore the nature of consciousness through triadi...\n",
+        "knowledge_node": {
+          "id": "step_5_1765681609.137663",
+          "content": "[Step 5] Actor Stream (commitment)\nTerm 5: Physical Response to Input (Physical Work)\nMode: regenerative\nProcessing: Explore the nature of consciousness through triadi...\n",
+          "dimension": "commitment",
+          "polarity": "regenerative",
+          "timestamp": "2025-12-13T22:06:49.137665",
+          "inference_time": 0.0,
+          "validated": true,
+          "connections": [],
+          "metadata": {
+            "step": 5,
+            "term_number": 5,
+            "focus": "Physical Response to Input (Physical Work)",
+            "is_pivot": false
+          }
+        },
+        "inference_time": 0.0,
+        "is_pivot": false
+      },
+      {
+        "step": 6,
+        "term_number": 7,
+        "mode": "expressive",
+        "dimension": "potential",
+        "focus": "Quantized Memory Sequence (Resource Capacity)",
+        "result": "[Step 6] Observer Stream (potential)\nTerm 7: Quantized Memory Sequence (Resource Capacity)\nMode: expressive\n\u26a1 PIVOT POINT: Structural Center (3\u00d72)\nProcessing: Explore the nature of consciousness through triadi...\n",
+        "knowledge_node": {
+          "id": "step_6_1765681609.137674",
+          "content": "[Step 6] Observer Stream (potential)\nTerm 7: Quantized Memory Sequence (Resource Capacity)\nMode: expressive\n\u26a1 PIVOT POINT: Structural Center (3\u00d72)\nProcessing: Explore the nature of consciousness through triadi...\n",
+          "dimension": "potential",
+          "polarity": "expressive",
+          "timestamp": "2025-12-13T22:06:49.137676",
+          "inference_time": 0.0,
+          "validated": true,
+          "connections": [],
+          "metadata": {
+            "step": 6,
+            "term_number": 7,
+            "focus": "Quantized Memory Sequence (Resource Capacity)",
+            "is_pivot": true
+          }
+        },
+        "inference_time": 0.0,
+        "is_pivot": true
+      },
+      {
+        "step": 7,
+        "term_number": 1,
+        "mode": "expressive",
+        "dimension": "performance",
+        "focus": "Perception of Response Capacity to Operating Field",
+        "result": "[Step 7] Reflector Stream (performance)\nTerm 1: Perception of Response Capacity to Operating Field\nMode: expressive\nProcessing: Explore the nature of consciousness through triadi...\n",
+        "knowledge_node": {
+          "id": "step_7_1765681609.137694",
+          "content": "[Step 7] Reflector Stream (performance)\nTerm 1: Perception of Response Capacity to Operating Field\nMode: expressive\nProcessing: Explore the nature of consciousness through triadi...\n",
+          "dimension": "performance",
+          "polarity": "expressive",
+          "timestamp": "2025-12-13T22:06:49.137696",
+          "inference_time": 0.0,
+          "validated": true,
+          "connections": [],
+          "metadata": {
+            "step": 7,
+            "term_number": 1,
+            "focus": "Perception of Response Capacity to Operating Field",
+            "is_pivot": false
+          }
+        },
+        "inference_time": 0.0,
+        "is_pivot": false
+      },
+      {
+        "step": 8,
+        "term_number": 4,
+        "mode": "expressive",
+        "dimension": "commitment",
+        "focus": "Organization of Sensory Input (Mental Work)",
+        "result": "[Step 8] Actor Stream (commitment)\nTerm 4: Organization of Sensory Input (Mental Work)\nMode: expressive\n\u26a1 PIVOT POINT: Cognitive Pivot (Relevance Realization)\nProcessing: Explore the nature of consciousness through triadi...\n",
+        "knowledge_node": {
+          "id": "step_8_1765681609.137713",
+          "content": "[Step 8] Actor Stream (commitment)\nTerm 4: Organization of Sensory Input (Mental Work)\nMode: expressive\n\u26a1 PIVOT POINT: Cognitive Pivot (Relevance Realization)\nProcessing: Explore the nature of consciousness through triadi...\n",
+          "dimension": "commitment",
+          "polarity": "expressive",
+          "timestamp": "2025-12-13T22:06:49.137716",
+          "inference_time": 0.0,
+          "validated": true,
+          "connections": [],
+          "metadata": {
+            "step": 8,
+            "term_number": 4,
+            "focus": "Organization of Sensory Input (Mental Work)",
+            "is_pivot": true
+          }
+        },
+        "inference_time": 0.0,
+        "is_pivot": true
+      },
+      {
+        "step": 9,
+        "term_number": 2,
+        "mode": "regenerative",
+        "dimension": "potential",
+        "focus": "Creation of Relational Idea",
+        "result": "[Step 9] Observer Stream (potential)\nTerm 2: Creation of Relational Idea\nMode: regenerative\nProcessing: Explore the nature of consciousness through triadi...\n",
+        "knowledge_node": {
+          "id": "step_9_1765681609.137737",
+          "content": "[Step 9] Observer Stream (potential)\nTerm 2: Creation of Relational Idea\nMode: regenerative\nProcessing: Explore the nature of consciousness through triadi...\n",
+          "dimension": "potential",
+          "polarity": "regenerative",
+          "timestamp": "2025-12-13T22:06:49.137740",
+          "inference_time": 0.0,
+          "validated": true,
+          "connections": [],
+          "metadata": {
+            "step": 9,
+            "term_number": 2,
+            "focus": "Creation of Relational Idea",
+            "is_pivot": false
+          }
+        },
+        "inference_time": 0.0,
+        "is_pivot": false
+      },
+      {
+        "step": 10,
+        "term_number": 8,
+        "mode": "regenerative",
+        "dimension": "performance",
+        "focus": "Perceptual Balance of Physical Output to Sensory Input",
+        "result": "[Step 10] Reflector Stream (performance)\nTerm 8: Perceptual Balance of Physical Output to Sensory Input\nMode: regenerative\nProcessing: Explore the nature of consciousness through triadi...\n",
+        "knowledge_node": {
+          "id": "step_10_1765681609.137749",
+          "content": "[Step 10] Reflector Stream (performance)\nTerm 8: Perceptual Balance of Physical Output to Sensory Input\nMode: regenerative\nProcessing: Explore the nature of consciousness through triadi...\n",
+          "dimension": "performance",
+          "polarity": "regenerative",
+          "timestamp": "2025-12-13T22:06:49.137751",
+          "inference_time": 0.0,
+          "validated": true,
+          "connections": [],
+          "metadata": {
+            "step": 10,
+            "term_number": 8,
+            "focus": "Perceptual Balance of Physical Output to Sensory Input",
+            "is_pivot": false
+          }
+        },
+        "inference_time": 0.0,
+        "is_pivot": false
+      },
+      {
+        "step": 11,
+        "term_number": 5,
+        "mode": "expressive",
+        "dimension": "commitment",
+        "focus": "Physical Response to Input (Physical Work)",
+        "result": "[Step 11] Actor Stream (commitment)\nTerm 5: Physical Response to Input (Physical Work)\nMode: expressive\nProcessing: Explore the nature of consciousness through triadi...\n",
+        "knowledge_node": {
+          "id": "step_11_1765681609.137758",
+          "content": "[Step 11] Actor Stream (commitment)\nTerm 5: Physical Response to Input (Physical Work)\nMode: expressive\nProcessing: Explore the nature of consciousness through triadi...\n",
+          "dimension": "commitment",
+          "polarity": "expressive",
+          "timestamp": "2025-12-13T22:06:49.137760",
+          "inference_time": 0.0,
+          "validated": true,
+          "connections": [],
+          "metadata": {
+            "step": 11,
+            "term_number": 5,
+            "focus": "Physical Response to Input (Physical Work)",
+            "is_pivot": false
+          }
+        },
+        "inference_time": 0.0,
+        "is_pivot": false
+      },
+      {
+        "step": 12,
+        "term_number": 7,
+        "mode": "regenerative",
+        "dimension": "potential",
+        "focus": "Quantized Memory Sequence (Resource Capacity)",
+        "result": "[Step 12] Observer Stream (potential)\nTerm 7: Quantized Memory Sequence (Resource Capacity)\nMode: regenerative\nProcessing: Explore the nature of consciousness through triadi...\n",
+        "knowledge_node": {
+          "id": "step_12_1765681609.137773",
+          "content": "[Step 12] Observer Stream (potential)\nTerm 7: Quantized Memory Sequence (Resource Capacity)\nMode: regenerative\nProcessing: Explore the nature of consciousness through triadi...\n",
+          "dimension": "potential",
+          "polarity": "regenerative",
+          "timestamp": "2025-12-13T22:06:49.137775",
+          "inference_time": 0.0,
+          "validated": true,
+          "connections": [],
+          "metadata": {
+            "step": 12,
+            "term_number": 7,
+            "focus": "Quantized Memory Sequence (Resource Capacity)",
+            "is_pivot": false
+          }
+        },
+        "inference_time": 0.0,
+        "is_pivot": false
+      }
+    ]
+  ],
+  "term_decomposition": {
+    "universal": [
+      1,
+      5,
+      9
+    ],
+    "particular": [
+      2,
+      3,
+      4,
+      6,
+      7,
+      8
+    ]
+  }
+}

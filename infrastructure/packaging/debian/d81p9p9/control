@@ -1,0 +1,9 @@
+Package: d81p9p9
+Version: 1.0.0
+Section: math
+Priority: optional
+Architecture: all
+Depends: guile-3.0
+Maintainer: AGI-OS Team
+Description: A000081 rooted tree implementation
+ OEIS A000081 mathematical foundation for Deep Tree Echo

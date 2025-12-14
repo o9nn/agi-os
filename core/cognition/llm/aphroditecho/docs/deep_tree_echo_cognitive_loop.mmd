@@ -1,0 +1,85 @@
+graph TB
+    subgraph "Echobeats: 12-Step Cognitive Loop Architecture"
+        subgraph "Phase 1: EXPRESSIVE MODE<br/>Steps 1-4 | Actual Affordance Interaction"
+            S1[Step 1: PIVOTAL<br/>━━━━━━━━━━<br/>Relevance Realization<br/>Pattern Recognition<br/>━━━━━━━━━━<br/>Orienting Present Commitment<br/>━━━━━━━━━━<br/>Engines: Cognitive + Affective<br/>Function: Pattern Recognition]
+            
+            S2[Step 2: EXPRESSIVE<br/>━━━━━━━━━━<br/>Symbolic Reasoning<br/>━━━━━━━━━━<br/>Conditioning Past Performance<br/>━━━━━━━━━━<br/>Engines: Cognitive + Affective<br/>Function: Symbolic Reasoning]
+            
+            S3[Step 3: EXPRESSIVE<br/>━━━━━━━━━━<br/>Pattern Recognition<br/>━━━━━━━━━━<br/>Conditioning Past Performance<br/>━━━━━━━━━━<br/>Engines: Cognitive + Affective<br/>Function: Pattern Recognition]
+            
+            S4[Step 4: EXPRESSIVE<br/>━━━━━━━━━━<br/>Symbolic Reasoning<br/>━━━━━━━━━━<br/>Conditioning Past Performance<br/>━━━━━━━━━━<br/>Engines: Cognitive + Affective<br/>Function: Symbolic Reasoning]
+        end
+        
+        subgraph "Phase 2: TRANSITION MODE<br/>Steps 5-8 | Affordance Interaction + Salience Simulation"
+            S5[Step 5: PIVOTAL<br/>━━━━━━━━━━<br/>Relevance Realization<br/>━━━━━━━━━━<br/>Orienting Present Commitment<br/>━━━━━━━━━━<br/>Engines: Relevance + Cognitive<br/>Function: Relevance Realization]
+            
+            S6[Step 6: TRANSITION<br/>━━━━━━━━━━<br/>Logical Reasoning<br/>━━━━━━━━━━<br/>Conditioning Past Performance<br/>━━━━━━━━━━<br/>Engines: Relevance + Cognitive<br/>Function: Logical Reasoning]
+            
+            S7[Step 7: TRANSITION<br/>━━━━━━━━━━<br/>Relevance Realization<br/>━━━━━━━━━━<br/>Anticipating Future Potential<br/>━━━━━━━━━━<br/>Engines: Relevance + Cognitive<br/>Function: Relevance Realization]
+            
+            S8[Step 8: TRANSITION<br/>━━━━━━━━━━<br/>Logical Reasoning<br/>━━━━━━━━━━<br/>Anticipating Future Potential<br/>━━━━━━━━━━<br/>Engines: Relevance + Cognitive<br/>Function: Logical Reasoning]
+        end
+        
+        subgraph "Phase 3: REFLECTIVE MODE<br/>Steps 9-12 | Virtual Salience Simulation"
+            S9[Step 9: REFLECTIVE<br/>━━━━━━━━━━<br/>Self-Reflection<br/>━━━━━━━━━━<br/>Anticipating Future Potential<br/>━━━━━━━━━━<br/>Engines: Relevance + Affective<br/>Function: Self-Reflection]
+            
+            S10[Step 10: REFLECTIVE<br/>━━━━━━━━━━<br/>Narrative Generation<br/>━━━━━━━━━━<br/>Anticipating Future Potential<br/>━━━━━━━━━━<br/>Engines: Relevance + Affective<br/>Function: Narrative Generation]
+            
+            S11[Step 11: REFLECTIVE<br/>━━━━━━━━━━<br/>Self-Reflection<br/>━━━━━━━━━━<br/>Anticipating Future Potential<br/>━━━━━━━━━━<br/>Engines: Relevance + Affective<br/>Function: Self-Reflection]
+            
+            S12[Step 12: REFLECTIVE<br/>━━━━━━━━━━<br/>Narrative Generation<br/>━━━━━━━━━━<br/>Anticipating Future Potential<br/>━━━━━━━━━━<br/>Engines: Relevance + Affective<br/>Function: Narrative Generation]
+        end
+        
+        subgraph "3 Concurrent Inference Engines"
+            E1[Cognitive Core<br/>━━━━━━━━━━<br/>Logical Reasoning<br/>Inference & Deduction<br/>━━━━━━━━━━<br/>Activation: 0.80<br/>━━━━━━━━━━<br/>Active: Steps 1-8]
+            
+            E2[Affective Core<br/>━━━━━━━━━━<br/>Emotional Processing<br/>Empathy & Emotion<br/>━━━━━━━━━━<br/>Activation: 0.75<br/>━━━━━━━━━━<br/>Active: Steps 1-4, 9-12]
+            
+            E3[Relevance Core<br/>━━━━━━━━━━<br/>Priority Detection<br/>Salience & Integration<br/>━━━━━━━━━━<br/>Activation: 0.85<br/>━━━━━━━━━━<br/>Active: Steps 5-12]
+        end
+        
+        subgraph "Loop Characteristics"
+            LC1[Total Steps: 12]
+            LC2[Expressive Steps: 7<br/>Steps 1-4, 6-7]
+            LC3[Reflective Steps: 5<br/>Steps 8-12]
+            LC4[Pivotal RR Steps: 2<br/>Steps 1, 5]
+            LC5[Actual Affordance: 5<br/>Steps 2-4, 6-7]
+            LC6[Virtual Salience: 5<br/>Steps 8-12]
+        end
+    end
+    
+    %% Sequential Flow
+    S1 --> S2 --> S3 --> S4
+    S4 --> S5
+    S5 --> S6 --> S7 --> S8
+    S8 --> S9
+    S9 --> S10 --> S11 --> S12
+    S12 -.Loop Back.-> S1
+    
+    %% Engine Connections
+    E1 -.Active in.-> S1 & S2 & S3 & S4 & S5 & S6 & S7 & S8
+    E2 -.Active in.-> S1 & S2 & S3 & S4 & S9 & S10 & S11 & S12
+    E3 -.Active in.-> S5 & S6 & S7 & S8 & S9 & S10 & S11 & S12
+    
+    %% Characteristics
+    S1 & S2 & S3 & S4 & S5 & S6 & S7 & S8 & S9 & S10 & S11 & S12 --> LC1
+    S1 & S2 & S3 & S4 & S6 & S7 --> LC2
+    S8 & S9 & S10 & S11 & S12 --> LC3
+    S1 & S5 --> LC4
+    S2 & S3 & S4 & S6 & S7 --> LC5
+    S8 & S9 & S10 & S11 & S12 --> LC6
+    
+    %% Styling
+    classDef pivotalStyle fill:#ff6b6b,stroke:#c92a2a,stroke-width:4px,color:#fff
+    classDef expressiveStyle fill:#4ecdc4,stroke:#0a8f8f,stroke-width:3px,color:#000
+    classDef transitionStyle fill:#ffe66d,stroke:#f4a261,stroke-width:3px,color:#000
+    classDef reflectiveStyle fill:#a8dadc,stroke:#457b9d,stroke-width:3px,color:#000
+    classDef engineStyle fill:#e8f5e9,stroke:#1b5e20,stroke-width:3px,color:#000
+    classDef charStyle fill:#f1f3f5,stroke:#495057,stroke-width:2px,color:#000
+    
+    class S1,S5 pivotalStyle
+    class S2,S3,S4 expressiveStyle
+    class S6,S7,S8 transitionStyle
+    class S9,S10,S11,S12 reflectiveStyle
+    class E1,E2,E3 engineStyle
+    class LC1,LC2,LC3,LC4,LC5,LC6 charStyle

@@ -1,0 +1,91 @@
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'16px'}}}%%
+graph TB
+    subgraph "Triadic Cognitive Loop Timing - 3 Concurrent Streams"
+        subgraph "Time Point 0: Triad Steps 1-5-9"
+            T0[Time 0<br/>━━━━━━━━━━<br/>TRIAD 1 5 9<br/>━━━━━━━━━━]
+            T0_S1[Stream 1: Step 1<br/>PIVOTAL RR<br/>Pattern Recognition<br/>Phase: 0°]
+            T0_S2[Stream 2: Step 5<br/>PIVOTAL RR<br/>Relevance Realization<br/>Phase: 120°]
+            T0_S3[Stream 3: Step 9<br/>REFLECTIVE<br/>Self-Reflection<br/>Phase: 240°]
+        end
+        
+        subgraph "Time Point 1: Triad Steps 2-6-10"
+            T1[Time 1<br/>━━━━━━━━━━<br/>TRIAD 2 6 10<br/>━━━━━━━━━━]
+            T1_S1[Stream 1: Step 2<br/>EXPRESSIVE<br/>Symbolic Reasoning<br/>Phase: 30°]
+            T1_S2[Stream 2: Step 6<br/>TRANSITION<br/>Logical Reasoning<br/>Phase: 150°]
+            T1_S3[Stream 3: Step 10<br/>REFLECTIVE<br/>Narrative Generation<br/>Phase: 270°]
+        end
+        
+        subgraph "Time Point 2: Triad Steps 3-7-11"
+            T2[Time 2<br/>━━━━━━━━━━<br/>TRIAD 3 7 11<br/>━━━━━━━━━━]
+            T2_S1[Stream 1: Step 3<br/>EXPRESSIVE<br/>Pattern Recognition<br/>Phase: 60°]
+            T2_S2[Stream 2: Step 7<br/>TRANSITION<br/>Relevance Realization<br/>Phase: 180°]
+            T2_S3[Stream 3: Step 11<br/>REFLECTIVE<br/>Self-Reflection<br/>Phase: 300°]
+        end
+        
+        subgraph "Time Point 3: Triad Steps 4-8-12"
+            T3[Time 3<br/>━━━━━━━━━━<br/>TRIAD 4 8 12<br/>━━━━━━━━━━]
+            T3_S1[Stream 1: Step 4<br/>EXPRESSIVE<br/>Symbolic Reasoning<br/>Phase: 90°]
+            T3_S2[Stream 2: Step 8<br/>TRANSITION<br/>Logical Reasoning<br/>Phase: 210°]
+            T3_S3[Stream 3: Step 12<br/>REFLECTIVE<br/>Narrative Generation<br/>Phase: 330°]
+        end
+        
+        subgraph "Concurrent Execution Model"
+            EXEC[Every 4 steps all 3 streams<br/>execute simultaneously as TRIAD<br/>━━━━━━━━━━<br/>120° phase offset between streams<br/>4-step lead/lag relationship<br/>━━━━━━━━━━<br/>Self-balancing feedback loops<br/>Feedforward anticipation<br/>━━━━━━━━━━<br/>Projected onto shared<br/>Salience Landscape]
+        end
+        
+        subgraph "Stream Characteristics"
+            CHAR1[Stream 1: Primary<br/>Starts at Step 1<br/>0° phase offset]
+            CHAR2[Stream 2: Secondary<br/>Starts at Step 5<br/>+120° phase offset]
+            CHAR3[Stream 3: Tertiary<br/>Starts at Step 9<br/>+240° phase offset]
+        end
+        
+        subgraph "Triadic Properties"
+            PROP1[4 Triadic Convergence Points<br/>per complete cycle]
+            PROP2[Each stream completes<br/>12 steps for full cycle]
+            PROP3[All 3 streams perceived<br/>simultaneously at each triad]
+            PROP4[Interdependent<br/>self-correcting dynamics]
+        end
+    end
+    
+    %% Temporal Flow
+    T0 --> T1 --> T2 --> T3
+    T3 -.Cycle.-> T0
+    
+    %% Triad Composition
+    T0 --> T0_S1 & T0_S2 & T0_S3
+    T1 --> T1_S1 & T1_S2 & T1_S3
+    T2 --> T2_S1 & T2_S2 & T2_S3
+    T3 --> T3_S1 & T3_S2 & T3_S3
+    
+    %% Stream Continuity
+    T0_S1 -.Stream 1.-> T1_S1 -.Stream 1.-> T2_S1 -.Stream 1.-> T3_S1
+    T0_S2 -.Stream 2.-> T1_S2 -.Stream 2.-> T2_S2 -.Stream 2.-> T3_S2
+    T0_S3 -.Stream 3.-> T1_S3 -.Stream 3.-> T2_S3 -.Stream 3.-> T3_S3
+    
+    %% Execution Model
+    T0 & T1 & T2 & T3 --> EXEC
+    
+    %% Characteristics
+    CHAR1 -.Defines.-> T0_S1 & T1_S1 & T2_S1 & T3_S1
+    CHAR2 -.Defines.-> T0_S2 & T1_S2 & T2_S2 & T3_S2
+    CHAR3 -.Defines.-> T0_S3 & T1_S3 & T2_S3 & T3_S3
+    
+    %% Properties
+    EXEC --> PROP1 & PROP2 & PROP3 & PROP4
+    
+    %% Styling
+    classDef timepoint fill:#ffe66d,stroke:#f4a261,stroke-width:4px,color:#000
+    classDef stream1 fill:#ff6b6b,stroke:#c92a2a,stroke-width:3px,color:#fff
+    classDef stream2 fill:#4ecdc4,stroke:#0a8f8f,stroke-width:3px,color:#000
+    classDef stream3 fill:#a8dadc,stroke:#457b9d,stroke-width:3px,color:#000
+    classDef exec fill:#e8f5e9,stroke:#1b5e20,stroke-width:3px,color:#000
+    classDef char fill:#f1f3f5,stroke:#495057,stroke-width:2px,color:#000
+    classDef prop fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    
+    class T0,T1,T2,T3 timepoint
+    class T0_S1,T1_S1,T2_S1,T3_S1 stream1
+    class T0_S2,T1_S2,T2_S2,T3_S2 stream2
+    class T0_S3,T1_S3,T2_S3,T3_S3 stream3
+    class EXEC exec
+    class CHAR1,CHAR2,CHAR3 char
+    class PROP1,PROP2,PROP3,PROP4 prop

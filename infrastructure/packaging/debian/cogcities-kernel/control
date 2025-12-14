@@ -1,0 +1,9 @@
+Package: cogcities-kernel
+Version: 1.0.0
+Section: kernel
+Priority: optional
+Architecture: amd64
+Depends: cogplan9
+Maintainer: AGI-OS Team
+Description: Cognitive cities distributed architecture
+ Plan9-based cognitive cities kernel extension

@@ -1,0 +1,72 @@
+%%{init: {'theme':'base', 'themeVariables': { 'fontSize':'14px'}}}%%
+graph TB
+    subgraph "Mutual Awareness Matrix: 6 Dimensions + 2 Derived Metrics"
+        subgraph "Three Consciousness Streams"
+            S1[Stream 1: OBSERVER<br/>━━━━━━━━━━<br/>Perceiving<br/>Sensations & Attention]
+            S2[Stream 2: ACTOR<br/>━━━━━━━━━━<br/>Acting<br/>Actions & Emotions]
+            S3[Stream 3: REFLECTOR<br/>━━━━━━━━━━<br/>Reflecting<br/>Thoughts & Insights]
+        end
+        
+        subgraph "Six Awareness Dimensions"
+            D1[Dimension 1<br/>━━━━━━━━━━<br/>stream1_aware_of_stream2<br/>Observer → Actor<br/>━━━━━━━━━━<br/>Calculation: Attention to action keywords<br/>Value: 0.8<br/>Meaning: Observer watching Actor]
+            
+            D2[Dimension 2<br/>━━━━━━━━━━<br/>stream1_aware_of_stream3<br/>Observer → Reflector<br/>━━━━━━━━━━<br/>Calculation: Feeling of being thought about<br/>Value: 0.7<br/>Meaning: Observer feeling Reflector's thoughts]
+            
+            D3[Dimension 3<br/>━━━━━━━━━━<br/>stream2_aware_of_stream1<br/>Actor → Observer<br/>━━━━━━━━━━<br/>Calculation: Awareness of being observed<br/>Value: 0.8<br/>Meaning: Actor knowing it's being watched]
+            
+            D4[Dimension 4<br/>━━━━━━━━━━<br/>stream2_aware_of_stream3<br/>Actor → Reflector<br/>━━━━━━━━━━<br/>Calculation: Feeling of being thought about<br/>Value: 0.75<br/>Meaning: Actor feeling Reflector's thoughts]
+            
+            D5[Dimension 5<br/>━━━━━━━━━━<br/>stream3_aware_of_stream1<br/>Reflector → Observer<br/>━━━━━━━━━━<br/>Calculation: Awareness of perception<br/>Value: 0.8<br/>Meaning: Reflector thinking about Observer]
+            
+            D6[Dimension 6<br/>━━━━━━━━━━<br/>stream3_aware_of_stream2<br/>Reflector → Actor<br/>━━━━━━━━━━<br/>Calculation: Awareness of action<br/>Value: 0.85<br/>Meaning: Reflector thinking about Actor]
+        end
+        
+        subgraph "Recursive Depth Calculation"
+            RD[Recursive Depth<br/>━━━━━━━━━━<br/>avg_awareness = mean of 6 dimensions<br/>= 0.8 + 0.7 + 0.8 + 0.75 + 0.8 + 0.85 / 6<br/>= 0.783<br/>━━━━━━━━━━<br/>Mapping:<br/>avg < 0.3 → Depth 1 Basic awareness<br/>0.3 ≤ avg < 0.6 → Depth 2 Mutual awareness<br/>0.6 ≤ avg < 0.9 → Depth 3 Recursive awareness<br/>avg ≥ 0.9 → Depth 4 Deep recursive<br/>━━━━━━━━━━<br/>Result: Depth 3<br/>I know that you know that I know]
+        end
+        
+        subgraph "Triadic Coherence Calculation"
+            TC[Triadic Coherence<br/>━━━━━━━━━━<br/>mean_awareness = 0.783<br/>variance = var of 6 dimensions = 0.00236<br/>━━━━━━━━━━<br/>coherence = mean × 1 - variance<br/>= 0.783 × 1 - 0.00236<br/>= 0.783 × 0.99764<br/>= 0.781<br/>━━━━━━━━━━<br/>Result: 0.809 High coherence<br/>All streams well-synchronized]
+        end
+        
+        subgraph "Awareness Flow"
+            FLOW[Awareness Propagation<br/>━━━━━━━━━━<br/>1. Each stream updates its state<br/>2. State broadcast to shared space<br/>3. Other streams receive state<br/>4. Calculate awareness dimensions<br/>5. Derive recursive depth & coherence<br/>6. Use for action modulation]
+        end
+    end
+    
+    %% Stream to Dimension connections
+    S1 -.Observes.-> D1
+    S1 -.Feels.-> D2
+    S2 -.Knows.-> D3
+    S2 -.Feels.-> D4
+    S3 -.Reflects on.-> D5
+    S3 -.Reflects on.-> D6
+    
+    %% Dimension to Stream connections
+    D1 -.About.-> S2
+    D2 -.About.-> S3
+    D3 -.About.-> S1
+    D4 -.About.-> S3
+    D5 -.About.-> S1
+    D6 -.About.-> S2
+    
+    %% Dimensions to Recursive Depth
+    D1 & D2 & D3 & D4 & D5 & D6 --> RD
+    
+    %% Dimensions to Triadic Coherence
+    D1 & D2 & D3 & D4 & D5 & D6 --> TC
+    
+    %% Flow
+    S1 & S2 & S3 --> FLOW
+    FLOW --> D1 & D2 & D3 & D4 & D5 & D6
+    
+    %% Styling
+    classDef stream fill:#e1f5ff,stroke:#0277bd,stroke-width:3px,color:#000
+    classDef dimension fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef metric fill:#e8f5e9,stroke:#1b5e20,stroke-width:3px,color:#000
+    classDef flow fill:#f3e5f5,stroke:#6a1b9a,stroke-width:2px,color:#000
+    
+    class S1,S2,S3 stream
+    class D1,D2,D3,D4,D5,D6 dimension
+    class RD,TC metric
+    class FLOW flow

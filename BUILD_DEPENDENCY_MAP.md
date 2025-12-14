@@ -72,6 +72,12 @@
 - Cognitive syscalls
 - MachSpace (distributed hypergraph)
 - Cognitive Fusion Reactor
+- **cogcities-kernel**: Cognitive cities distributed architecture
+  - Location: `core/os/cogplan9/cogcities-kernel/`
+  - Namespace-based cognitive domains
+  - 9P neural transport channels
+  - Cognitive swarms and process groups
+  - Urban cognitive ecology modeling
 
 ### Layer 3: OpenCog Collection (OCC)
 
@@ -200,6 +206,34 @@
     - Location: `core/cognition/distributed/das/`
     - Dependencies: atomspace, atomspace-storage, Redis, MongoDB
     - Provides: Distributed hypergraph, query engine, attention broker
+
+#### Layer 3.12: LLM Integration
+**Build Order**: 12
+**Dependencies**: atomspace (optional)
+
+20. **node-llama-cog**
+    - Location: `core/cognition/llm/node-llama-cog/`
+    - Dependencies: Node.js 18+, llama.cpp
+    - Provides: Local LLM execution, TypeScript bindings, model loading
+
+21. **aphroditecho**
+    - Location: `core/cognition/llm/aphroditecho/`
+    - Dependencies: Python 3.9+, CUDA 12+, torch, vLLM
+    - Provides: High-performance inference, PagedAttention, continuous batching
+
+#### Layer 3.13: Avatar and Deep Tree Echo
+**Build Order**: 13
+**Dependencies**: atomspace
+
+22. **d81p9p9**
+    - Location: `core/avatar/deep-tree-echo/d81p9p9/`
+    - Dependencies: Guile Scheme
+    - Provides: A000081 implementation, Matula numbers, tree enumeration
+
+23. **deltecho**
+    - Location: `core/avatar/deep-tree-echo/deltecho/`
+    - Dependencies: d81p9p9, DeltaChat, Dovecot
+    - Provides: Deep Tree Echo orchestrator, Delta Echo desk, communication core
 
 ### Layer 4: Integration Layer
 **Location**: `core/integration/cognitive-grip/`

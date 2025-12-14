@@ -1,0 +1,147 @@
+#!/bin/rc
+# Test suite for Cognitive Cities architecture
+
+echo 'Cognitive Cities Test Suite'
+echo '==========================='
+echo ''
+
+# Color codes for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+PASSED=0
+FAILED=0
+
+fn test {
+	echo -n 'Testing: '^$1^'... '
+}
+
+fn pass {
+	echo $GREEN'PASS'$NC
+	PASSED=`{echo $PASSED + 1 | hoc}
+}
+
+fn fail {
+	echo $RED'FAIL'$NC
+	FAILED=`{echo $FAILED + 1 | hoc}
+	if(~ $#* 1) echo '  Reason: '^$1
+}
+
+fn warn {
+	echo $YELLOW'WARN'$NC
+	if(~ $#* 1) echo '  Warning: '^$1
+}
+
+# Test 1: Check if cognitive device exists
+test 'Cognitive device /proc/cognitive exists'
+if(test -e /proc/cognitive) {
+	pass
+} else {
+	fail 'Device not found. Make sure devcognitive.c is loaded'
+}
+
+# Test 2: Check if control file is writable
+test 'Control file /proc/cognitive/ctl is writable'
+if(test -w /proc/cognitive/ctl) {
+	pass
+} else {
+	fail 'Control file not writable'
+}
+
+# Test 3: Read domains
+test 'Reading cognitive domains'
+if(cat /proc/cognitive/domains >/dev/null >[2=1]) {
+	pass
+} else {
+	fail 'Cannot read domains file'
+}
+
+# Test 4: Read channels
+test 'Reading neural channels'
+if(cat /proc/cognitive/channels >/dev/null >[2=1]) {
+	pass
+} else {
+	fail 'Cannot read channels file'
+}
+
+# Test 5: Read metrics
+test 'Reading system metrics'
+if(cat /proc/cognitive/metrics >/dev/null >[2=1]) {
+	pass
+} else {
+	fail 'Cannot read metrics file'
+}
+
+# Test 6: Test cogctl command exists
+test 'cogctl command available'
+if(which cogctl >/dev/null >[2=1]) {
+	pass
+} else {
+	warn 'cogctl not in PATH - may need to build or install'
+}
+
+# Test 7: Test cogmon command exists
+test 'cogmon command available'
+if(which cogmon >/dev/null >[2=1]) {
+	pass
+} else {
+	warn 'cogmon not in PATH - may need to build or install'
+}
+
+# Test 8: Create test namespace
+test 'Creating test namespace'
+if(echo 'create-namespace test-domain /cognitive-cities/test' >/proc/cognitive/ctl >[2=1]) {
+	pass
+} else {
+	fail 'Cannot create namespace'
+}
+
+# Test 9: Bind test channel
+test 'Binding test neural channel'
+if(echo 'bind-channel test-domain transportation 500' >/proc/cognitive/ctl >[2=1]) {
+	pass
+} else {
+	fail 'Cannot bind channel'
+}
+
+# Test 10: Start test swarm
+test 'Starting test swarm'
+if(echo 'start-swarm test-swarm test-domain 2' >/proc/cognitive/ctl >[2=1]) {
+	pass
+} else {
+	fail 'Cannot start swarm'
+}
+
+# Test 11: Trigger emergence detection
+test 'Triggering emergence detection'
+if(echo 'detect-emergence test-domain 0.7' >/proc/cognitive/ctl >[2=1]) {
+	pass
+} else {
+	fail 'Cannot trigger emergence detection'
+}
+
+# Test 12: Adapt namespace
+test 'Adapting test namespace'
+if(echo 'adapt-namespace test-domain auto' >/proc/cognitive/ctl >[2=1]) {
+	pass
+} else {
+	fail 'Cannot adapt namespace'
+}
+
+echo ''
+echo 'Test Summary'
+echo '============'
+echo 'Passed: '^$PASSED
+echo 'Failed: '^$FAILED
+
+if(~ $FAILED 0) {
+	echo ''
+	echo $GREEN'All tests passed!'$NC
+	exit 0
+} else {
+	echo ''
+	echo $RED'Some tests failed'$NC
+	exit 1
+}

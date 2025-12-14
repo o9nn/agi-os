@@ -1,0 +1,9 @@
+Package: aphroditecho
+Version: 0.5.0
+Section: devel
+Priority: optional
+Architecture: amd64
+Depends: python3 (>= 3.9), python3-torch, python3-vllm
+Maintainer: AGI-OS Team
+Description: High-performance LLM inference engine
+ vLLM-based inference with PagedAttention

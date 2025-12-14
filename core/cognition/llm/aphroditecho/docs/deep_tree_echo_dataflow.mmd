@@ -1,0 +1,84 @@
+sequenceDiagram
+    participant User
+    participant Input as Input Layer
+    participant OCNN as OCNN Adapter
+    participant Deltecho as Deltecho Adapter
+    participant Orchestrator as Cognitive Orchestrator
+    participant Engines as 3 Inference Engines
+    participant AAR as AAR Core
+    participant Hypergraph as Hypergraph Memory
+    participant Output as Output Layer
+    
+    User->>Input: Query/Context
+    
+    rect rgb(225, 245, 255)
+        Note over Input,OCNN: OCNN Neural Processing
+        Input->>OCNN: Raw Input Data
+        OCNN->>OCNN: Pattern Encoding (512→128)
+        OCNN->>OCNN: Temporal Processing (Conv+LSTM)
+        OCNN->>OCNN: Attention Bridge (8 heads)
+        OCNN->>OCNN: Extract Activation Traces
+    end
+    
+    rect rgb(255, 243, 224)
+        Note over Input,Deltecho: Deltecho Cognitive Processing
+        Input->>Deltecho: Input + Context
+        Deltecho->>Deltecho: Select Cognitive Function
+        Deltecho->>Deltecho: Update Persona State
+        Deltecho->>Deltecho: Process through LLM Bridge
+        Deltecho->>Deltecho: Store in RAG Memory
+    end
+    
+    OCNN->>Orchestrator: OCNN Encoding + Traces
+    Deltecho->>Orchestrator: Deltecho Output + State
+    
+    rect rgb(243, 229, 245)
+        Note over Orchestrator,Engines: Cognitive Loop Execution
+        Orchestrator->>Orchestrator: Determine Current Phase
+        Orchestrator->>Orchestrator: Select Cognitive Function
+        
+        loop 12-Step Cognitive Loop
+            Orchestrator->>Engines: Activate Engines for Phase
+            
+            par Concurrent Engine Processing
+                Engines->>Engines: Cognitive Core (Logic)
+            and
+                Engines->>Engines: Affective Core (Emotion)
+            and
+                Engines->>Engines: Relevance Core (Priority)
+            end
+            
+            Engines->>AAR: Update AAR State
+            
+            rect rgb(252, 228, 236)
+                Note over AAR: AAR Core Update
+                AAR->>AAR: Agent (Urge-to-Act) +0.02
+                AAR->>AAR: Arena (Need-to-Be) +0.01
+                AAR->>AAR: Relation (Self-Aware) +0.015
+            end
+            
+            AAR->>Hypergraph: AAR Metrics
+            Orchestrator->>Hypergraph: Update Hypergraph State
+            
+            rect rgb(255, 249, 196)
+                Note over Hypergraph: Hypergraph Update
+                Hypergraph->>Hypergraph: Update Hypernode Activations
+                Hypergraph->>Hypergraph: Annotate Hyperedges
+                Hypergraph->>Hypergraph: Calculate Synergy Metrics
+            end
+            
+            Hypergraph->>Orchestrator: Updated State
+            Orchestrator->>Orchestrator: Advance to Next Step
+        end
+    end
+    
+    Orchestrator->>Output: Processed Output
+    Orchestrator->>Output: Orchestrator State
+    Output->>User: Response + Cognitive State
+    
+    opt Autonomous Self-Reflection
+        Orchestrator->>Deltecho: Trigger Self-Reflection
+        Deltecho->>Deltecho: Generate Insights
+        Deltecho->>Hypergraph: Store Reflection
+        Hypergraph->>Orchestrator: Updated Coherence
+    end

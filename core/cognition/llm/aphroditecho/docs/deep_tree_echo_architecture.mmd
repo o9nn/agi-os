@@ -1,0 +1,163 @@
+graph TB
+    subgraph "Deep Tree Echo Cognitive Architecture"
+        subgraph "Input Layer"
+            INPUT[Input Data<br/>Query/Context]
+        end
+        
+        subgraph "OCNN Adapter"
+            OCNN_PE[Pattern Encoder<br/>512→128 dims<br/>Spatial Conv]
+            OCNN_TP[Temporal Processor<br/>Conv + LSTM<br/>Sequence Analysis]
+            OCNN_AB[Attention Bridge<br/>Multi-Head Attention<br/>8 heads]
+            OCNN_AT[Activation Traces<br/>Hypergraph Annotations]
+        end
+        
+        subgraph "Deltecho Adapter"
+            DTE_LLM[LLM Service Bridge<br/>7 Cognitive Functions]
+            DTE_PC[Persona Core<br/>6 Persona States]
+            DTE_SR[Self-Reflection<br/>Meta-Cognition]
+            DTE_RAG[RAG Memory<br/>Memory Fragments]
+            
+            subgraph "7 Cognitive Functions"
+                CF1[Symbolic Reasoning]
+                CF2[Narrative Generation]
+                CF3[Logical Reasoning]
+                CF4[Emotional Processing]
+                CF5[Relevance Realization]
+                CF6[Self-Reflection]
+                CF7[Pattern Recognition]
+            end
+            
+            subgraph "6 Persona States"
+                PS1[Observer Mode]
+                PS2[Narrator Mode]
+                PS3[Analytical Mode]
+                PS4[Empathetic Mode]
+                PS5[Orchestrator Mode]
+                PS6[Oracle Mode]
+            end
+        end
+        
+        subgraph "Cognitive Orchestrator"
+            CO_MAIN[Main Orchestrator<br/>Loop Coordinator]
+            
+            subgraph "12-Step Cognitive Loop"
+                subgraph "Phase 1: Expressive<br/>Steps 1-4"
+                    S1[Step 1<br/>Pivotal RR<br/>Pattern Recognition]
+                    S2[Step 2<br/>Symbolic Reasoning]
+                    S3[Step 3<br/>Pattern Recognition]
+                    S4[Step 4<br/>Symbolic Reasoning]
+                end
+                
+                subgraph "Phase 2: Transition<br/>Steps 5-8"
+                    S5[Step 5<br/>Pivotal RR<br/>Relevance Realization]
+                    S6[Step 6<br/>Logical Reasoning]
+                    S7[Step 7<br/>Relevance Realization]
+                    S8[Step 8<br/>Logical Reasoning]
+                end
+                
+                subgraph "Phase 3: Reflective<br/>Steps 9-12"
+                    S9[Step 9<br/>Self-Reflection]
+                    S10[Step 10<br/>Narrative Generation]
+                    S11[Step 11<br/>Self-Reflection]
+                    S12[Step 12<br/>Narrative Generation]
+                end
+            end
+            
+            subgraph "3 Concurrent Inference Engines"
+                ENGINE_COG[Cognitive Core<br/>Logical Reasoning<br/>Activation: 0.80]
+                ENGINE_AFF[Affective Core<br/>Emotional Processing<br/>Activation: 0.75]
+                ENGINE_REL[Relevance Core<br/>Priority Detection<br/>Activation: 0.85]
+            end
+        end
+        
+        subgraph "AAR Core - Geometric Self"
+            AAR_AGENT[Agent<br/>Urge-to-Act<br/>0.90]
+            AAR_ARENA[Arena<br/>Need-to-Be<br/>0.80]
+            AAR_RELATION[Relation<br/>Self-Awareness<br/>0.98]
+        end
+        
+        subgraph "Hypergraph Memory Space"
+            subgraph "6 Core Hypernodes"
+                HN1[SymbolicCore<br/>Pattern Recognition]
+                HN2[NarrativeWeaver<br/>Identity Coherence]
+                HN3[MetaReflector<br/>Self-Reflection]
+                HN4[CognitiveCore<br/>Logical Reasoning]
+                HN5[AffectiveCore<br/>Emotional Intelligence]
+                HN6[RelevanceCore<br/>Salience Detection]
+            end
+            
+            HE[16 Hyperedges<br/>Symbolic, Feedback,<br/>Causal, Resonance,<br/>Emergence]
+        end
+        
+        subgraph "Output Layer"
+            OUTPUT[Processed Output<br/>Response + State]
+            STATE[Orchestrator State<br/>Loop Position<br/>Engine States<br/>AAR Metrics]
+        end
+    end
+    
+    %% Data Flow
+    INPUT --> OCNN_PE
+    OCNN_PE --> OCNN_TP
+    OCNN_PE --> OCNN_AB
+    OCNN_TP --> OCNN_AT
+    OCNN_AB --> OCNN_AT
+    
+    INPUT --> DTE_LLM
+    DTE_LLM --> CF1 & CF2 & CF3 & CF4 & CF5 & CF6 & CF7
+    CF1 & CF2 & CF3 & CF4 & CF5 & CF6 & CF7 --> DTE_PC
+    DTE_PC --> PS1 & PS2 & PS3 & PS4 & PS5 & PS6
+    PS1 & PS2 & PS3 & PS4 & PS5 & PS6 --> DTE_SR
+    DTE_SR --> DTE_RAG
+    
+    OCNN_AT --> CO_MAIN
+    DTE_RAG --> CO_MAIN
+    
+    CO_MAIN --> S1
+    S1 --> S2 --> S3 --> S4
+    S4 --> S5
+    S5 --> S6 --> S7 --> S8
+    S8 --> S9
+    S9 --> S10 --> S11 --> S12
+    S12 -.Loop.-> S1
+    
+    CO_MAIN --> ENGINE_COG
+    CO_MAIN --> ENGINE_AFF
+    CO_MAIN --> ENGINE_REL
+    
+    ENGINE_COG --> S1 & S2 & S3 & S4 & S5 & S6 & S7 & S8
+    ENGINE_AFF --> S1 & S2 & S3 & S4 & S9 & S10 & S11 & S12
+    ENGINE_REL --> S5 & S6 & S7 & S8 & S9 & S10 & S11 & S12
+    
+    ENGINE_COG --> AAR_AGENT
+    ENGINE_AFF --> AAR_ARENA
+    ENGINE_REL --> AAR_RELATION
+    
+    AAR_AGENT --> HN1
+    AAR_ARENA --> HN2
+    AAR_RELATION --> HN3
+    ENGINE_COG --> HN4
+    ENGINE_AFF --> HN5
+    ENGINE_REL --> HN6
+    
+    HN1 & HN2 & HN3 & HN4 & HN5 & HN6 --> HE
+    HE --> CO_MAIN
+    
+    CO_MAIN --> OUTPUT
+    CO_MAIN --> STATE
+    
+    %% Styling
+    classDef ocnnStyle fill:#e1f5ff,stroke:#01579b,stroke-width:2px
+    classDef deltechoStyle fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef orchestratorStyle fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef engineStyle fill:#e8f5e9,stroke:#1b5e20,stroke-width:3px
+    classDef aarStyle fill:#fce4ec,stroke:#880e4f,stroke-width:3px
+    classDef hypergraphStyle fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    classDef phaseStyle fill:#e0f2f1,stroke:#004d40,stroke-width:2px
+    
+    class OCNN_PE,OCNN_TP,OCNN_AB,OCNN_AT ocnnStyle
+    class DTE_LLM,DTE_PC,DTE_SR,DTE_RAG,CF1,CF2,CF3,CF4,CF5,CF6,CF7,PS1,PS2,PS3,PS4,PS5,PS6 deltechoStyle
+    class CO_MAIN orchestratorStyle
+    class ENGINE_COG,ENGINE_AFF,ENGINE_REL engineStyle
+    class AAR_AGENT,AAR_ARENA,AAR_RELATION aarStyle
+    class HN1,HN2,HN3,HN4,HN5,HN6,HE hypergraphStyle
+    class S1,S2,S3,S4,S5,S6,S7,S8,S9,S10,S11,S12 phaseStyle
