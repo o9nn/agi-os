@@ -82,5 +82,5 @@ This project has successfully integrated the Inferno kernel into the AGI-OS, con
 Future work should focus on:
 
 -   **Testing and Validation:** Thoroughly testing the integrated system to ensure stability and performance.
--   **Cognitive Translator Development:** Expanding the set of cognitive translators in HurdCog to leverage the full power of the integrated AtomSpace.
+-   **Cognitive Translator Development:** Expanding the set of cognitive translators in CoGNUHurd to leverage the full power of the integrated AtomSpace.
 -   **Application Development:** Building applications that utilize the unified cognitive capabilities of the AGI-OS.

@@ -3,7 +3,7 @@
  * @brief Unified Cognitive Interface for AGI-OS
  * 
  * This header defines the unified cognitive interface that works across
- * all AGI-OS paradigms (Inferno, CogPlan9, HurdCog, CogNumach, OpenCog, DAS).
+ * all AGI-OS paradigms (Inferno, CogPlan9, CoGNUHurd, CoGNUMach, OpenCog, DAS).
  * All cognitive operations are exposed via the 9P protocol as file operations.
  * 
  * @author AGI-OS Architecture Team

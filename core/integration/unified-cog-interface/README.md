@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Unified Cognitive Interface provides a consistent, cross-system API for all cognitive operations in AGI-OS. It reconciles the different paradigms (Inferno, CogPlan9, HurdCog, CogNumach, OpenCog, DAS) into a single coherent interface exposed via the 9P protocol.
+The Unified Cognitive Interface provides a consistent, cross-system API for all cognitive operations in AGI-OS. It reconciles the different paradigms (Inferno, CogPlan9, CoGNUHurd, CoGNUMach, OpenCog, DAS) into a single coherent interface exposed via the 9P protocol.
 
 ## Architecture
 
@@ -23,8 +23,8 @@ The unified interface operates on the principle that **all cognitive operations 
 | AtomSpace | OpenCog (C++) | DAS (Python) | CogPlan9 libatomspace (C) |
 | Reasoning | OpenCog PLN | DAS inference agent | CogPlan9 libpln |
 | Protocol | Inferno 9P/Styx | - | - |
-| Scheduling | CogNumach cognitive scheduler | - | CogPlan9 Fusion Reactor |
-| Memory | CogNumach cognitive VM | - | CogPlan9 CogVM |
+| Scheduling | CoGNUMach cognitive scheduler | - | CogPlan9 Fusion Reactor |
+| Memory | CoGNUMach cognitive VM | - | CogPlan9 CogVM |
 
 ## File System Structure
 
@@ -155,19 +155,19 @@ cog_shutdown();
 
 ### Inferno Kernel
 
-The Inferno kernel provides the foundational 9P protocol implementation. All cognitive services are built on top of Inferno's Styx messaging layer.
+The InFernOKern provides the foundational 9P protocol implementation. All cognitive services are built on top of Inferno's Styx messaging layer.
 
 ### CogPlan9
 
 CogPlan9's cognitive file servers provide the reference implementation for exposing cognitive services via 9P. The `libatomspace` and `libpln` libraries serve as lightweight clients.
 
-### HurdCog
+### CoGNUHurd
 
-HurdCog integrates via translators that bridge between Hurd's filesystem and the 9P cognitive services. The AtomSpace bridge connects Hurd processes to the unified interface.
+CoGNUHurd integrates via translators that bridge between Hurd's filesystem and the 9P cognitive services. The AtomSpace bridge connects Hurd processes to the unified interface.
 
-### CogNumach
+### CoGNUMach
 
-CogNumach provides microkernel-level cognitive scheduling and memory management. The cognitive scheduler uses attention values from ECAN to prioritize tasks.
+CoGNUMach provides microkernel-level cognitive scheduling and memory management. The cognitive scheduler uses attention values from ECAN to prioritize tasks.
 
 ### OpenCog
 

@@ -33,7 +33,7 @@
 
 **RESOLUTION**: Keep cognumach/mig as primary, create symlink from hurdcog
 
-### Layer 1: CogNumach Microkernel
+### Layer 1: CoGNUMach Microkernel
 **Location**: `core/microkernel/cognumach/`
 **Build System**: Autotools
 **Dependencies**: 
@@ -45,11 +45,11 @@
 - Memory management
 - Thread management
 
-### Layer 2: HurdCog Operating System
+### Layer 2: CoGNUHurd Operating System
 **Location**: `core/os/hurdcog/`
 **Build System**: Autotools
 **Dependencies**:
-- CogNumach (Layer 1)
+- CoGNUMach (Layer 1)
 - MIG (Layer 0.5)
 **Components**:
 - GNU Hurd translators
@@ -215,8 +215,8 @@
 ```
 Layer 0: Inferno Kernel
   └─> Layer 0.5: MIG
-       └─> Layer 1: CogNumach
-            └─> Layer 2: HurdCog
+       └─> Layer 1: CoGNUMach
+            └─> Layer 2: CoGNUHurd
                  └─> Layer 3: OpenCog Collection
                       ├─> cogutil (no deps)
                       ├─> atomspace (→ cogutil)
@@ -249,7 +249,7 @@ Layer 0: Inferno Kernel
 1. Keep `core/microkernel/cognumach/mig/` as the authoritative source
 2. Remove `core/os/hurdcog/external/hurd-repos/mig/`
 3. Create symlink: `core/os/hurdcog/external/hurd-repos/mig -> ../../../../microkernel/cognumach/mig`
-4. Update HurdCog build scripts to reference cognumach MIG
+4. Update CoGNUHurd build scripts to reference cognumach MIG
 
 ## Debian Packaging Dependencies
 
@@ -273,17 +273,17 @@ All packages must be built in dependency order:
 
 ## Integration Points
 
-### Inferno ↔ CogNumach
+### Inferno ↔ CoGNUMach
 - 9P protocol for IPC
 - Styx protocol compatibility
 - Shared namespace concepts
 
-### CogNumach ↔ HurdCog
+### CoGNUMach ↔ CoGNUHurd
 - MIG-generated interfaces
 - Mach IPC primitives
 - Kernel services
 
-### HurdCog ↔ OpenCog
+### CoGNUHurd ↔ OpenCog
 - AtomSpace-Hurd bridge
 - Cognitive translators
 - Semantic filesystem
@@ -300,7 +300,7 @@ All packages must be built in dependency order:
 - Secondary: Limbo compiler (for Limbo modules)
 - Output: Kernel image, libraries, tools
 
-### CogNumach/HurdCog
+### CoGNUMach/CoGNUHurd
 - Primary: Autotools (configure, make)
 - Dependencies: MIG (autotools)
 - Output: Kernel binaries, headers

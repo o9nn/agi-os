@@ -138,11 +138,11 @@ IF(BUILD_COGNUMACH OR BUILD_HURDCOG)
 ENDIF()
 
 # ============================================================================
-# Layer 1: Cognumach Microkernel (autotools-based)
+# Layer 1: CoGNUMach Microkernel (Cognitive GNU Mach) (autotools-based)
 # ============================================================================
 
 IF(BUILD_COGNUMACH)
-    MESSAGE(STATUS "Building Layer 1: Cognumach Microkernel...")
+    MESSAGE(STATUS "Building Layer 1: CoGNUMach Microkernel...")
     MESSAGE(STATUS "  Note: Requires autotools (autoconf, automake, libtool)")
     
     IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/core/microkernel/cognumach/")
@@ -154,11 +154,11 @@ IF(BUILD_COGNUMACH)
 ENDIF()
 
 # ============================================================================
-# Layer 2: HurdCog Operating System (autotools-based + cognitive extensions)
+# Layer 2: CoGNUHurd Operating System (Cognitive GNU Hurd) (autotools-based + cognitive extensions)
 # ============================================================================
 
 IF(BUILD_HURDCOG)
-    MESSAGE(STATUS "Building Layer 2: HurdCog Operating System...")
+    MESSAGE(STATUS "Building Layer 2: CoGNUHurd Operating System...")
     MESSAGE(STATUS "  Note: Requires Cognumach and autotools")
     
     IF(BUILD_COGNUMACH)
@@ -390,10 +390,10 @@ MESSAGE(STATUS "========================================")
 MESSAGE(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 MESSAGE(STATUS "")
 MESSAGE(STATUS "AGI-OS Stack:")
-MESSAGE(STATUS "Layer 0 - Inferno Kernel: ${BUILD_INFERNO_KERNEL}")
+MESSAGE(STATUS "Layer 0 - InFernOKern (Inferno Kernel): ${BUILD_INFERNO_KERNEL}")
 MESSAGE(STATUS "Layer 0 - MIG (Build Tool): ${BUILD_MIG}")
-MESSAGE(STATUS "Layer 1 - Cognumach (Microkernel): ${BUILD_COGNUMACH}")
-MESSAGE(STATUS "Layer 2 - HurdCog (OS + Cognitive): ${BUILD_HURDCOG}")
+MESSAGE(STATUS "Layer 1 - CoGNUMach (Cognitive GNU Mach): ${BUILD_COGNUMACH}")
+MESSAGE(STATUS "Layer 2 - CoGNUHurd (Cognitive GNU Hurd): ${BUILD_HURDCOG}")
 MESSAGE(STATUS "")
 MESSAGE(STATUS "Layer 3 - OpenCog Collection:")
 MESSAGE(STATUS "  Foundation:")

@@ -3,7 +3,7 @@
  * @brief Implementation of unified cognitive primitives
  * 
  * This file implements the cross-system cognitive primitives that work
- * across Inferno, CogPlan9, HurdCog, CogNumach, OpenCog, and DAS.
+ * across Inferno, CogPlan9, CoGNUHurd, CoGNUMach, OpenCog, and DAS.
  * 
  * @author AGI-OS Architecture Team
  * @date December 14, 2025
@@ -82,7 +82,7 @@ bool cog_init(const char* config_path) {
      * 2. Initialize DAS client
      * 3. Mount 9P cognitive file server
      * 4. Initialize CogPlan9 libraries
-     * 5. Connect to HurdCog translators
+     * 5. Connect to CoGNUHurd translators
      */
     
     g_cog_state.initialized = true;

@@ -5,7 +5,7 @@
 
 ## 1. Executive Summary
 
-This document identifies the optimal components from each cognitive system (Inferno, CogPlan9, HurdCog, CogNumach, OpenCog, DAS) and proposes a unified architecture that eliminates redundancy while preserving the unique strengths of each paradigm.
+This document identifies the optimal components from each cognitive system (Inferno, CogPlan9, CoGNUHurd, CoGNUMach, OpenCog, DAS) and proposes a unified architecture that eliminates redundancy while preserving the unique strengths of each paradigm.
 
 ## 2. Best-of-Breed Component Selection
 
@@ -24,7 +24,7 @@ This document identifies the optimal components from each cognitive system (Infe
 - OpenCog AtomSpace remains the core hypergraph database
 - DAS wraps OpenCog AtomSpace for distributed access
 - CogPlan9 libatomspace becomes a lightweight client library for Plan9 environments
-- HurdCog AtomSpace bridge connects Hurd translators to OpenCog AtomSpace
+- CoGNUHurd AtomSpace bridge connects Hurd translators to OpenCog AtomSpace
 - All implementations share the same underlying data model
 
 ### 2.2. IPC/Protocol: 9P as Universal Interface
@@ -41,8 +41,8 @@ This document identifies the optimal components from each cognitive system (Infe
 **Integration Strategy**:
 - Inferno 9P/Styx becomes the foundational protocol layer
 - CogPlan9's cognitive file servers provide the reference implementation
-- HurdCog implements 9P translators to bridge with Mach IPC
-- CogNumach microkernel gains 9P support alongside Mach ports
+- CoGNUHurd implements 9P translators to bridge with Mach IPC
+- CoGNUMach microkernel gains 9P support alongside Mach ports
 - All cognitive services (AtomSpace, PLN, ECAN) exposed via 9P
 
 ### 2.3. Reasoning: OpenCog PLN with CogPlan9 Integration
@@ -70,7 +70,7 @@ This document identifies the optimal components from each cognitive system (Infe
 - CogPlan9's MachSpace demonstrates hypergraph distribution concepts
 
 **Integration Strategy**:
-- Inferno kernel provides the distributed OS foundation
+- InFernOKern provides the distributed OS foundation
 - DAS manages distributed AtomSpace across multiple nodes
 - CogPlan9 MachSpace concepts inform the distributed hypergraph design
 - 9P protocol enables transparent remote cognitive operations
@@ -84,7 +84,7 @@ This document identifies the optimal components from each cognitive system (Infe
 - Need consistent cognitive memory semantics across paradigms
 
 **Integration Strategy**:
-- CogNumach provides microkernel-level cognitive memory primitives
+- CoGNUMach provides microkernel-level cognitive memory primitives
 - CogPlan9's CogVM concepts inform the design
 - Inferno's Dis VM handles high-level garbage collection
 - Attention-based allocation (from ECAN) guides all memory management
@@ -95,12 +95,12 @@ This document identifies the optimal components from each cognitive system (Infe
 **Decision**: Implement attention-driven scheduling across all layers.
 
 **Rationale**:
-- CogNumach demonstrates microkernel-level cognitive scheduling
+- CoGNUMach demonstrates microkernel-level cognitive scheduling
 - CogPlan9's Cognitive Fusion Reactor shows multi-process coordination
 - ECAN provides the theoretical foundation for attention allocation
 
 **Integration Strategy**:
-- CogNumach cognitive scheduler becomes the microkernel foundation
+- CoGNUMach cognitive scheduler becomes the microkernel foundation
 - CogPlan9 Cognitive Fusion Reactor handles high-level task coordination
 - ECAN attention values drive scheduling decisions at all levels
 - 9P protocol enables distributed scheduling coordination
@@ -114,7 +114,7 @@ This document identifies the optimal components from each cognitive system (Infe
 | OpenCog AtomSpace (C++) | **PRIMARY** | Full-featured hypergraph database |
 | DAS (Python) | **DISTRIBUTED LAYER** | Distributed access and query optimization |
 | CogPlan9 libatomspace (C) | **EMBEDDED CLIENT** | Lightweight Plan9/Inferno client |
-| HurdCog bridge | **ADAPTER** | Hurd translator interface to OpenCog |
+| CoGNUHurd bridge | **ADAPTER** | Hurd translator interface to OpenCog |
 
 **Action**: Consolidate all implementations to use OpenCog's data model and wire format.
 
@@ -134,7 +134,7 @@ This document identifies the optimal components from each cognitive system (Infe
 |-----------|--------|------|
 | Inferno 9P/Styx | **FOUNDATION** | Native kernel-level 9P implementation |
 | CogPlan9 9P servers | **COGNITIVE SERVICES** | Cognitive file servers reference |
-| HurdCog 9P translator | **BRIDGE** | 9P ↔ Mach IPC bridge |
+| CoGNUHurd 9P translator | **BRIDGE** | 9P ↔ Mach IPC bridge |
 
 **Action**: Standardize on Inferno's 9P implementation, adapt others as clients/servers.
 
@@ -159,19 +159,19 @@ This document identifies the optimal components from each cognitive system (Infe
 ┌─────────────────────────────────────────────────────────────┐
 │  Layer 3: Operating System (Multi-Paradigm)                 │
 │  - CogPlan9: 9P cognitive file servers                      │
-│  - HurdCog: Cognitive translators                           │
+│  - CoGNUHurd: Cognitive translators                           │
 │  - Inferno: Native 9P services                              │
 └─────────────────────────────────────────────────────────────┘
                             ↕ System Calls
 ┌─────────────────────────────────────────────────────────────┐
 │  Layer 2: Microkernel                                       │
-│  - CogNumach: Cognitive scheduler, memory management        │
+│  - CoGNUMach: Cognitive scheduler, memory management        │
 │  - 9P support                                               │
 │  - Mach IPC (legacy compatibility)                          │
 └─────────────────────────────────────────────────────────────┘
                             ↕ Hardware Abstraction
 ┌─────────────────────────────────────────────────────────────┐
-│  Layer 1: Inferno Kernel Foundation                         │
+│  Layer 1: InFernOKern Foundation                         │
 │  - 9P/Styx protocol                                         │
 │  - Dis VM                                                   │
 │  - Device drivers                                           │
@@ -200,7 +200,7 @@ All systems will expose the following unified cognitive primitives via 9P:
 - Migrate all AtomSpace access to OpenCog core
 - Implement DAS as distributed wrapper
 - Convert CogPlan9 libatomspace to client library
-- Update HurdCog bridge to use unified interface
+- Update CoGNUHurd bridge to use unified interface
 
 ### Phase 3: Reasoning Integration
 - Integrate OpenCog PLN with CogPlan9 URE
