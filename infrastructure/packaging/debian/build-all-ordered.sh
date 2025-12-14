@@ -49,6 +49,9 @@ PACKAGES=(
     "hurdcog-atomspace-bridge"
     "hurdcog-occ-bridge"
     
+    # Layer 2.5: CogPlan9 Operating System
+    "cogplan9"
+    
     # Layer 3.1: Foundation
     "cogutil"
     
@@ -101,6 +104,9 @@ PACKAGES=(
     "atomspace-9p"
     "pln-9p"
     "ecan-9p"
+    
+    # Layer 3.14: Distributed Cognition
+    "das"
     
     # Layer 4: Integration
     "cognitive-grip"

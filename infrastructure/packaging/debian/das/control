@@ -1,0 +1,44 @@
+Source: das
+Section: science
+Priority: optional
+Maintainer: AGI-OS Development Team <dev@agi-os.org>
+Build-Depends: debhelper-compat (= 13),
+               python3-all,
+               python3-setuptools,
+               python3-pip,
+               redis-server,
+               mongodb
+Standards-Version: 4.6.0
+Homepage: https://github.com/o9nn/agi-os
+Vcs-Git: https://github.com/o9nn/agi-os.git
+Vcs-Browser: https://github.com/o9nn/agi-os
+
+Package: das
+Architecture: all
+Depends: ${python3:Depends},
+         ${misc:Depends},
+         atomspace (>= 5.0),
+         atomspace-storage (>= 5.0),
+         redis-server,
+         mongodb,
+         python3-grpcio,
+         python3-protobuf
+Description: Distributed AtomSpace for OpenCog Hyperon
+ The Distributed AtomSpace (DAS) is an extension of OpenCog Hyperon's
+ Atomspace designed to facilitate multiple simultaneous connections with
+ diverse AI algorithms.
+ .
+ Key features:
+  - Distributed hypergraph knowledge base
+  - Query engine with cognitive optimization
+  - Attention broker for resource allocation
+  - Evolution, link creation, and inference agents
+  - Integration with Hyperon MeTTa
+  - Support for multiple DBMS backends (MongoDB, Redis, PostgreSQL, Mork)
+
+Package: das-dev
+Architecture: all
+Depends: das (= ${binary:Version}), ${misc:Depends}
+Description: Development files for Distributed AtomSpace
+ Development headers, libraries, and tools for building applications
+ that integrate with the Distributed AtomSpace.

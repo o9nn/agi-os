@@ -59,6 +59,20 @@
 - Device drivers
 - AtomSpace-Hurd bridge
 
+### Layer 2.5: CogPlan9 Operating System
+**Location**: `core/os/cogplan9/`
+**Build System**: Plan9 mk
+**Dependencies**:
+- Inferno kernel (Layer 0)
+**Components**:
+- Plan9 cognitive extensions
+- 9P cognitive file servers
+- libatomspace (Plan9 native)
+- libpln (Plan9 native)
+- Cognitive syscalls
+- MachSpace (distributed hypergraph)
+- Cognitive Fusion Reactor
+
 ### Layer 3: OpenCog Collection (OCC)
 
 #### Layer 3.1: Foundation
@@ -177,6 +191,15 @@
 18. **agents**
     - Location: `core/cognition/foundation/agents/`
     - Dependencies: atomspace
+
+#### Layer 3.11: Distributed Cognition
+**Build Order**: 11
+**Dependencies**: atomspace, atomspace-storage
+
+19. **das** (Distributed AtomSpace)
+    - Location: `core/cognition/distributed/das/`
+    - Dependencies: atomspace, atomspace-storage, Redis, MongoDB
+    - Provides: Distributed hypergraph, query engine, attention broker
 
 ### Layer 4: Integration Layer
 **Location**: `core/integration/cognitive-grip/`

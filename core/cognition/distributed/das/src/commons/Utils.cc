@@ -1,0 +1,448 @@
+#include "Utils.h"
+
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <unistd.h>
+
+#include <algorithm>
+#include <cmath>
+#include <cstdlib>
+#include <fstream>
+#include <iomanip>
+#include <ios>
+#include <iostream>
+#include <sstream>
+#include <stdexcept>
+#include <string>
+#include <thread>
+
+#include "Logger.h"
+
+using namespace commons;
+using namespace std;
+
+// --------------------------------------------------------------------------------
+// Public methods
+
+void Utils::error(string msg, bool throw_flag) {
+    LOG_ERROR(msg);
+    if (throw_flag) {
+        throw runtime_error(msg);
+    }
+}
+
+bool Utils::flip_coin(double true_probability) {
+    long f = 1000;
+    return (rand() % f) < lround(true_probability * f);
+}
+
+unsigned int Utils::uint_rand(unsigned int closed_lower_bound, unsigned int open_upper_bound) {
+    if (open_upper_bound <= closed_lower_bound) {
+        Utils::error("Invalid bounds");
+    }
+    return (rand() % (open_upper_bound - closed_lower_bound)) + closed_lower_bound;
+}
+
+unsigned int Utils::uint_rand(unsigned int open_upper_bound) {
+    return Utils::uint_rand(0, open_upper_bound);
+}
+
+void Utils::sleep(unsigned int milliseconds) {
+    this_thread::sleep_for(chrono::milliseconds(milliseconds));
+}
+
+string Utils::get_environment(string const& key) {
+    char* value = getenv(key.c_str());
+    string answer = (value == NULL ? "" : value);
+    return answer;
+}
+
+map<string, string> Utils::parse_config(string const& config_path) {
+    map<string, string> config;
+    ifstream file(config_path);
+    string line;
+    while (getline(file, line)) {
+        istringstream iss_line(line);
+        string key;
+        if (getline(iss_line, key, '=')) {
+            string value;
+            if (getline(iss_line, value)) {
+                value.erase(remove_if(value.begin(), value.end(), ::isspace), value.end());
+                key.erase(remove_if(key.begin(), key.end(), ::isspace), key.end());
+                config[key] = value;
+            }
+        }
+    }
+    file.close();
+    return config;
+}
+
+map<string, string> Utils::parse_command_line(int argc, char* argv[], char delimiter) {
+    map<string, string> cmd_args;
+    for (int i = 1; i < argc; i++) {
+        string arg_str(argv[i]);
+        auto tokens = Utils::split(arg_str, delimiter);
+        if (tokens.size() == 2) {
+            replace_all(tokens[0], "--", "");  // Remove leading dashes
+            string value = tokens[1];
+            for (int j = i + 1; j < argc; j++) {
+                string next_arg_str(argv[j]);
+                if (next_arg_str.rfind("--", 0) == 0) {
+                    break;
+                } else {
+                    value += " " + next_arg_str;
+                    i++;
+                }
+            }
+            cmd_args[tokens[0]] = value;
+        }
+        if (tokens.size() == 1) {
+            replace_all(tokens[0], "--", "");  // Remove leading dashes
+            cmd_args[tokens[0]] = "true";
+        }
+    }
+    return cmd_args;
+}
+
+vector<string> Utils::split(const string& s, char delimiter) {
+    vector<string> tokens;
+    string token;
+    istringstream tokenStream(s);
+    while (getline(tokenStream, token, delimiter)) {
+        tokens.push_back(token);
+    }
+    return tokens;
+}
+
+pair<size_t, size_t> Utils::parse_ports_range(const string& str, char delimiter) {
+    auto tokens = split(str, delimiter);
+    if (tokens.size() != 2 || !is_number(tokens[0]) || !is_number(tokens[1])) {
+        throw invalid_argument("Invalid port range format. Use <start_port:end_port>.");
+    }
+    size_t start_port = stoul(tokens[0]);
+    size_t end_port = stoul(tokens[1]);
+    if (start_port >= end_port) {
+        throw invalid_argument("Invalid port range: start port must be less than end port.");
+    }
+    return make_pair(start_port, end_port);
+}
+
+string Utils::join(const vector<string>& tokens, char delimiter) {
+    string result;
+    for (size_t i = 0; i < tokens.size(); i++) {
+        if (i > 0) {
+            result += delimiter;
+        }
+        result += tokens[i];
+    }
+    return result;
+}
+
+string Utils::random_string(size_t length) {
+    const char charset[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    const size_t max_index = (sizeof(charset) - 1);
+    string result;
+    for (size_t i = 0; i < length; i++) {
+        result += charset[rand() % max_index];
+    }
+    return result;
+}
+
+bool Utils::is_number(const string& s) {
+    return !s.empty() &&
+           find_if(s.begin(), s.end(), [](unsigned char c) { return !isdigit(c); }) == s.end();
+}
+
+float Utils::string_to_float(const string& s) {
+    if (s.empty()) {
+        Utils::error("Can't convert empty string to float");
+        return 0;
+    } else {
+        char* end_ptr;
+        float value = strtof(s.c_str(), &end_ptr);
+        if ((*end_ptr == '\0') && (end_ptr != s.c_str())) {
+            return value;
+        } else {
+            Utils::error("Can't convert string \"" + s + "\" to float");
+            return 0;
+        }
+    }
+}
+
+int Utils::string_to_int(const string& s) {
+    if (!is_number(s)) {
+        throw invalid_argument("Can not convert string to int: Invalid arguments (" + s + ")");
+    }
+    return stoi(s);
+}
+
+string Utils::trim(const string& s) {
+    const string whitespace = " \n\r\t\f\v";
+    size_t start = s.find_first_not_of(whitespace);
+    if (start == string::npos) {
+        return "";
+    }
+    size_t end = s.find_last_not_of(whitespace);
+    return s.substr(start, end - start + 1);
+}
+
+unsigned long long Utils::get_current_time_millis() {
+    return chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now().time_since_epoch())
+        .count();
+}
+
+string Utils::linux_command_line(const char* cmd) {
+    std::array<char, 128> buffer;
+    std::string answer;
+    FILE* pipe = popen(cmd, "r");
+    if (!pipe) {
+        Utils::error("Command line failed");
+        return "";
+    }
+    try {
+        while (fgets(buffer.data(), buffer.size(), pipe) != nullptr) {
+            answer += buffer.data();
+        }
+    } catch (...) {
+        pclose(pipe);
+        throw;
+    }
+    pclose(pipe);
+    return answer;
+}
+
+unsigned long Utils::get_current_free_ram() {
+    return std::stol(Utils::linux_command_line(
+        "cat /proc/meminfo | grep MemAvailable | rev | cut -d\" \" -f2 | rev"));
+}
+
+unsigned long Utils::get_current_ram_usage() {
+    using std::ifstream;
+    using std::ios_base;
+    using std::string;
+
+    // double vm_usage = 0.0;
+    double resident_set = 0.0;
+
+    ifstream stat_stream("/proc/self/stat", ios_base::in);
+
+    // Not actually used
+    string pid, comm, state, ppid, pgrp, session, tty_nr;
+    string tpgid, flags, minflt, cminflt, majflt, cmajflt;
+    string utime, stime, cutime, cstime, priority, nice;
+    string O, itrealvalue, starttime;
+
+    unsigned long vsize;
+    long rss;
+
+    stat_stream >> pid >> comm >> state >> ppid >> pgrp >> session >> tty_nr >> tpgid >> flags >>
+        minflt >> cminflt >> majflt >> cmajflt >> utime >> stime >> cutime >> cstime >> priority >>
+        nice >> O >> itrealvalue >> starttime >> vsize >> rss;
+
+    stat_stream.close();
+
+    long page_size_kb = sysconf(_SC_PAGE_SIZE) / 1024;
+    // vm_usage = vsize / 1024.0;
+    resident_set = rss * page_size_kb;
+
+    return (unsigned long) resident_set;
+}
+
+bool Utils::is_port_available(unsigned int port) {
+    int socket_descriptor;
+    struct sockaddr_in my_addr;
+
+    socket_descriptor = socket(AF_INET, SOCK_STREAM, 0);
+    if (socket_descriptor == -1) {
+        return false;
+    }
+
+    my_addr.sin_family = AF_INET;
+    my_addr.sin_port = htons(port);
+    my_addr.sin_addr.s_addr = INADDR_ANY;
+    bzero(&(my_addr.sin_zero), 8);
+
+    if (bind(socket_descriptor, (struct sockaddr*) &my_addr, sizeof(struct sockaddr)) == -1) {
+        return false;
+    }
+
+    close(socket_descriptor);
+    return true;
+}
+
+void Utils::replace_all(string& base_string, const string& from, const string& to) {
+    if (from.empty()) {
+        return;
+    } else {
+        size_t cursor = 0;
+        while ((cursor = base_string.find(from, cursor)) != string::npos) {
+            base_string.replace(cursor, from.length(), to);
+            cursor += to.length();
+        }
+    }
+}
+
+// --------------------------------------------------------------------------------
+// StopWatch
+
+StopWatch::StopWatch() { reset(); }
+
+StopWatch::~StopWatch() {}
+
+void StopWatch::start() {
+    if (running) {
+        stop();
+    }
+    start_time = chrono::steady_clock::now();
+    running = true;
+}
+
+void StopWatch::stop() {
+    if (running) {
+        chrono::steady_clock::time_point check = chrono::steady_clock::now();
+        accumulator = accumulator + (check - start_time);
+        start_time = check;
+        running = false;
+    }
+}
+
+void StopWatch::reset() {
+    running = false;
+    accumulator = chrono::steady_clock::duration::zero();
+}
+
+unsigned long StopWatch::milliseconds() {
+    return chrono::duration_cast<chrono::milliseconds>(accumulator).count();
+}
+
+string StopWatch::str_time() {
+    unsigned long millis = milliseconds();
+
+    unsigned long seconds = millis / 1000;
+    if (seconds > 0) {
+        millis = millis % 1000;
+    }
+
+    unsigned long minutes = seconds / 60;
+    if (minutes > 0) {
+        seconds = seconds % 60;
+    }
+
+    unsigned long hours = minutes / 60;
+    if (hours > 0) {
+        minutes = minutes % 60;
+    }
+
+    if (hours > 0) {
+        return to_string(hours) + " hours " + to_string(minutes) + " mins";
+    } else if (minutes > 0) {
+        return to_string(minutes) + " mins " + to_string(seconds) + " secs";
+    } else {
+        return to_string(seconds) + " secs " + to_string(millis) + " millis";
+    }
+}
+
+void Utils::retry_function(function<void()> func,
+                           unsigned int max_retries,
+                           unsigned int wait_millis,
+                           const string& function_name) {
+    unsigned int attempt = 0;
+    while (attempt < max_retries) {
+        try {
+            func();
+            return;  // Success
+        } catch (const exception& e) {
+            attempt++;
+            LOG_ERROR("Attempt " + to_string(attempt) + " failed for function " + function_name + ": " +
+                      string(e.what()));
+            if (attempt < max_retries) {
+                Utils::sleep(wait_millis);
+            } else {
+                LOG_ERROR("All " + to_string(max_retries) + " attempts failed for function " +
+                          function_name);
+                throw;  // Rethrow the last exception
+            }
+        }
+    }
+}
+
+// --------------------------------------------------------------------------------
+// MemoryFootprint
+
+MemoryFootprint::MemoryFootprint() {
+    this->running = false;
+    this->start_snapshot = 0L;
+    this->last_snapshot = 0L;
+    this->final_snapshot = 0L;
+}
+
+MemoryFootprint::~MemoryFootprint() {}
+
+void MemoryFootprint::start() {
+    this->running = true;
+    this->delta_ram.clear();
+    this->start_snapshot = Utils::get_current_ram_usage();
+    this->last_snapshot = this->start_snapshot;
+}
+
+void MemoryFootprint::check(const string& tag) {
+    if (this->running) {
+        unsigned long snapshot = Utils::get_current_ram_usage();
+        delta_ram.push_back(make_pair(snapshot - this->last_snapshot, tag));
+        this->last_snapshot = snapshot;
+    } else {
+        Utils::error("MemoryFootprint is not running");
+    }
+}
+
+void MemoryFootprint::stop(const string& tag) {
+    if (this->running) {
+        if (tag != "") {
+            check(tag);
+        }
+        this->final_snapshot = Utils::get_current_ram_usage();
+        this->running = false;
+    } else {
+        Utils::error("MemoryFootprint is not running");
+    }
+}
+
+long MemoryFootprint::delta_usage(bool since_last_check) {
+    unsigned long baseline;
+    unsigned long reference;
+    if (since_last_check) {
+        baseline = this->last_snapshot;
+    } else {
+        baseline = this->start_snapshot;
+    }
+    if (this->running) {
+        reference = Utils::get_current_ram_usage();
+    } else {
+        reference = this->final_snapshot;
+    }
+    return reference - baseline;
+}
+
+string MemoryFootprint::to_string() {
+    string answer = "{Begin: " + std::to_string(this->start_snapshot) + ", End: ";
+    if (this->running) {
+        answer += std::to_string(this->final_snapshot);
+    } else {
+        answer += std::to_string(this->last_snapshot);
+    }
+    answer += ", Delta: " + std::to_string(delta_usage()) + ", Checkpoints: [";
+    bool empty_flag = true;
+    for (auto pair : this->delta_ram) {
+        answer += "(\"" + pair.second + "\", " + std::to_string(pair.first) + ")";
+        answer += ", ";
+        empty_flag = false;
+    }
+    if (!empty_flag) {
+        answer.pop_back();
+        answer.pop_back();
+    }
+    answer += "]}";
+    return answer;
+}
+
+// --------------------------------------------------------------------------------

@@ -1,0 +1,38 @@
+Source: cogplan9
+Section: kernel
+Priority: optional
+Maintainer: AGI-OS Development Team <dev@agi-os.org>
+Build-Depends: debhelper-compat (= 13),
+               build-essential,
+               gcc,
+               binutils
+Standards-Version: 4.6.0
+Homepage: https://github.com/o9nn/agi-os
+Vcs-Git: https://github.com/o9nn/agi-os.git
+Vcs-Browser: https://github.com/o9nn/agi-os
+
+Package: cogplan9
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, inferno-kernel (>= 1.0)
+Description: Plan9-based cognitive operating system
+ CogPlan9 is an AGI-enabled extension of the Plan 9 operating system
+ that integrates cognitive computing capabilities based on the OpenCog
+ framework.
+ .
+ Key features:
+  - Plan9 cognitive kernel extensions
+  - 9P cognitive file servers
+  - libatomspace (Plan9 native implementation)
+  - libpln (Probabilistic Logic Networks)
+  - Cognitive syscalls
+  - MachSpace (distributed hypergraph)
+  - Cognitive Fusion Reactor
+  - ECAN (Economic Attention Network)
+  - Integration with Inferno kernel
+
+Package: cogplan9-dev
+Architecture: any
+Depends: cogplan9 (= ${binary:Version}), ${misc:Depends}
+Description: Development files for CogPlan9
+ Development headers, libraries, and tools for building applications
+ on the CogPlan9 cognitive operating system.
