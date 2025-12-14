@@ -1,571 +1,304 @@
 # AGI-OS Build Dependency Map
 
-## Overview
+## Date: 2025-12-14
 
-This document maps all build dependencies across CogNumach, HurdCog, and OpenCog subsystems, identifying shared components and optimal build order.
+## Layer Architecture
 
-## Dependency Layers
+### Layer 0: Inferno Kernel (Foundation)
+**Location**: `core/inferno-kernel/`
+**Build System**: CMake + Limbo
+**Dependencies**: None (kernel layer)
+**Components**:
+- Inferno OS core
+- 9P protocol implementation
+- Vortex (Matula numbers + vorticity)
+- Morphule (agentic functions)
+- Egregore (daemon constellations)
+- Styx protocol
+- Dis virtual machine
 
-### Layer 0: Build Tools
+### Layer 0.5: Build Tools
+**Location**: `core/microkernel/cognumach/mig/`
+**Build System**: Autotools
+**Dependencies**: None
+**Components**:
+- MIG (Mach Interface Generator)
+- MIDL parser
+- C code generator
+- RPC stub generator
 
-```
-mig (Mach Interface Generator)
-├── Location: core/microkernel/cognumach/mig/
-├── Used by: cognumach, hurdcog
-├── Type: Code generator for Mach IPC
-└── Build: autotools-based
-```
+**ISSUE**: MIG duplicated in:
+- `core/microkernel/cognumach/mig/` (FULL - 40+ files)
+- `core/os/hurdcog/external/hurd-repos/mig/` (STUB - 1 README)
 
-**Shared Dependency Resolution**:
-- Primary location: `core/microkernel/cognumach/mig/`
-- Symlink in hurdcog: `core/os/hurdcog/mig -> ../../microkernel/cognumach/mig`
-- Status: ✅ Correctly configured
+**RESOLUTION**: Keep cognumach/mig as primary, create symlink from hurdcog
 
-### Layer 1: Microkernel (CogNumach)
+### Layer 1: CogNumach Microkernel
+**Location**: `core/microkernel/cognumach/`
+**Build System**: Autotools
+**Dependencies**: 
+- MIG (Layer 0.5)
+**Components**:
+- GNU Mach kernel
+- Cognitive scheduling extensions
+- IPC mechanisms
+- Memory management
+- Thread management
 
-```
-cognumach (GNU Mach + Cognitive Extensions)
-├── Location: core/microkernel/cognumach/
-├── Dependencies: mig
-├── Provides: Mach IPC, cognitive scheduling primitives
-├── Build System: autotools (configure, make)
-└── Build Order: 1
-```
+### Layer 2: HurdCog Operating System
+**Location**: `core/os/hurdcog/`
+**Build System**: Autotools
+**Dependencies**:
+- CogNumach (Layer 1)
+- MIG (Layer 0.5)
+**Components**:
+- GNU Hurd translators
+- Cognitive translators
+- Filesystem servers
+- Network servers
+- Device drivers
+- AtomSpace-Hurd bridge
 
-**Key Components**:
-- `mig/` - Mach Interface Generator
-- `include/` - Mach kernel headers
-- `kern/` - Kernel core
-- `ipc/` - Inter-process communication
-- `vm/` - Virtual memory management
+### Layer 3: OpenCog Collection (OCC)
 
-### Layer 2: Operating System (HurdCog)
+#### Layer 3.1: Foundation
+**Build Order**: 1
+**Dependencies**: None
 
-```
-hurdcog (GNU Hurd + Cognitive Extensions)
-├── Location: core/os/hurdcog/
-├── Dependencies: cognumach, mig
-├── Provides: Cognitive translators, semantic filesystem
-├── Build System: autotools (configure, make)
-└── Build Order: 2
-```
+1. **cogutil**
+   - Location: `core/cognition/foundation/cogutil/`
+   - Dependencies: None
+   - Provides: Utility functions, logging, configuration
 
-**Key Components**:
-- `mig` (symlink) - Shared with cognumach
-- `libhurd-slab/` - Memory allocator
-- `libhurdbugaddr/` - Debug utilities
-- `trans/` - Translators (filesystem servers)
-- `boot/` - Boot system
-- `exec/` - Process execution
+#### Layer 3.2: Hypergraph Database
+**Build Order**: 2
+**Dependencies**: cogutil
 
-**Shared Dependencies with CogNumach**:
-1. `mig` - Interface generator (symlinked)
-2. Mach headers - From cognumach
-3. IPC definitions - From cognumach
+2. **atomspace**
+   - Location: `core/cognition/foundation/atomspace/`
+   - Dependencies: cogutil
+   - Provides: Hypergraph database, atom types, pattern matching
 
-### Layer 3: OpenCog Foundation
+#### Layer 3.3: Storage Layer (CRITICAL)
+**Build Order**: 3
+**Dependencies**: atomspace
 
-#### 3.1 CogUtil (Foundation Library)
+3. **atomspace-storage**
+   - Location: `core/cognition/foundation/atomspace-storage/`
+   - Dependencies: atomspace
+   - Provides: Persistence API, file storage, CSV storage
+   - **CRITICAL**: Must be built BEFORE cogserver
 
-```
-cogutil
-├── Location: core/cognition/foundation/cogutil/
-├── Dependencies: None (foundation)
-├── Provides: Utilities, logging, config, backtrace
-├── Build System: CMake
-├── Build Order: 3
-└── Required by: ALL OpenCog components
-```
+#### Layer 3.4: Storage Backends
+**Build Order**: 4
+**Dependencies**: atomspace-storage
 
-**Key Exports**:
-- `libcogutil.so` - Core utilities library
-- Headers: `opencog/util/*.h`
-- CMake: `CogUtilConfig.cmake`
+4. **atomspace-rocks**
+   - Location: `core/cognition/storage/backends/rocks/`
+   - Dependencies: atomspace-storage, RocksDB
 
-#### 3.2 AtomSpace (Hypergraph Database)
+5. **atomspace-pgres**
+   - Location: `core/cognition/storage/backends/postgres/`
+   - Dependencies: atomspace-storage, PostgreSQL
 
-```
-atomspace
-├── Location: core/cognition/foundation/atomspace/
-├── Dependencies: cogutil
-├── Provides: Hypergraph, atoms, truth values, pattern matching
-├── Build System: CMake
-├── Build Order: 4
-└── Required by: ALL cognitive components
-```
+6. **atomspace-cog**
+   - Location: `core/cognition/storage/atomspace-cog/`
+   - Dependencies: atomspace-storage, cogserver
 
-**Key Exports**:
-- `libatomspace.so` - Core hypergraph
-- `libatombase.so` - Base atom types
-- `libatomcore.so` - Core operations
-- Headers: `opencog/atomspace/*.h`
-- CMake: `AtomSpaceConfig.cmake`
+#### Layer 3.5: Network Services
+**Build Order**: 5
+**Dependencies**: atomspace, atomspace-storage
 
-**Language Bindings**:
-- Python: `opencog/cython/`
-- Guile: `opencog/guile/`
-- Haskell: `opencog/haskell/`
+7. **cogserver**
+   - Location: `core/cognition/foundation/cogserver/`
+   - Dependencies: atomspace, atomspace-storage
+   - Provides: Network shell, module loading, REPL
 
-#### 3.3 AtomSpace Storage
+#### Layer 3.6: Reasoning
+**Build Order**: 6
+**Dependencies**: atomspace
 
-```
-atomspace-storage
-├── Location: core/cognition/foundation/atomspace-storage/
-├── Dependencies: cogutil, atomspace
-├── Provides: Persistence, storage backends
-├── Build System: CMake
-├── Build Order: 5
-└── Required by: cogserver, distributed systems
-```
+8. **unify**
+   - Location: `core/cognition/reasoning/unify/`
+   - Dependencies: atomspace
 
-**Storage Backends** (in `core/cognition/storage/`):
-- `atomspace-rocks/` - RocksDB backend
-- `atomspace-pgres/` - PostgreSQL backend
-- `atomspace-cog/` - CogServer backend
-- `atomspace-machspace/` - Mach IPC backend (for HurdCog integration)
+9. **ure** (Unified Rule Engine)
+   - Location: `core/cognition/reasoning/ure/`
+   - Dependencies: atomspace, unify
 
-### Layer 4: OpenCog Network
+10. **pln** (Probabilistic Logic Networks)
+    - Location: `core/cognition/reasoning/pln/`
+    - Dependencies: atomspace, ure
 
-```
-cogserver
-├── Location: core/cognition/foundation/cogserver/
-├── Dependencies: cogutil, atomspace, atomspace-storage
-├── Provides: Network API, shell, modules
-├── Build System: CMake
-├── Build Order: 6
-└── Required by: Distributed cognition
-```
+11. **spacetime**
+    - Location: `core/cognition/reasoning/spacetime/`
+    - Dependencies: atomspace
 
-**Key Exports**:
-- `libcogserver.so` - Network server
-- Shell interface
-- Module loading system
+#### Layer 3.7: Attention
+**Build Order**: 7
+**Dependencies**: atomspace
 
-### Layer 5: OpenCog Reasoning
+12. **attention** (ECAN)
+    - Location: `core/cognition/attention/ecan/`
+    - Dependencies: atomspace, cogserver
 
-#### 5.1 PLN (Probabilistic Logic Networks)
+#### Layer 3.8: Learning
+**Build Order**: 8
+**Dependencies**: atomspace
 
-```
-pln
-├── Location: core/cognition/reasoning/pln/
-├── Dependencies: cogutil, atomspace
-├── Provides: Deduction, induction, abduction
-├── Build System: CMake
-└── Build Order: 7
-```
+13. **learn**
+    - Location: `core/cognition/learning/learn/`
+    - Dependencies: atomspace, cogserver
 
-#### 5.2 URE (Unified Rule Engine)
+14. **miner**
+    - Location: `core/cognition/learning/miner/`
+    - Dependencies: atomspace, ure
 
-```
-ure
-├── Location: core/cognition/reasoning/ure/
-├── Dependencies: cogutil, atomspace
-├── Provides: Forward/backward chaining
-├── Build System: CMake
-└── Build Order: 7 (parallel with PLN)
-```
+15. **asmoses**
+    - Location: `core/cognition/foundation/asmoses/`
+    - Dependencies: atomspace, cogutil
 
-#### 5.3 Unify
+#### Layer 3.9: Language
+**Build Order**: 9
+**Dependencies**: atomspace
 
-```
-unify
-├── Location: core/cognition/reasoning/unify/
-├── Dependencies: cogutil, atomspace
-├── Provides: Unification, pattern matching
-├── Build System: CMake
-└── Build Order: 7 (parallel with PLN, URE)
-```
+16. **link-grammar**
+    - Location: `core/cognition/language/link-grammar/`
+    - Dependencies: None (external)
 
-#### 5.4 SpaceTime
+17. **lg-atomese**
+    - Location: `core/cognition/language/lg-atomese/`
+    - Dependencies: atomspace, link-grammar
 
-```
-spacetime
-├── Location: core/cognition/reasoning/spacetime/
-├── Dependencies: cogutil, atomspace
-├── Provides: Spatial/temporal reasoning
-├── Build System: CMake
-└── Build Order: 7 (parallel with others)
-```
+#### Layer 3.10: Agents
+**Build Order**: 10
+**Dependencies**: atomspace
 
-### Layer 6: OpenCog Attention
+18. **agents**
+    - Location: `core/cognition/foundation/agents/`
+    - Dependencies: atomspace
 
-```
-ecan (Economic Attention Networks)
-├── Location: core/cognition/attention/ecan/
-├── Dependencies: cogutil, atomspace
-├── Provides: STI, LTI, attention allocation
-├── Build System: CMake
-└── Build Order: 8
-```
+### Layer 4: Integration Layer
+**Location**: `core/integration/cognitive-grip/`
+**Build System**: CMake
+**Dependencies**: All of Layer 3
+**Components**:
+- Unified API abstraction
+- Cross-layer communication
+- Cognitive synergy coordination
 
-**Key Components**:
-- `attentionbank/` - Attention value management
-- `avalue/` - Attention value types
-- `bank/` - Attention allocation algorithms
-
-### Layer 7: OpenCog Learning
-
-#### 7.1 Learn
+## Build Dependency Graph (Correct Order)
 
 ```
-learn
-├── Location: core/cognition/foundation/learn/
-├── Dependencies: cogutil, atomspace
-├── Provides: Symbolic learning
-├── Build System: CMake
-└── Build Order: 9
+Layer 0: Inferno Kernel
+  └─> Layer 0.5: MIG
+       └─> Layer 1: CogNumach
+            └─> Layer 2: HurdCog
+                 └─> Layer 3: OpenCog Collection
+                      ├─> cogutil (no deps)
+                      ├─> atomspace (→ cogutil)
+                      ├─> atomspace-storage (→ atomspace) ⭐ CRITICAL
+                      ├─> atomspace-rocks (→ atomspace-storage)
+                      ├─> atomspace-pgres (→ atomspace-storage)
+                      ├─> cogserver (→ atomspace, atomspace-storage)
+                      ├─> atomspace-cog (→ atomspace-storage, cogserver)
+                      ├─> unify (→ atomspace)
+                      ├─> ure (→ atomspace, unify)
+                      ├─> pln (→ atomspace, ure)
+                      ├─> spacetime (→ atomspace)
+                      ├─> attention (→ atomspace, cogserver)
+                      ├─> learn (→ atomspace, cogserver)
+                      ├─> miner (→ atomspace, ure)
+                      ├─> asmoses (→ atomspace, cogutil)
+                      ├─> link-grammar (no deps)
+                      ├─> lg-atomese (→ atomspace, link-grammar)
+                      └─> agents (→ atomspace)
+                      └─> Layer 4: Cognitive-Grip (→ all Layer 3)
 ```
 
-#### 7.2 Miner
+## MIG Consolidation Plan
 
-```
-miner
-├── Location: core/cognition/learning/miner/
-├── Dependencies: cogutil, atomspace, ure
-├── Provides: Pattern mining
-├── Build System: CMake
-└── Build Order: 9
-```
+### Current State
+- **Primary**: `core/microkernel/cognumach/mig/` (40+ files, complete implementation)
+- **Duplicate**: `core/os/hurdcog/external/hurd-repos/mig/` (1 README file)
 
-#### 7.3 MOSES
+### Resolution
+1. Keep `core/microkernel/cognumach/mig/` as the authoritative source
+2. Remove `core/os/hurdcog/external/hurd-repos/mig/`
+3. Create symlink: `core/os/hurdcog/external/hurd-repos/mig -> ../../../../microkernel/cognumach/mig`
+4. Update HurdCog build scripts to reference cognumach MIG
 
-```
-moses
-├── Location: core/cognition/learning/moses/
-├── Dependencies: cogutil, atomspace
-├── Provides: Program evolution
-├── Build System: CMake
-└── Build Order: 9
-```
+## Debian Packaging Dependencies
 
-#### 7.4 AS-MOSES
+All packages must be built in dependency order:
 
-```
-asmoses
-├── Location: core/cognition/foundation/asmoses/
-├── Dependencies: cogutil, atomspace, moses
-├── Provides: AtomSpace-based MOSES
-├── Build System: CMake
-└── Build Order: 10 (after moses)
-```
+1. `inferno-kernel` (Layer 0)
+2. `cognumach-mig` (Layer 0.5)
+3. `cognumach` (Layer 1)
+4. `hurdcog` (Layer 2)
+5. `cogutil` (Layer 3.1)
+6. `atomspace` (Layer 3.2)
+7. `atomspace-storage` (Layer 3.3) ⭐
+8. `atomspace-rocks`, `atomspace-pgres` (Layer 3.4)
+9. `cogserver` (Layer 3.5)
+10. `pln`, `ure`, `unify`, `spacetime` (Layer 3.6)
+11. `attention` (Layer 3.7)
+12. `learn`, `miner`, `asmoses` (Layer 3.8)
+13. `link-grammar`, `lg-atomese` (Layer 3.9)
+14. `agents` (Layer 3.10)
+15. `cognitive-grip` (Layer 4)
 
-### Layer 8: OpenCog Generation
+## Integration Points
 
-```
-generate
-├── Location: core/cognition/generation/generate/
-├── Dependencies: cogutil, atomspace
-├── Provides: Content generation
-├── Build System: CMake
-└── Build Order: 11
-```
+### Inferno ↔ CogNumach
+- 9P protocol for IPC
+- Styx protocol compatibility
+- Shared namespace concepts
 
-### Layer 9: OpenCog Language
+### CogNumach ↔ HurdCog
+- MIG-generated interfaces
+- Mach IPC primitives
+- Kernel services
 
-#### 9.1 Link Grammar
+### HurdCog ↔ OpenCog
+- AtomSpace-Hurd bridge
+- Cognitive translators
+- Semantic filesystem
 
-```
-link-grammar
-├── Location: core/cognition/language/link-grammar/
-├── Dependencies: None (external)
-├── Provides: Syntactic parsing
-├── Build System: CMake
-└── Build Order: 12
-```
-
-#### 9.2 LG-AtomESE
-
-```
-lg-atomese
-├── Location: core/cognition/language/lg-atomese/
-├── Dependencies: cogutil, atomspace, link-grammar
-├── Provides: Link Grammar → AtomSpace
-├── Build System: CMake
-└── Build Order: 13
-```
-
-#### 9.3 RelEx
-
-```
-relex
-├── Location: core/cognition/language/relex/
-├── Dependencies: cogutil, atomspace, link-grammar
-├── Provides: Semantic relation extraction
-├── Build System: CMake/Java
-└── Build Order: 13
-```
-
-### Layer 10: OpenCog Perception
-
-```
-vision
-├── Location: core/cognition/perception/vision/
-├── Dependencies: cogutil, atomspace
-├── Provides: Visual processing
-├── Build System: CMake
-└── Build Order: 14
-```
-
-### Layer 11: OpenCog Specialized
-
-```
-agi-bio
-├── Location: core/cognition/specialized/agi-bio/
-├── Dependencies: cogutil, atomspace, pln
-├── Provides: Bioinformatics reasoning
-├── Build System: CMake
-└── Build Order: 15
-```
-
-### Layer 12: Additional Components
-
-#### 12.1 CogBolt
-
-```
-cogbolt
-├── Location: cogbolt/
-├── Dependencies: C++ standard library, optional OpenCog
-├── Provides: AI-powered IDE core
-├── Build System: CMake
-└── Build Order: 16 (independent)
-```
-
-#### 12.2 Consciousness Layer
-
-```
-consciousness
-├── Location: consciousness/
-├── Dependencies: cogutil, atomspace, attention
-├── Provides: Consciousness mechanisms
-├── Build System: CMake
-└── Build Order: 17
-```
-
-#### 12.3 Personification Layer
-
-```
-personification
-├── Location: personification/
-├── Dependencies: cogutil, atomspace, consciousness
-├── Provides: Personality and identity
-├── Build System: CMake
-└── Build Order: 18
-```
-
-## Optimal Build Order
-
-### Sequential Build Order
-
-```
-1. mig                      (Layer 0: Build Tools)
-2. cognumach                (Layer 1: Microkernel)
-3. hurdcog                  (Layer 2: Operating System)
-4. cogutil                  (Layer 3: Foundation)
-5. atomspace                (Layer 3: Foundation)
-6. atomspace-storage        (Layer 3: Foundation)
-7. cogserver                (Layer 4: Network)
-8. pln, ure, unify, spacetime  (Layer 5: Reasoning - parallel)
-9. ecan                     (Layer 6: Attention)
-10. learn, miner, moses     (Layer 7: Learning - parallel)
-11. asmoses                 (Layer 7: Learning)
-12. generate                (Layer 8: Generation)
-13. link-grammar            (Layer 9: Language)
-14. lg-atomese, relex       (Layer 9: Language - parallel)
-15. vision                  (Layer 10: Perception)
-16. agi-bio                 (Layer 11: Specialized)
-17. cogbolt                 (Layer 12: IDE - independent)
-18. consciousness           (Layer 12: Consciousness)
-19. personification         (Layer 12: Personification)
-```
-
-### Parallel Build Opportunities
-
-**Group 1: Reasoning Components** (can build in parallel)
-- pln
-- ure
-- unify
-- spacetime
-
-**Group 2: Learning Components** (can build in parallel after moses)
-- learn
-- miner
-
-**Group 3: Language Components** (can build in parallel after link-grammar)
-- lg-atomese
-- relex
-
-**Group 4: Independent Components** (can build anytime)
-- cogbolt (no OpenCog dependencies)
-
-## Critical Dependencies
-
-### Must Build First (Blockers)
-
-1. **cogutil** - Required by ALL OpenCog components
-2. **atomspace** - Required by ALL cognitive components
-3. **atomspace-storage** - Required by cogserver and distributed systems
-4. **mig** - Required by cognumach and hurdcog
-
-### Circular Dependencies
-
-**None identified** - Clean dependency graph
-
-### Optional Dependencies
-
-1. **Haskell bindings** - Optional for atomspace
-2. **Python bindings** - Optional but recommended
-3. **Guile bindings** - Optional but recommended for Scheme interface
-
-## Shared Build Artifacts
-
-### Libraries
-
-| Library | Location | Used By |
-|---------|----------|---------|
-| `libcogutil.so` | cogutil | ALL OpenCog components |
-| `libatomspace.so` | atomspace | ALL cognitive components |
-| `libatombase.so` | atomspace | ALL cognitive components |
-| `libatomcore.so` | atomspace | ALL cognitive components |
-| `libattentionbank.so` | ecan | Attention-aware components |
-| `libcogserver.so` | cogserver | Network clients |
-
-### Headers
-
-| Header Path | Provided By | Used By |
-|-------------|-------------|---------|
-| `opencog/util/*.h` | cogutil | ALL |
-| `opencog/atomspace/*.h` | atomspace | ALL cognitive |
-| `opencog/attentionbank/*.h` | ecan | Attention components |
-| `mach/*.h` | cognumach | hurdcog |
-
-### CMake Config Files
-
-| Config | Location | Purpose |
-|--------|----------|---------|
-| `CogUtilConfig.cmake` | cogutil | Find cogutil |
-| `AtomSpaceConfig.cmake` | atomspace | Find atomspace |
-| `AttentionConfig.cmake` | ecan | Find attention |
-| `CogServerConfig.cmake` | cogserver | Find cogserver |
+### OpenCog ↔ Cognitive-Grip
+- Unified API
+- Cross-component communication
+- Cognitive synergy
 
 ## Build System Integration
 
-### CMake Dependency Chain
+### Inferno Kernel
+- Primary: CMake (for C components)
+- Secondary: Limbo compiler (for Limbo modules)
+- Output: Kernel image, libraries, tools
 
-```cmake
-# Root CMakeLists.txt
-add_subdirectory(core/cognition/foundation/cogutil)         # 1
-add_subdirectory(core/cognition/foundation/atomspace)       # 2 (needs cogutil)
-add_subdirectory(core/cognition/foundation/atomspace-storage) # 3 (needs atomspace)
-add_subdirectory(core/cognition/foundation/cogserver)       # 4 (needs storage)
-add_subdirectory(core/cognition/reasoning/pln)              # 5 (needs atomspace)
-add_subdirectory(core/cognition/reasoning/ure)              # 5 (needs atomspace)
-add_subdirectory(core/cognition/reasoning/unify)            # 5 (needs atomspace)
-add_subdirectory(core/cognition/reasoning/spacetime)        # 5 (needs atomspace)
-add_subdirectory(core/cognition/attention/ecan)             # 6 (needs atomspace)
-add_subdirectory(core/cognition/foundation/learn)           # 7 (needs atomspace)
-add_subdirectory(core/cognition/learning/miner)             # 7 (needs ure)
-add_subdirectory(core/cognition/learning/moses)             # 7 (needs atomspace)
-add_subdirectory(core/cognition/foundation/asmoses)         # 8 (needs moses)
-add_subdirectory(core/cognition/generation/generate)        # 9 (needs atomspace)
-add_subdirectory(core/cognition/language/link-grammar)      # 10 (independent)
-add_subdirectory(core/cognition/language/lg-atomese)        # 11 (needs link-grammar)
-add_subdirectory(core/cognition/language/relex)             # 11 (needs link-grammar)
-add_subdirectory(core/cognition/perception/vision)          # 12 (needs atomspace)
-add_subdirectory(core/cognition/specialized/agi-bio)        # 13 (needs pln)
-add_subdirectory(cogbolt)                                   # 14 (independent)
-add_subdirectory(consciousness)                             # 15 (needs attention)
-add_subdirectory(personification)                           # 16 (needs consciousness)
-```
+### CogNumach/HurdCog
+- Primary: Autotools (configure, make)
+- Dependencies: MIG (autotools)
+- Output: Kernel binaries, headers
 
-### Autotools Dependency Chain
+### OpenCog Collection
+- Primary: CMake
+- All components use CMake
+- Output: Libraries, executables, Python/Guile bindings
 
-```bash
-# CogNumach (autotools)
-cd core/microkernel/cognumach
-autoreconf -fi
-./configure --prefix=/usr/local
-make -j$(nproc)
-make install
+### Integration Strategy
+1. Root CMakeLists.txt coordinates all layers
+2. Autotools components built via ExternalProject_Add
+3. Proper dependency ordering enforced
+4. Parallel builds where possible
 
-# HurdCog (autotools, needs cognumach)
-cd core/os/hurdcog
-autoreconf -fi
-./configure --prefix=/usr/local --with-mach=/usr/local
-make -j$(nproc)
-make install
-```
+## Next Steps
 
-## Inferno Kernel Integration Points
-
-### New Dependencies for Inferno Integration
-
-```
-inferno-kernel
-├── Dependencies: None (new foundation)
-├── Provides: Dis VM, 9P protocol, Limbo runtime
-├── Build System: Custom (Inferno build system)
-└── Build Order: 0 (before or parallel with cognumach)
-
-atomspace-9p
-├── Dependencies: inferno-kernel, atomspace
-├── Provides: AtomSpace as 9P file servers
-├── Build System: CMake + Limbo
-└── Build Order: After atomspace
-
-pln-9p
-├── Dependencies: atomspace-9p, pln
-├── Provides: PLN reasoning via 9P
-├── Build System: CMake + Limbo
-└── Build Order: After pln
-
-ecan-9p
-├── Dependencies: atomspace-9p, ecan
-├── Provides: ECAN attention via 9P
-├── Build System: CMake + Limbo
-└── Build Order: After ecan
-
-distributed-cognition
-├── Dependencies: atomspace-9p, pln-9p, ecan-9p
-├── Provides: Distributed reasoning
-├── Build System: CMake + Limbo
-└── Build Order: After all 9P components
-```
-
-## Summary
-
-### Total Components: 30+
-
-- **Microkernel**: 1 (cognumach)
-- **Operating System**: 1 (hurdcog)
-- **Foundation**: 6 (cogutil, atomspace, atomspace-storage, cogserver, learn, asmoses)
-- **Reasoning**: 4 (pln, ure, unify, spacetime)
-- **Attention**: 1 (ecan)
-- **Learning**: 2 (miner, moses)
-- **Generation**: 1 (generate)
-- **Language**: 3 (link-grammar, lg-atomese, relex)
-- **Perception**: 1 (vision)
-- **Specialized**: 1 (agi-bio)
-- **Additional**: 3 (cogbolt, consciousness, personification)
-- **Storage Backends**: 4+ (rocks, pgres, cog, machspace)
-
-### Build Time Estimate
-
-- **Sequential**: ~4-6 hours (depending on hardware)
-- **Parallel (8 cores)**: ~1-2 hours
-- **With Inferno integration**: +2-4 hours
-
-### Critical Path
-
-```
-cogutil → atomspace → atomspace-storage → cogserver
-                   ↓
-                  pln → agi-bio
-                   ↓
-                 ecan → consciousness → personification
-```
-
----
-
-**Document Version**: 1.0  
-**Date**: December 13, 2025  
-**Status**: Complete dependency analysis
+1. ✅ Integrate infernos → core/inferno-kernel/
+2. 🔄 Consolidate MIG to single location
+3. 🔄 Update build scripts for correct dependency order
+4. 🔄 Complete debian packaging for all components
+5. 🔄 Implement cognitive-grip integration layer
+6. 🔄 Test full build
+7. 🔄 Commit and push changes

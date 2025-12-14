@@ -1,0 +1,97 @@
+# Build system for distributed agentic cognitive grammar
+
+# Include paths for agentic cognitive grammar components
+INCLUDES = -I../ggml_tensor_kernels -I../nyacc_seeds -I../distributed_namespaces -I../limbo_extensions -I../dis_vm_extensions
+
+# Source files for GGML tensor kernels
+TENSOR_SRC = ../ggml_tensor_kernels/tensor_ops.c
+
+# Source files for NYACC seeds
+NYACC_SRC = ../nyacc_seeds/neural_grammar.c
+
+# Source files for distributed namespaces
+NS_SRC = ../distributed_namespaces/distributed_ns.c
+
+# Source files for Dis VM extensions
+DIS_SRC = ../dis_vm_extensions/tensor_dis.c
+
+# Limbo source files
+LIMBO_SRC = ../limbo_extensions/agentic_limbo.b
+
+# Object files
+TENSOR_OBJ = $TENSOR_SRC:r.$O
+NYACC_OBJ = $NYACC_SRC:r.$O
+NS_OBJ = $NS_SRC:r.$O
+DIS_OBJ = $DIS_SRC:r.$O
+LIMBO_OBJ = $LIMBO_SRC:r.$O
+
+# Main target
+all: agentic_cognitive_grammar.$O
+
+# Build agentic cognitive grammar object
+agentic_cognitive_grammar.$O: $TENSOR_OBJ $NYACC_OBJ $NS_OBJ $DIS_OBJ
+	$LD $LDFLAGS -o agentic_cognitive_grammar.$O $TENSOR_OBJ $NYACC_OBJ $NS_OBJ $DIS_OBJ
+
+# Build tensor operations
+$TENSOR_OBJ: $TENSOR_SRC
+	$CC $CFLAGS $INCLUDES -c $TENSOR_SRC -o $TENSOR_OBJ
+
+# Build neural grammar
+$NYACC_OBJ: $NYACC_SRC
+	$CC $CFLAGS $INCLUDES -c $NYACC_SRC -o $NYACC_OBJ
+
+# Build distributed namespaces
+$NS_OBJ: $NS_SRC
+	$CC $CFLAGS $INCLUDES -c $NS_SRC -o $NS_OBJ
+
+# Build Dis VM extensions
+$DIS_OBJ: $DIS_SRC
+	$CC $CFLAGS $INCLUDES -c $DIS_SRC -o $DIS_OBJ
+
+# Build Limbo extensions
+$LIMBO_OBJ: $LIMBO_SRC
+	$LC $LFLAGS -o $LIMBO_OBJ $LIMBO_SRC
+
+# Install target
+install: all
+	cp agentic_cognitive_grammar.$O /dis/
+	cp $LIMBO_OBJ /dis/
+
+# Clean target
+clean:
+	rm -f *.o *.dis agentic_cognitive_grammar.$O
+
+# Test target
+test: all
+	# Run tests for agentic cognitive grammar
+	./test_agentic_cognitive_grammar
+
+# Documentation target
+docs:
+	# Generate documentation for agentic cognitive grammar
+	./generate_docs.sh
+
+# Integration with main Inferno build
+inferno_integration:
+	# Integrate with main Inferno build system
+	cp agentic_cognitive_grammar.$O ../emu/port/
+	cp $LIMBO_OBJ ../dis/
+	
+	# Update main mkfile to include agentic cognitive grammar
+	echo "AGENTIC_OBJ = agentic_cognitive_grammar.$O" >> ../mkfile
+	echo "AGENTIC_LIMBO = agentic_limbo.dis" >> ../mkfile
+	
+	# Add to build dependencies
+	echo "all: \$AGENTIC_OBJ \$AGENTIC_LIMBO" >> ../mkfile
+
+# Development target
+dev: all
+	# Start development environment
+	./start_dev_environment.sh
+
+# Distribution target
+dist: all
+	# Create distribution package
+	./create_distribution.sh
+
+.PHONY: all install clean test docs inferno_integration dev dist

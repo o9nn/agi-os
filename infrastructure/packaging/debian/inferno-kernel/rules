@@ -1,0 +1,27 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE = 1
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+%:
+dh $@ --buildsystem=cmake
+
+override_dh_auto_configure:
+dh_auto_configure -- \
+\
+STALL_PREFIX=/usr \
+FERNO_KERNEL=ON \
+
+
+override_dh_auto_test:
+# Skip tests for now
+true
+
+override_dh_install:
+dh_install
+# Install additional documentation
+mkdir -p debian/inferno-kernel/usr/share/doc/inferno-kernel
+cp core/inferno-kernel/README.md debian/inferno-kernel/usr/share/doc/inferno-kernel/ || true
+cp core/inferno-kernel/OPENCOG_*.md debian/inferno-kernel/usr/share/doc/inferno-kernel/ || true

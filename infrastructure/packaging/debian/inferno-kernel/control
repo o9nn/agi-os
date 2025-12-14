@@ -1,65 +1,40 @@
 Source: inferno-kernel
-Section: libs
+Section: kernel
 Priority: optional
 Maintainer: AGI-OS Development Team <dev@agi-os.org>
-Build-Depends: debhelper (>= 11),
+Build-Depends: debhelper-compat (= 13),
                cmake (>= 3.12),
-               gcc (>= 7.0),
-               libpthread-stubs0-dev
-Standards-Version: 4.5.0
+               build-essential,
+               flex,
+               bison,
+               libx11-dev,
+               libxext-dev
+Standards-Version: 4.6.0
 Homepage: https://github.com/o9nn/agi-os
 Vcs-Git: https://github.com/o9nn/agi-os.git
 Vcs-Browser: https://github.com/o9nn/agi-os
 
-Package: libinferno-kernel1
+Package: inferno-kernel
 Architecture: any
-Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Inferno kernel components for AGI-OS
- This package provides the Inferno kernel components including:
-  - Dis Virtual Machine (bytecode interpreter)
-  - 9P Protocol Stack (distributed file protocol)
-  - Limbo Language Runtime
-  - Namespace Management Core
-  - Cognitive Scheduler
+Description: Inferno distributed operating system kernel
+ Inferno is a distributed operating system that provides a unified
+ namespace and 9P protocol for distributed computing. This package
+ provides the Inferno kernel components integrated into AGI-OS.
  .
- These components enable cognitive processing as a fundamental
- kernel service in AGI-OS.
+ Key features:
+  - 9P protocol implementation
+  - Styx protocol support
+  - Dis virtual machine
+  - Limbo programming language
+  - Distributed namespace
+  - Vortex (Matula numbers + vorticity)
+  - Morphule (agentic functions)
+  - Egregore (daemon constellations)
 
-Package: libinferno-kernel-dev
-Section: libdevel
+Package: inferno-kernel-dev
 Architecture: any
-Multi-Arch: same
-Depends: libinferno-kernel1 (= ${binary:Version}), ${misc:Depends}
-Description: Development files for Inferno kernel
- This package contains the development files (headers and static
- libraries) for the Inferno kernel components.
- .
- Install this package if you want to develop applications that
- use Inferno kernel services.
-
-Package: inferno-dis-vm
-Architecture: any
-Depends: libinferno-kernel1 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
-Description: Dis Virtual Machine for Limbo bytecode
- The Dis VM is a bytecode interpreter for the Limbo programming
- language, providing:
-  - Type-safe bytecode execution
-  - Automatic garbage collection
-  - Module loading
-  - Cross-platform portability
- .
- This package provides the Dis VM runtime and tools.
-
-Package: inferno-9p-tools
-Architecture: any
-Depends: libinferno-kernel1 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
-Description: 9P protocol tools and utilities
- This package provides tools and utilities for working with the
- 9P file protocol:
-  - 9P server and client implementations
-  - File operation utilities
-  - Network transparency tools
- .
- The 9P protocol enables distributed file access and is used
- for cognitive operations in AGI-OS.
+Depends: inferno-kernel (= ${binary:Version}), ${misc:Depends}
+Description: Inferno kernel development files
+ Development files, headers, and libraries for building applications
+ that integrate with the Inferno kernel.

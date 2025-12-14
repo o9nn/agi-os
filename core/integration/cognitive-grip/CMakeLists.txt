@@ -22,6 +22,7 @@ include_directories(
 # Source files
 set(SOURCES
     src/cognitive_grip.cpp
+    src/inferno_bridge.cpp
     src/machspace_bridge.cpp
     src/hurdcog_bridge.cpp
     src/cognumach_bridge.cpp
