@@ -5,12 +5,17 @@ project(deep-tree-echo-bridge C)
 # Source files
 set(SOURCES
     vortex_bridge.c
+    emotion_json.c
+    deep_tree_9p.c
+    cJSON.c
 )
 
 # Header files
 set(HEADERS
     vortex_bridge.h
+    emotion_json.h
     deep_tree_9p.h
+    cJSON.h
 )
 
 # Create library
