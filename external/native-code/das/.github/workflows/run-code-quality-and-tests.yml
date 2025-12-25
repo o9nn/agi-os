@@ -1,0 +1,19 @@
+name: Code Quality & Tests
+
+on:
+  workflow_call:
+  pull_request:
+    branches:
+      - develop
+      - master
+  workflow_dispatch:
+
+jobs:
+  format-check:
+    uses: ./.github/workflows/run-format-check.yaml
+
+  unit-tests:
+    needs: format-check
+    uses: ./.github/workflows/run-unit-tests.yml
+    with:
+      runner: self-hosted-withcache

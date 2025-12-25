@@ -1,0 +1,20 @@
+name: Run format check
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  format-check:
+    runs-on: self-hosted-withcache
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup bazel
+        run: .github/scripts/setup_bazel.sh
+
+      - name: Run format check
+        working-directory: ./src
+        run: |
+          ./scripts/bazel_exec.sh run //:format.check

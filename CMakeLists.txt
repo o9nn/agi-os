@@ -381,6 +381,22 @@ IF(BUILD_INTEGRATION_LAYER)
 ENDIF()
 
 # ============================================================================
+# Layer 5: Native Code Integration (External AGI Components)
+# ============================================================================
+
+OPTION(BUILD_NATIVE_CODE_INTEGRATION "Build external AGI component integration" ON)
+IF(BUILD_NATIVE_CODE_INTEGRATION)
+    MESSAGE(STATUS "Building Layer 5: Native Code Integration...")
+    IF(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/native-code/CMakeLists.txt")
+        add_subdirectory(external/native-code)
+        MESSAGE(STATUS "  Native code integration configured")
+        MESSAGE(STATUS "  Components: Hyperon, OpenNARS, GGML, DAS, Soar, Inferno")
+    ELSE()
+        MESSAGE(WARNING "  Native code integration not found at external/native-code/")
+    ENDIF()
+ENDIF()
+
+# ============================================================================
 # Build Summary
 # ============================================================================
 
@@ -417,6 +433,10 @@ MESSAGE(STATUS "Integration Layer: ${BUILD_INTEGRATION_LAYER}")
 MESSAGE(STATUS "")
 MESSAGE(STATUS "Layer 4 - AI Development Tools:")
 MESSAGE(STATUS "  CogBolt IDE Core: ${BUILD_COGBOLT}")
+MESSAGE(STATUS "")
+MESSAGE(STATUS "Layer 5 - Native Code Integration:")
+MESSAGE(STATUS "  Native Code Integration: ${BUILD_NATIVE_CODE_INTEGRATION}")
+MESSAGE(STATUS "  Components: Hyperon/MeTTa, OpenNARS, GGML, DAS")
 MESSAGE(STATUS "")
 MESSAGE(STATUS "CRITICAL DEPENDENCY NOTES:")
 MESSAGE(STATUS "  - CogServer REQUIRES AtomSpace Storage")

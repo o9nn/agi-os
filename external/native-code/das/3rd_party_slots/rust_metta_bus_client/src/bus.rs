@@ -1,0 +1,51 @@
+use std::collections::HashMap;
+
+pub static PATTERN_MATCHING_QUERY_CMD: &str = "pattern_matching_query";
+pub static QUERY_EVOLUTION_CMD: &str = "query_evolution";
+pub static LINK_CREATION_CMD: &str = "link_creation";
+pub static INFERENCE_CMD: &str = "inference";
+pub static CONTEXT_CMD: &str = "context";
+
+#[derive(Debug, Default, Clone)]
+pub struct Bus {
+	pub command_owner: HashMap<String, String>,
+}
+
+impl Bus {
+	pub fn new() -> Self {
+		Default::default()
+	}
+
+	pub fn add(&mut self, command: String) {
+		if let Some(owner) = self.command_owner.get(&command) {
+			if !owner.is_empty() {
+				panic!("Bus: command <{command}> is already assigned to {owner}");
+			}
+		} else {
+			self.command_owner.insert(command, String::new());
+		}
+	}
+
+	pub fn set_ownership(&mut self, command: String, node_id: &str) {
+		if !self.command_owner.contains_key(&command) {
+			panic!("Bus: command <{command}> is not defined");
+		} else {
+			let current_owner = self.command_owner.get(&command).unwrap();
+			if current_owner != node_id {
+				log::trace!(target: "das", "Bus::set_ownership(): Adding {command} to bus, owner: {node_id}");
+				self.command_owner.insert(command.to_string(), node_id.to_string());
+			}
+		}
+	}
+
+	pub fn get_ownership(&self, command: String) -> &str {
+		match self.command_owner.get(&command) {
+			Some(owner) => owner,
+			None => panic!("Bus: unknown command <{command}>"),
+		}
+	}
+
+	pub fn contains(&self, command: String) -> bool {
+		self.command_owner.contains_key(&command)
+	}
+}

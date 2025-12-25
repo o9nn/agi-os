@@ -1,0 +1,233 @@
+{
+  "name": "metta-lsp",
+  "displayName": "metta-lsp",
+  "description": "A language server for MeTTa",
+  "author": "Roy Ward",
+  "license": "LGPL-3.0",
+  "publisher": "RoyWard",
+  "version": "0.2.0",
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "mettalog"
+  ],
+  "engines": {
+    "vscode": "^1.54.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/royward/lsp_server_metta"
+  },
+  "activationEvents": [
+    "onLanguage:metta"
+  ],
+  "main": "./extension",
+  "contributes": {
+    "languages": [
+      {
+        "id": "metta",
+        "aliases": [
+          "metta",
+          "mettalog",
+          "MeTTa",
+          "MeTTaLog",
+          "meTTa",
+          "meTTaLog"
+        ],
+        "configuration": "./metta.config.json",
+        "extensions": [
+          ".meld",
+          ".kif",
+          ".krf",
+          ".metta"
+        ]
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "MeTTa LSP Configuration",
+      "properties": {
+        "metta-lsp.maxNumberOfProblems": {
+          "scope": "resource",
+          "type": "number",
+          "default": 1000,
+          "description": "Configures the maximum number of diagnostic issues the language server will report. Useful for managing performance in larger projects."
+        },
+        "metta-lsp.trace.server": {
+          "scope": "window",
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Controls the verbosity of server communication logs, aiding in debugging and development."
+        },
+        "metta-lsp.features": {
+          "scope": "window",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "codeRefactoring",
+              "codeCommenting",
+              "codeAndErrorExplanation",
+              "systemCodeIndexing",
+              "userCodeIndexing",
+              "foreignCodeIndexing",
+              "codeExecution",
+              "testRunning"
+            ]
+          },
+          "default": [
+            "codeExecution",
+            "systemCodeIndexing",
+            "codeCommenting",
+            "testRunning"
+          ],
+          "description": "Enables selection of specific server features, optimizing functionality based on user needs."
+        },
+        "metta-lsp.debug.showIncompleteFeatures": {
+          "scope": "window",
+          "type": "boolean",
+          "default": false,
+          "description": "Toggles the visibility of in-development features, allowing users to test or preview new functionalities."
+        },
+        "metta-lsp.options": {
+          "scope": "window",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "show_thread_monitor",
+              "show_debug_window",
+              "debug_main",
+              "debug_errors",
+              "debug_threads",
+              "debug_high",
+              "debug_low",
+              "debug_position",
+              "debug_todo",
+              "debug_xref"
+            ]
+          },
+          "default": [
+            "debug_main",
+            "debug_errors",
+            "debug_threads",
+            "debug_high",
+            "debug_todo",
+            "debug_xref"
+          ],
+          "description": "Selects specific debugging features to enable, providing detailed insights into the server's internal operations."
+        },
+        "metta-lsp.xtras.chatgpt.enabled": {
+          "scope": "window",
+          "type": "boolean",
+          "default": true,
+          "description": "Enables integration with ChatGPT for enhanced code assistance, leveraging AI to augment coding capabilities."
+        },
+        "metta-lsp.xtras.chatgpt.alternateUrl": {
+          "scope": "window",
+          "type": "string",
+          "default": "",
+          "description": "Specifies the URL used for sending requests to a non-OpenAI (presumably local) LLM model."
+        },
+        "metta-lsp.xtras.chatgpt.inlineCompletion": {
+          "scope": "window",
+          "type": "boolean",
+          "default": false,
+          "description": "Enable the configured LLM as a source for completions. Note this may slow down completion options being disabled significantly."
+        },
+        "metta-lsp.xtras.chatgpt.apiKey": {
+          "scope": "window",
+          "type": "string",
+          "default": "",
+          "description": "Specifies the API key required for ChatGPT functionality, ensuring secure and authorized access to AI models."
+        },
+        "metta-lsp.xtras.chatgpt.model": {
+          "scope": "window",
+          "type": "string",
+          "default": "gpt-3.5-turbo",
+          "description": "Allows selection of the ChatGPT model version for tailored code assistance, with an option for manual entry to support various OpenAI models."
+        },
+        "metta-lsp.xtras.chatgpt.maxTokens": {
+          "scope": "window",
+          "type": "number",
+          "default": 500,
+          "description": "Defines the limit on token count per ChatGPT interaction, optimizing response length and detail."
+        },
+        "metta-lsp.xtras.chatgpt.temperature": {
+          "scope": "window",
+          "type": "number",
+          "default": 0.7,
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Adjusts the variability of ChatGPT responses, controlling the balance between creativity and consistency."
+        },
+        "metta-lsp.server.mode": {
+          "scope": "window",
+          "type": "string",
+          "enum": [
+            "stdio",
+            "port"
+          ],
+          "default": "port",
+          "description": "Determines how the LSP server is launched: using standard I/O (stdio) or a TCP port."
+        },
+        "metta-lsp.server.spawnProcess": {
+          "scope": "window",
+          "type": "boolean",
+          "default": true,
+          "description": "If 'port' mode is selected, choose whether to spawn a new SWI-Prolog process on that port (true) or connect to an already-running server (false)."
+        },
+        "metta-lsp.server.port": {
+          "scope": "window",
+          "type": "number",
+          "default": 40222,
+          "description": "If using 'port' mode, the TCP port that the LSP server listens on or that the client should connect to."
+        },
+        "metta-lsp.server.address": {
+          "scope": "window",
+          "type": "string",
+          "default": "127.0.0.1",
+          "description": "If using 'port' mode with spawnProcess=false, the hostname or IP address to connect to. Defaults to localhost (127.0.0.1)."
+        },
+        "metta-lsp.server.swiplPath": {
+          "scope": "window",
+          "type": "string",
+          "default": "swipl",
+          "description": "Path to swipl binary to run"
+        },
+        "metta-lsp.server.debugLsp": {
+          "scope": "window",
+          "type": "boolean",
+          "default": false,
+          "description": "When true, load the LSP from `mettalogPath` instead of the installed pack."
+        },
+        "metta-lsp.server.mettalogPath": {
+          "scope": "window",
+          "type": "string",
+          "default": "",
+          "description": "Path to Mettalog installation. Used when 'debugLsp' is true."
+        }
+      }
+    },
+    "grammars": [
+      {
+        "language": "metta",
+        "scopeName": "source.metta",
+        "path": "./syntaxes/mettalanguage.json"
+      }
+    ]
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "vscode": "^1.1.6"
+  }
+}
+

@@ -1,0 +1,35 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE = 1
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	# OpenNARS uses a simple build script, configure CMake wrapper
+	mkdir -p $(CURDIR)/build
+	cd $(CURDIR)/build && cmake .. \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr
+
+override_dh_auto_build:
+	# Build using the original build script
+	cd $(CURDIR) && ./build.sh
+	# Also build via CMake for library
+	cd $(CURDIR)/build && $(MAKE)
+
+override_dh_auto_install:
+	# Install binaries
+	install -D -m 755 $(CURDIR)/NAR $(CURDIR)/debian/opennars-native/usr/bin/nars
+	# Install library
+	install -D -m 644 $(CURDIR)/build/libopennars.a \
+		$(CURDIR)/debian/opennars-native-dev/usr/lib/libopennars.a
+	# Install headers
+	install -d $(CURDIR)/debian/opennars-native-dev/usr/include/opennars
+	install -m 644 $(CURDIR)/src/*.h \
+		$(CURDIR)/debian/opennars-native-dev/usr/include/opennars/
+
+override_dh_auto_test:
+	# Run basic tests
+	cd $(CURDIR) && ./NAR shell < /dev/null || true

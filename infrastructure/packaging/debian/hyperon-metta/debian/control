@@ -1,0 +1,41 @@
+Source: hyperon-metta
+Section: science
+Priority: optional
+Maintainer: AGI-OS Team <agi-os@example.org>
+Build-Depends: debhelper-compat (= 13),
+               cmake (>= 3.16),
+               rustc (>= 1.70),
+               cargo,
+               python3-dev,
+               python3-pip,
+               libssl-dev,
+               zlib1g-dev,
+               protobuf-compiler
+Standards-Version: 4.6.0
+Homepage: https://github.com/trueagi-io/hyperon-experimental
+Vcs-Browser: https://github.com/o9nn/agi-os
+Vcs-Git: https://github.com/o9nn/agi-os.git
+
+Package: hyperon-metta
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python3
+Recommends: cogutil, atomspace
+Description: MeTTa programming language implementation for AGI
+ Hyperon is a substantially revised, novel version of OpenCog that
+ implements the MeTTa (Meta Type Talk) programming language. MeTTa
+ provides type-theoretic foundations, meta-programming capabilities,
+ and integration with the Distributed AtomSpace (DAS).
+ .
+ This package provides:
+  - MeTTa language interpreter (Rust-based)
+  - Python bindings for MeTTa
+  - C API for integration with other components
+  - REPL for interactive MeTTa programming
+
+Package: hyperon-metta-dev
+Architecture: any
+Section: libdevel
+Depends: hyperon-metta (= ${binary:Version}), ${misc:Depends}
+Description: MeTTa programming language - development files
+ This package contains the header files and development libraries
+ needed to build applications that use the Hyperon MeTTa API.

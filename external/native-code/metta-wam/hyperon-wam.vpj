@@ -1,0 +1,323 @@
+<!DOCTYPE Project SYSTEM "http://www.slickedit.com/dtd/vse/10.0/vpj.dtd">
+<Project
+	Version="10.0"
+	VendorName="SlickEdit"
+	TemplateName="(Other)"
+	WorkingDir="."
+	TagFile="None">
+	<Config
+		Name="Release"
+		OutputFile=""
+		CompilerConfigName="">
+		<Menu>
+			<Target
+				Name="Compile"
+				MenuCaption="&amp;Compile"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveCurrent"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Build"
+				MenuCaption="&amp;Build"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Rebuild"
+				MenuCaption="&amp;Rebuild"
+				CaptureOutputWith="ProcessBuffer"
+				SaveOption="SaveWorkspaceFiles"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Debug"
+				MenuCaption="&amp;Debug"
+				SaveOption="SaveNone"
+				RunFromDir="%rw">
+				<Exec/>
+			</Target>
+			<Target
+				Name="Execute"
+				MenuCaption="E&amp;xecute"
+				SaveOption="SaveNone"
+				RunFromDir="%rw">
+				<Exec CmdLine='".exe"'/>
+			</Target>
+		</Menu>
+	</Config>
+	<CustomFolders>
+		<Folder
+			Name="Source Files"
+			Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.c++;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl;*.d"></Folder>
+		<Folder
+			Name="Header Files"
+			Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if"></Folder>
+		<Folder
+			Name="Resource Files"
+			Filters="*.ico;*.cur;*.dlg"></Folder>
+		<Folder
+			Name="Bitmaps"
+			Filters="*.bmp"/>
+		<Folder
+			Name="Other Files"
+			Filters=""></Folder>
+	</CustomFolders>
+	<List Name="RTE">
+	</List>
+	<Files AutoFolders="DirectoryView">
+		<Folder Name="t:/">
+			<Folder Name="root">
+				<Folder Name=".local">
+					<Folder Name="share">
+						<Folder Name="swi-prolog">
+							<Folder Name="pack">
+								<Folder Name="function_expansion">
+									<F
+										N="t:/root/.local/share/swi-prolog/pack/function_expansion/*.*"
+										Recurse="1"
+										Excludes=".git/;*.metta.html;*.bak;build/;.*/;*~*/"/>
+								</Folder>
+								<Folder Name="prolog_graphviz">
+									<F
+										N="t:/root/.local/share/swi-prolog/pack/prolog_graphviz/*.*"
+										Recurse="1"
+										Excludes=".git/;*.metta.html;*.bak;build/;.*/;*~*/"/>
+								</Folder>
+								<Folder Name="prolog_library_collection">
+									<F
+										N="t:/root/.local/share/swi-prolog/pack/prolog_library_collection/*.*"
+										Recurse="1"
+										Excludes=".git/;*.metta.html;*.bak;build/;.*/;*~*/"/>
+								</Folder>
+							</Folder>
+						</Folder>
+					</Folder>
+				</Folder>
+			</Folder>
+		</Folder>
+		<Folder Name=".Attic">
+			<F
+				N=".Attic/*.*"
+				Recurse="1"
+				Excludes=".git/;*.metta.html;*.bak;build/;.*/;*~*/"
+				L="1"/>
+		</Folder>
+		<Folder Name=".github">
+			<Folder Name="workflows">
+				<F N=".github/workflows/ci.yml"/>
+			</Folder>
+		</Folder>
+		<Folder Name="../.vscode">
+			<Folder Name="extensions">
+				<Folder Name="royward.metta-lsp-0.0.2">
+					<F
+						N="../.vscode/extensions/royward.metta-lsp-0.0.2/*.*"
+						Recurse="1"
+						Excludes=".git/;*.metta.html;*.bak;build/"
+						L="1"/>
+				</Folder>
+			</Folder>
+			<F
+				N="../.vscode/*.*"
+				Recurse="1"
+				Excludes=".git/;*.metta.html;*.bak;build/;.*/;*~*/"
+				L="1"/>
+		</Folder>
+		<Folder Name="docs">
+			<F
+				N="docs/*.*"
+				Recurse="1"
+				Excludes=".git/;*.metta.html;*.bak;build/;.*/;*~*/"/>
+		</Folder>
+		<Folder Name="../hyperon-experimental">
+			<F
+				N="../hyperon-experimental/*.*"
+				Recurse="1"
+				Excludes=".git/;*.metta.html;*.bak;build/;.*/;*~*/"/>
+		</Folder>
+		<Folder Name="library">
+			<F
+				N="library/*.*"
+				Recurse="1"
+				Excludes=".git/;*.metta.html;*.bak;build/;.*/;*~*/"
+				L="1"/>
+		</Folder>
+		<Folder Name="../metta-morph">
+			<F
+				N="../metta-morph/*.*"
+				Recurse="1"
+				Excludes=".git/;*.metta.html;*.bak;build/;.*/;*~*/;*.back"
+				L="1"/>
+		</Folder>
+		<Folder Name="../metta-src-conversions">
+			<F
+				N="../metta-src-conversions/*.*"
+				Recurse="1"
+				Excludes=".git/;*.metta.html;*.bak;build/;.*/;*~*/"
+				L="1"/>
+		</Folder>
+		<Folder Name="../metta-testsuite">
+			<Folder Name="tests">
+				<F
+					N="../metta-testsuite/tests/*.*"
+					Recurse="1"
+					Excludes=".git/;*.metta.html;*.bak;build/;.*/;*~*/"
+					L="1"/>
+			</Folder>
+		</Folder>
+		<Folder Name="python">
+			<F
+				N="python/*.*"
+				Recurse="1"
+				Excludes=".git/;*.metta.html;*.bak;build/"
+				L="1"/>
+		</Folder>
+		<Folder Name="reports">
+			<Folder Name="BY_DATE">
+				<F
+					N="reports/BY_DATE/*.*"
+					Recurse="1"
+					Excludes=".git/;*.metta.html;*.bak;build/;.*/;*~*/"
+					L="1"/>
+			</Folder>
+			<F N="reports/.gitignore"/>
+			<F N="reports/NewResults.md"/>
+			<F N="reports/PASS_FAIL.md"/>
+			<F N="reports/README.md"/>
+			<F N="reports/SHARED.UNITS.PREV.md"/>
+			<F N="reports/TEST_LINKS.md"/>
+		</Folder>
+		<Folder Name="scripts">
+			<F N="scripts/1-VSpaceTest.metta"/>
+			<F N="scripts/2-VSpaceTest.metta"/>
+			<F N="scripts/3-Learn-Rules.metta"/>
+			<F N="scripts/4-VSpaceTest.metta"/>
+			<F N="scripts/5-Learn-Flybase.metta"/>
+			<F N="scripts/6-Learn-Flybase-Full.metta"/>
+			<F N="scripts/7-FlybaseResults.metta"/>
+			<F N="scripts/8-FlybaseQuestions.metta"/>
+			<F N="scripts/add_lines.sh"/>
+			<F N="scripts/chado_to_tsv.sh"/>
+			<F N="scripts/colorize_output.sh"/>
+			<F N="scripts/convert_to_metta.sh"/>
+			<F N="scripts/ensure_venv"/>
+			<F N="scripts/envvars_mettalog.sh"/>
+			<F N="scripts/flybase_setup.sh"/>
+			<F N="scripts/html_pass_fail.sh"/>
+			<F N="scripts/into_junit.py"/>
+			<F N="scripts/lsp_server_prolog_install.sh"/>
+			<F N="scripts/metta-jupyter-kernel"/>
+			<F N="scripts/metta-jupyter-kernel-debug"/>
+			<F N="scripts/mettalog-docker"/>
+			<F N="scripts/mettalog-python"/>
+			<F N="scripts/mettalog.cmd"/>
+			<F N="scripts/old_test_in_metta2.sh"/>
+			<F N="scripts/open-metta-file.reg"/>
+			<F N="scripts/pass_fail_totals.sh"/>
+			<F N="scripts/rebuild-fast.sh"/>
+			<F N="scripts/Rebuild-hyperon.cmd"/>
+			<F N="scripts/rebuild-hyperon.sh"/>
+			<F N="scripts/rebuild-min.sh"/>
+			<F N="scripts/rebuild-nonminal.sh"/>
+			<F N="scripts/retest.sh"/>
+			<F N="scripts/run_commit_tests.sh"/>
+			<F N="scripts/send_keys_debug.sh"/>
+			<F N="scripts/start_jupyter.sh"/>
+			<F N="scripts/subtest.sh"/>
+			<F N="scripts/test_in_metta.sh"/>
+			<F N="scripts/test_in_metta1.sh"/>
+			<F N="scripts/total_loonits.sh"/>
+		</Folder>
+		<Folder Name="src">
+			<Folder Name="packs">
+				<Folder Name="lsp_server_metta">
+					<Folder Name="prolog">
+						<F N="src/packs/lsp_server_metta/prolog/lsp_metta_checking.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_metta_code_actions.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_metta_colours.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_metta_completion.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_metta_formater.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_metta_hover.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_metta_include.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_metta_outline.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_metta_parser.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_metta_references.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_metta_save_actions.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_metta_split.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_metta_utils.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_metta_workspace.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_metta_xref.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_prolog_changes.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_prolog_checking.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_prolog_colours.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_prolog_utils.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_server_hooks.pl"/>
+						<F N="src/packs/lsp_server_metta/prolog/lsp_server_metta.pl"/>
+					</Folder>
+					<Folder Name="vscode">
+						<Folder Name="syntaxes">
+							<F N="src/packs/lsp_server_metta/vscode/syntaxes/mettalanguage.json"/>
+						</Folder>
+						<F N="src/packs/lsp_server_metta/vscode/extension.js"/>
+						<F N="src/packs/lsp_server_metta/vscode/metta.config.json"/>
+						<F N="src/packs/lsp_server_metta/vscode/package - Copy.json"/>
+						<F N="src/packs/lsp_server_metta/vscode/package-lock.json"/>
+						<F N="src/packs/lsp_server_metta/vscode/package.json"/>
+						<F N="src/packs/lsp_server_metta/vscode/README.md"/>
+					</Folder>
+					<F N="src/packs/lsp_server_metta/lsp-callbacks.metta"/>
+					<F N="src/packs/lsp_server_metta/lsp-metta.el"/>
+					<F N="src/packs/lsp_server_metta/pack.pl"/>
+					<F N="src/packs/lsp_server_metta/README.md"/>
+				</Folder>
+			</Folder>
+			<F
+				N="src/*.*"
+				Recurse="1"
+				Excludes=".git/;*.metta.html;*.bak;build/;.*/;*~*/"
+				L="1"/>
+		</Folder>
+		<Folder Name="tests">
+			<F
+				N="tests/*.*"
+				Recurse="1"
+				Excludes=".git/;*.metta.html;*.bak;build/;.*/;*~*/"/>
+		</Folder>
+		<Folder Name="/usr">
+			<Folder Name="local">
+				<Folder Name="lib">
+					<Folder Name="swipl">
+						<Folder Name="library">
+							<Folder Name="ext">
+								<Folder Name="swipy">
+									<Folder Name="python">
+										<F N="/usr/local/lib/swipl/library/ext/swipy/python/janus.py"/>
+										<F N="/usr/local/lib/swipl/library/ext/swipy/python/janus_swi.py"/>
+									</Folder>
+								</Folder>
+							</Folder>
+						</Folder>
+					</Folder>
+				</Folder>
+			</Folder>
+		</Folder>
+		<F
+			N="*.*"
+			Recurse="1"
+			Excludes=".git/;*.metta.html;*.bak;build/;.*/;*~*/"
+			L="1"/>
+		<F
+			N="*.*"
+			Recurse="1"
+			Excludes=".git/;*.metta.html;*.bak;build/;.*/;*~*/"/>
+		<F N="mymod.py"/>
+		<F N="rust_rand.py"/>
+		<F N="setup.py"/>
+		<F N="vvv_tests.pl"/>
+	</Files>
+</Project>

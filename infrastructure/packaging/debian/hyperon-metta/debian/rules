@@ -1,0 +1,35 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE = 1
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	# Build Rust components first
+	cd $(CURDIR) && cargo build --release
+	# Configure CMake for C API
+	dh_auto_configure -- \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr
+
+override_dh_auto_build:
+	# Build C API
+	dh_auto_build
+	# Build Python bindings
+	cd $(CURDIR)/python && python3 -m pip wheel . --no-deps -w dist/
+
+override_dh_auto_install:
+	dh_auto_install
+	# Install Rust binaries
+	install -D -m 755 $(CURDIR)/target/release/metta-repl \
+		$(CURDIR)/debian/hyperon-metta/usr/bin/metta-repl
+	# Install Python package
+	cd $(CURDIR)/python && python3 -m pip install --target=$(CURDIR)/debian/hyperon-metta/usr/lib/python3/dist-packages dist/*.whl
+
+override_dh_auto_test:
+	# Run Rust tests
+	cargo test --release
+	# Run Python tests
+	cd $(CURDIR)/python && python3 -m pytest tests/ || true

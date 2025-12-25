@@ -1,0 +1,46 @@
+Source: ggml-tensor
+Section: science
+Priority: optional
+Maintainer: AGI-OS Team <agi-os@example.org>
+Build-Depends: debhelper-compat (= 13),
+               cmake (>= 3.16),
+               gcc,
+               g++,
+               libc6-dev
+Standards-Version: 4.6.0
+Homepage: https://github.com/ggml-org/ggml
+Vcs-Browser: https://github.com/o9nn/agi-os
+Vcs-Git: https://github.com/o9nn/agi-os.git
+
+Package: libggml1
+Architecture: any
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Tensor library for machine learning
+ GGML is a lightweight tensor library optimized for machine learning
+ inference. It provides efficient CPU-based tensor operations with
+ optional GPU acceleration via CUDA, OpenCL, and Metal.
+ .
+ Features:
+  - Optimized CPU tensor operations
+  - Quantization support (INT4, INT8, FP16)
+  - SIMD acceleration (AVX, AVX2, AVX-512, NEON)
+  - Optional CUDA/OpenCL/Metal backends
+ .
+ This package provides the shared library for GGML.
+
+Package: libggml-dev
+Architecture: any
+Multi-Arch: same
+Section: libdevel
+Depends: libggml1 (= ${binary:Version}), ${misc:Depends}
+Description: Tensor library for machine learning - development files
+ This package contains the header files and development libraries
+ needed to build applications that use GGML.
+
+Package: ggml-tools
+Architecture: any
+Depends: libggml1 (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Description: GGML tensor library - tools and examples
+ This package contains example programs and tools for working with
+ GGML tensor operations, including model conversion utilities.

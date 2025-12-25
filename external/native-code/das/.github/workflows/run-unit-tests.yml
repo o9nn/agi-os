@@ -1,0 +1,78 @@
+name: Unit Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner:
+        description: Choose a runner tag to run this workflow (e.g self-hosted, ubuntu-latest)
+        required: true
+        type: string
+  workflow_call:
+    inputs:
+      runner:
+        required: true
+        type: string
+
+jobs:
+  unit-tests:
+    runs-on:
+      - self-hosted
+      - amd64
+      - ${{ inputs.runner }}
+    env:
+      DAS_REDIS_HOSTNAME: localhost
+      DAS_REDIS_PORT: 40020
+      DAS_MONGODB_HOSTNAME: localhost
+      DAS_MONGODB_PORT: 40021
+      DAS_MONGODB_USERNAME: admin
+      DAS_MONGODB_PASSWORD: admin
+      DAS_MORK_HOSTNAME: localhost
+      DAS_MORK_PORT: 40022
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |-
+          sudo apt -y update
+          sudo apt -y install build-essential wget
+          sudo bash -c "wget -O - http://45.77.4.33/apt-repo/setup.sh | bash"
+          sudo apt -y install das-toolbox
+          sudo das-cli update-version --version ${{ vars.DAS_CLI_VERSION }}
+          das-cli --version
+
+      - name: Download Knowledge Base
+        run: curl https://raw.githubusercontent.com/singnet/das-toolbox/refs/heads/master/das-cli/src/examples/data/animals.metta -o /tmp/animals.metta
+
+      - name: Setting das-cli configuration
+        run: |-
+          das-cli config set services.database.atomdb_backend=redis_mongodb
+
+      - name: Starting Redis and MongoDB
+        run: das-cli db restart
+
+      - name: Loading Load Knowledge Base
+        run: das-cli metta load /tmp/animals.metta
+
+      - name: Setup bazel
+        run: .github/scripts/setup_bazel.sh
+
+      - name: Compile Binaries
+        run: .github/scripts/bazel_build.sh
+
+      - name: Starting Attention Broker
+        run: das-cli attention-broker restart
+
+      - name: Starting MORK Server and Load Knowledge Base
+        run: |-
+          make run-mork-server > /dev/null 2>&1 &
+          
+          until curl --silent http://localhost:40022/status/-; do
+            echo "Waiting MORK…"
+            sleep 1
+          done
+          
+          make mork-loader FILE="/tmp/animals.metta"
+
+      - name: Execute Unit Test Suite
+        run: make test-all

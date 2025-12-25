@@ -1,0 +1,39 @@
+Source: opennars-native
+Section: science
+Priority: optional
+Maintainer: AGI-OS Team <agi-os@example.org>
+Build-Depends: debhelper-compat (= 13),
+               cmake (>= 3.16),
+               gcc,
+               libc6-dev
+Standards-Version: 4.6.0
+Homepage: https://github.com/opennars/OpenNARS-for-Applications
+Vcs-Browser: https://github.com/o9nn/agi-os
+Vcs-Git: https://github.com/o9nn/agi-os.git
+
+Package: opennars-native
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: atomspace
+Description: Non-Axiomatic Reasoning System in pure C
+ OpenNARS for Applications (ONA) is a lightweight implementation of
+ the Non-Axiomatic Reasoning System (NARS) in pure C. It provides
+ real-time reasoning capabilities with minimal dependencies.
+ .
+ Features:
+  - Non-Axiomatic Logic (NAL) implementation
+  - Event-driven architecture
+  - Real-time inference
+  - Narsese language parser
+  - Network NAR support for distributed reasoning
+ .
+ This package integrates with AGI-OS cognitive architecture for
+ unified reasoning capabilities.
+
+Package: opennars-native-dev
+Architecture: any
+Section: libdevel
+Depends: opennars-native (= ${binary:Version}), ${misc:Depends}
+Description: OpenNARS for Applications - development files
+ This package contains the header files and static libraries needed
+ to build applications that use the OpenNARS API.
