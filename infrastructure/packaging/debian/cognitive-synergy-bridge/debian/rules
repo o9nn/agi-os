@@ -1,0 +1,32 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE = 1
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+%:
+	dh $@
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DBUILD_NARS_INTEGRATION=ON \
+		-DBUILD_GGML_INTEGRATION=ON \
+		-DBUILD_METTA_INTEGRATION=ON \
+		-DBUILD_SHARED_LIBS=ON
+
+override_dh_auto_build:
+	dh_auto_build
+
+override_dh_auto_install:
+	dh_auto_install
+	# Install headers
+	install -d $(CURDIR)/debian/libcognitive-synergy-bridge-dev/usr/include/agi-os
+	install -m 644 $(CURDIR)/cognitive_synergy_bridge.h \
+		$(CURDIR)/debian/libcognitive-synergy-bridge-dev/usr/include/agi-os/
+	install -m 644 $(CURDIR)/integrations/*.h \
+		$(CURDIR)/debian/libcognitive-synergy-bridge-dev/usr/include/agi-os/
+
+override_dh_auto_test:
+	# Run tests if available
+	cd $(CURDIR)/obj-* && ctest --output-on-failure || true

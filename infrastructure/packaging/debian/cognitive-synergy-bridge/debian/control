@@ -1,0 +1,50 @@
+Source: cognitive-synergy-bridge
+Section: science
+Priority: optional
+Maintainer: AGI-OS Team <agi-os@example.org>
+Build-Depends: debhelper-compat (= 13),
+               cmake (>= 3.12),
+               gcc,
+               g++,
+               libc6-dev,
+               libpthread-stubs0-dev
+Standards-Version: 4.6.0
+Homepage: https://github.com/o9nn/agi-os
+Vcs-Browser: https://github.com/o9nn/agi-os
+Vcs-Git: https://github.com/o9nn/agi-os.git
+
+Package: libcognitive-synergy-bridge1
+Architecture: any
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: opennars-native, libggml1
+Description: AGI-OS Cognitive Synergy Bridge - shared library
+ The Cognitive Synergy Bridge provides a unified C API for integrating
+ multiple cognitive computing systems into a coherent AGI-OS framework.
+ It enables seamless interoperability between different reasoning systems,
+ neural processing backends, and knowledge representation frameworks.
+ .
+ This package provides the shared library for the Cognitive Synergy Bridge.
+
+Package: libcognitive-synergy-bridge-dev
+Architecture: any
+Multi-Arch: same
+Section: libdevel
+Depends: libcognitive-synergy-bridge1 (= ${binary:Version}), ${misc:Depends}
+Recommends: opennars-native-dev, libggml-dev
+Description: AGI-OS Cognitive Synergy Bridge - development files
+ The Cognitive Synergy Bridge provides a unified C API for integrating
+ multiple cognitive computing systems into a coherent AGI-OS framework.
+ .
+ This package contains the header files and static libraries needed to
+ build applications using the Cognitive Synergy Bridge API.
+
+Package: cognitive-synergy-bridge-doc
+Architecture: all
+Section: doc
+Depends: ${misc:Depends}
+Description: AGI-OS Cognitive Synergy Bridge - documentation
+ The Cognitive Synergy Bridge provides a unified C API for integrating
+ multiple cognitive computing systems into a coherent AGI-OS framework.
+ .
+ This package contains the API documentation and integration guides.

@@ -1,0 +1,11 @@
+cognitive-synergy-bridge (1.0.0-1) unstable; urgency=medium
+
+  * Initial release
+  * Unified C API for cognitive computing integration
+  * NARS integration layer for non-axiomatic reasoning
+  * GGML integration layer for tensor processing
+  * MeTTa integration layer for Hyperon runtime
+  * Thread-safe implementation with pthread support
+  * AtomSpace-compatible knowledge representation
+
+ -- AGI-OS Team <agi-os@example.org>  Wed, 25 Dec 2024 12:00:00 +0000

@@ -1,0 +1,9 @@
+@PACKAGE_INIT@
+
+include("${CMAKE_CURRENT_LIST_DIR}/opennars-targets.cmake")
+
+check_required_components(opennars)
+
+# Provide helpful variables
+set(OPENNARS_INCLUDE_DIRS "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@/opennars")
+set(OPENNARS_LIBRARIES opennars::opennars-static)
