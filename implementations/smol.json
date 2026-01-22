@@ -1,0 +1,251 @@
+{
+  "smol_agent_protocol": {
+    "description": "Code Minimalization as Constraint Optimization",
+    "version": "1.0.0",
+    
+    "optimization_problem": {
+      "objective": {
+        "function": "f(x) = size(code)",
+        "goal": "minimize",
+        "unit": "bytes"
+      },
+      "constraints": [
+        {
+          "type": "hard_constraint",
+          "function": "g(x) = functionality(original) - functionality(optimized)",
+          "requirement": "g(x) == 0"
+        }
+      ]
+    },
+    
+    "phases": [
+      {
+        "phase": 1,
+        "name": "Baseline Establishment",
+        "steps": [
+          {
+            "action": "measure_initial_state",
+            "operations": [
+              "record_byte_count",
+              "document_functionality",
+              "run_tests",
+              "create_verification_suite"
+            ]
+          },
+          {
+            "action": "identify_optimization_surface",
+            "operations": [
+              "scan_removable_elements",
+              "map_transformation_opportunities",
+              "prioritize_by_byte_savings"
+            ]
+          }
+        ]
+      },
+      {
+        "phase": 2,
+        "name": "Iterative Optimization Loop",
+        "transformations": [
+          {
+            "category": "syntax_compaction",
+            "priority": 1,
+            "techniques": [
+              "remove_unnecessary_whitespace",
+              "eliminate_optional_semicolons",
+              "use_shorthand_operators",
+              "shorten_variable_names"
+            ]
+          },
+          {
+            "category": "statement_reduction",
+            "priority": 2,
+            "techniques": [
+              "convert_to_arrow_functions",
+              "use_comma_operator",
+              "merge_conditionals",
+              "eliminate_redundant_paths"
+            ]
+          },
+          {
+            "category": "structural_optimization",
+            "priority": 3,
+            "techniques": [
+              "hoist_constants",
+              "extract_repeated_patterns",
+              "scientific_notation",
+              "inline_single_use_variables"
+            ]
+          },
+          {
+            "category": "semantic_equivalence",
+            "priority": 4,
+            "techniques": [
+              "shorter_string_equivalents",
+              "shorter_property_access",
+              "leverage_coercion_rules",
+              "implicit_undefined_returns"
+            ]
+          }
+        ],
+        "verification_protocol": [
+          "syntax_check",
+          "measure_new_size",
+          "run_functionality_tests",
+          "document_change_and_savings"
+        ],
+        "decision_rules": {
+          "accept": {
+            "condition": "functionality_preserved AND size_reduced",
+            "action": "continue_optimization"
+          },
+          "neutral": {
+            "condition": "functionality_preserved AND size_same",
+            "action": "try_different_optimization"
+          },
+          "reject_size": {
+            "condition": "functionality_preserved AND size_increased",
+            "action": "revert_changes"
+          },
+          "reject_func": {
+            "condition": "NOT functionality_preserved",
+            "action": "revert_immediately"
+          }
+        },
+        "iteration_strategy": {
+          "versioning": "create_numbered_versions",
+          "targeting": "one_transformation_category_per_iteration",
+          "termination": "no_further_size_reduction_possible",
+          "comparison": "compare_all_versions_for_optimal_minimum"
+        }
+      },
+      {
+        "phase": 3,
+        "name": "Validation and Finalization",
+        "steps": [
+          {
+            "action": "comprehensive_testing",
+            "operations": [
+              "run_full_test_suite",
+              "verify_edge_cases",
+              "confirm_error_handling",
+              "validate_output_matches_original"
+            ]
+          },
+          {
+            "action": "documentation",
+            "operations": [
+              "record_final_byte_count",
+              "calculate_reduction_percentage",
+              "document_key_transformations",
+              "note_limitations_and_tradeoffs"
+            ]
+          }
+        ]
+      }
+    ],
+    
+    "principles": {
+      "1": {
+        "name": "Functionality is Sacred",
+        "description": "Never sacrifice working code for size"
+      },
+      "2": {
+        "name": "Measure Everything",
+        "description": "Every change must be measured in bytes"
+      },
+      "3": {
+        "name": "Verify Continuously",
+        "description": "Test after every transformation"
+      },
+      "4": {
+        "name": "Version Iteratively",
+        "description": "Keep track of each optimization attempt"
+      },
+      "5": {
+        "name": "Embrace Reversibility",
+        "description": "Be ready to revert any change that breaks functionality"
+      },
+      "6": {
+        "name": "Converge Systematically",
+        "description": "Stop when no more byte savings can be found"
+      }
+    },
+    
+    "metrics": {
+      "primary": {
+        "name": "total_byte_reduction",
+        "measure": "bytes_saved",
+        "formula": "initial_size - final_size"
+      },
+      "secondary": {
+        "name": "optimization_iterations",
+        "measure": "number_of_passes",
+        "formula": "count_of_successful_iterations"
+      },
+      "constraint": {
+        "name": "functionality_preservation",
+        "measure": "test_pass_rate",
+        "requirement": "100%"
+      },
+      "efficiency": {
+        "name": "reduction_percentage",
+        "formula": "100 * (initial_size - final_size) / initial_size"
+      }
+    },
+    
+    "algorithm": {
+      "pseudocode": [
+        "function minimize_code(filepath, max_iterations):",
+        "  code = read_file(filepath)",
+        "  initial_size = measure_size(code)",
+        "  ",
+        "  for version in 0..max_iterations:",
+        "    transformed = apply_all_transformations(code)",
+        "    new_size = measure_size(transformed)",
+        "    ",
+        "    if verify_functionality(transformed) and new_size < initial_size:",
+        "      code = transformed",
+        "      report_progress(version, new_size)",
+        "    else:",
+        "      break  // converged",
+        "  ",
+        "  return code"
+      ]
+    },
+    
+    "example_application": {
+      "initial_size_bytes": 1047,
+      "optimized_size_bytes": 803,
+      "reduction_bytes": 244,
+      "reduction_percentage": 23.3,
+      "transformation_passes": 10,
+      "functionality_preserved": true,
+      "test_pass_rate": "100%"
+    },
+    
+    "implementations": {
+      "languages": [
+        "guile_scheme",
+        "prolog",
+        "common_lisp",
+        "emacs_lisp",
+        "echo_lisp",
+        "c",
+        "cpp",
+        "go",
+        "limbo",
+        "perl",
+        "raku",
+        "racket",
+        "julia",
+        "haskell",
+        "ocaml",
+        "forth",
+        "python",
+        "ruby",
+        "zig"
+      ],
+      "count": 19
+    }
+  }
+}

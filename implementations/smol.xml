@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<smol-agent-protocol version="1.0.0">
+  <metadata>
+    <title>Code Minimalization as Constraint Optimization</title>
+    <author>Smol Agent</author>
+    <repository>e9-o9/smallest-agent</repository>
+    <license>Educational/Research</license>
+  </metadata>
+
+  <optimization-problem>
+    <objective>
+      <function>f(x) = size(code)</function>
+      <goal>minimize</goal>
+      <unit>bytes</unit>
+    </objective>
+    
+    <constraints>
+      <constraint type="hard">
+        <function>g(x) = functionality(original) - functionality(optimized)</function>
+        <requirement>g(x) == 0</requirement>
+        <description>Functionality must be preserved exactly</description>
+      </constraint>
+    </constraints>
+  </optimization-problem>
+
+  <phases>
+    <phase number="1" name="Baseline Establishment">
+      <step name="measure_initial_state">
+        <action>record_byte_count</action>
+        <action>document_functionality</action>
+        <action>run_tests</action>
+        <action>create_verification_suite</action>
+      </step>
+      
+      <step name="identify_optimization_surface">
+        <action>scan_removable_elements</action>
+        <action>map_transformation_opportunities</action>
+        <action>prioritize_by_byte_savings</action>
+      </step>
+    </phase>
+
+    <phase number="2" name="Iterative Optimization Loop">
+      <transformations>
+        <transformation-category name="syntax_compaction" priority="1">
+          <technique>remove_unnecessary_whitespace</technique>
+          <technique>eliminate_optional_semicolons</technique>
+          <technique>use_shorthand_operators</technique>
+          <technique>shorten_variable_names</technique>
+        </transformation-category>
+
+        <transformation-category name="statement_reduction" priority="2">
+          <technique>convert_to_arrow_functions</technique>
+          <technique>use_comma_operator</technique>
+          <technique>merge_conditionals</technique>
+          <technique>eliminate_redundant_paths</technique>
+        </transformation-category>
+
+        <transformation-category name="structural_optimization" priority="3">
+          <technique>hoist_constants</technique>
+          <technique>extract_repeated_patterns</technique>
+          <technique>scientific_notation</technique>
+          <technique>inline_single_use_variables</technique>
+        </transformation-category>
+
+        <transformation-category name="semantic_equivalence" priority="4">
+          <technique>shorter_string_equivalents</technique>
+          <technique>shorter_property_access</technique>
+          <technique>leverage_coercion_rules</technique>
+          <technique>implicit_undefined_returns</technique>
+        </transformation-category>
+      </transformations>
+
+      <verification-protocol>
+        <step command="node -c &lt;file&gt;">syntax_check</step>
+        <step command="wc -c &lt;file&gt;">measure_new_size</step>
+        <step command="npm test">run_functionality_tests</step>
+        <step>document_change_and_savings</step>
+      </verification-protocol>
+
+      <decision-rules>
+        <rule name="accept">
+          <condition>functionality_preserved AND size_reduced</condition>
+          <action>continue_optimization</action>
+        </rule>
+
+        <rule name="neutral">
+          <condition>functionality_preserved AND size_same</condition>
+          <action>try_different_optimization</action>
+        </rule>
+
+        <rule name="reject_size">
+          <condition>functionality_preserved AND size_increased</condition>
+          <action>revert_changes</action>
+        </rule>
+
+        <rule name="reject_func" priority="highest">
+          <condition>NOT functionality_preserved</condition>
+          <action>revert_immediately</action>
+        </rule>
+      </decision-rules>
+
+      <iteration-strategy>
+        <versioning>create_numbered_versions</versioning>
+        <pattern>file-v1.js, file-v2.js, ...</pattern>
+        <targeting>one_transformation_category_per_iteration</targeting>
+        <termination>no_further_size_reduction_possible</termination>
+        <comparison>compare_all_versions_for_optimal</comparison>
+      </iteration-strategy>
+    </phase>
+
+    <phase number="3" name="Validation and Finalization">
+      <comprehensive-testing>
+        <test>run_full_test_suite</test>
+        <test>verify_edge_cases</test>
+        <test>confirm_error_handling</test>
+        <test>validate_output_matches_original</test>
+      </comprehensive-testing>
+
+      <documentation>
+        <item>record_final_byte_count</item>
+        <item>calculate_reduction_percentage</item>
+        <item>document_key_transformations</item>
+        <item>note_limitations_and_tradeoffs</item>
+      </documentation>
+    </phase>
+  </phases>
+
+  <principles>
+    <principle number="1" emoji="⚠️">
+      <name>Functionality is Sacred</name>
+      <description>Never sacrifice working code for size</description>
+    </principle>
+
+    <principle number="2" emoji="📏">
+      <name>Measure Everything</name>
+      <description>Every change must be measured in bytes</description>
+    </principle>
+
+    <principle number="3" emoji="✓">
+      <name>Verify Continuously</name>
+      <description>Test after every transformation</description>
+    </principle>
+
+    <principle number="4" emoji="🔄">
+      <name>Version Iteratively</name>
+      <description>Keep track of each optimization attempt</description>
+    </principle>
+
+    <principle number="5" emoji="↩">
+      <name>Embrace Reversibility</name>
+      <description>Be ready to revert any change</description>
+    </principle>
+
+    <principle number="6" emoji="⚡">
+      <name>Converge Systematically</name>
+      <description>Stop when no more byte savings found</description>
+    </principle>
+  </principles>
+
+  <metrics>
+    <metric name="primary">
+      <name>total_byte_reduction</name>
+      <unit>bytes</unit>
+      <formula>initial_size - final_size</formula>
+    </metric>
+
+    <metric name="secondary">
+      <name>optimization_iterations</name>
+      <unit>count</unit>
+      <formula>number_of_successful_passes</formula>
+    </metric>
+
+    <metric name="constraint">
+      <name>functionality_preservation</name>
+      <unit>percentage</unit>
+      <requirement>100</requirement>
+      <formula>test_pass_rate</formula>
+    </metric>
+
+    <metric name="efficiency">
+      <name>reduction_percentage</name>
+      <unit>percentage</unit>
+      <formula>100 * (initial_size - final_size) / initial_size</formula>
+    </metric>
+  </metrics>
+
+  <example-results>
+    <initial-size>1047</initial-size>
+    <final-size>803</final-size>
+    <reduction>
+      <bytes>244</bytes>
+      <percentage>23.3</percentage>
+    </reduction>
+    <iterations>10</iterations>
+    <functionality-preserved>true</functionality-preserved>
+    <test-pass-rate>100</test-pass-rate>
+  </example-results>
+
+  <implementations count="19">
+    <language-family name="lisp">
+      <language>guile_scheme</language>
+      <language>common_lisp</language>
+      <language>emacs_lisp</language>
+      <language>echo_lisp</language>
+      <language>racket</language>
+    </language-family>
+
+    <language-family name="logic">
+      <language>prolog</language>
+    </language-family>
+
+    <language-family name="systems">
+      <language>c</language>
+      <language>cpp</language>
+      <language>go</language>
+      <language>zig</language>
+      <language>limbo</language>
+    </language-family>
+
+    <language-family name="scripting">
+      <language>perl</language>
+      <language>raku</language>
+      <language>python</language>
+      <language>ruby</language>
+      <language>julia</language>
+    </language-family>
+
+    <language-family name="functional">
+      <language>haskell</language>
+      <language>ocaml</language>
+    </language-family>
+
+    <language-family name="esoteric">
+      <language>forth</language>
+    </language-family>
+  </implementations>
+
+  <related-concepts>
+    <concept>code_golf</concept>
+    <concept>constraint_optimization</concept>
+    <concept>program_transformation</concept>
+    <concept>software_testing</concept>
+  </related-concepts>
+</smol-agent-protocol>

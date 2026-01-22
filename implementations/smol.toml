@@ -1,0 +1,231 @@
+# Smol Agent Protocol Configuration
+# Code Minimalization as Constraint Optimization
+
+[protocol]
+name = "Smol Agent Protocol"
+description = "Code Minimalization as Constraint Optimization"
+version = "1.0.0"
+
+[optimization_problem]
+objective_function = "f(x) = size(code)"
+objective_goal = "minimize"
+objective_unit = "bytes"
+
+[optimization_problem.constraint]
+type = "hard_constraint"
+function = "g(x) = functionality(original) - functionality(optimized)"
+requirement = "g(x) == 0"
+
+[phases.baseline_establishment]
+phase_number = 1
+name = "Baseline Establishment"
+
+[phases.baseline_establishment.measure_initial_state]
+actions = [
+    "record_byte_count",
+    "document_functionality",
+    "run_tests",
+    "create_verification_suite"
+]
+
+[phases.baseline_establishment.identify_optimization]
+actions = [
+    "scan_removable_elements",
+    "map_transformation_opportunities",
+    "prioritize_by_byte_savings"
+]
+
+[phases.iterative_optimization]
+phase_number = 2
+name = "Iterative Optimization Loop"
+
+[phases.iterative_optimization.transformations.syntax_compaction]
+priority = 1
+techniques = [
+    "remove_unnecessary_whitespace",
+    "eliminate_optional_semicolons",
+    "use_shorthand_operators",
+    "shorten_variable_names"
+]
+
+[phases.iterative_optimization.transformations.statement_reduction]
+priority = 2
+techniques = [
+    "convert_to_arrow_functions",
+    "use_comma_operator",
+    "merge_conditionals",
+    "eliminate_redundant_paths"
+]
+
+[phases.iterative_optimization.transformations.structural_optimization]
+priority = 3
+techniques = [
+    "hoist_constants",
+    "extract_repeated_patterns",
+    "scientific_notation",
+    "inline_single_use_variables"
+]
+
+[phases.iterative_optimization.transformations.semantic_equivalence]
+priority = 4
+techniques = [
+    "shorter_string_equivalents",
+    "shorter_property_access",
+    "leverage_coercion_rules",
+    "implicit_undefined_returns"
+]
+
+[phases.iterative_optimization.verification]
+steps = [
+    "syntax_check",
+    "measure_new_size",
+    "run_functionality_tests",
+    "document_change"
+]
+commands = [
+    "node -c <file>",
+    "wc -c <file>",
+    "npm test",
+    "log transformation"
+]
+
+[phases.iterative_optimization.decision_rules.accept]
+condition = "functionality_preserved AND size_reduced"
+action = "continue_optimization"
+
+[phases.iterative_optimization.decision_rules.neutral]
+condition = "functionality_preserved AND size_same"
+action = "try_different_optimization"
+
+[phases.iterative_optimization.decision_rules.reject_size]
+condition = "functionality_preserved AND size_increased"
+action = "revert_changes"
+
+[phases.iterative_optimization.decision_rules.reject_func]
+condition = "NOT functionality_preserved"
+action = "revert_immediately"
+priority = "highest"
+
+[phases.finalization]
+phase_number = 3
+name = "Validation and Finalization"
+
+[phases.finalization.testing]
+actions = [
+    "run_full_test_suite",
+    "verify_edge_cases",
+    "confirm_error_handling",
+    "validate_output_matches_original"
+]
+
+[phases.finalization.documentation]
+actions = [
+    "record_final_byte_count",
+    "calculate_reduction_percentage",
+    "document_key_transformations",
+    "note_limitations_and_tradeoffs"
+]
+
+[[principles]]
+number = 1
+name = "Functionality is Sacred"
+description = "Never sacrifice working code for size"
+emoji = "⚠️"
+
+[[principles]]
+number = 2
+name = "Measure Everything"
+description = "Every change must be measured in bytes"
+emoji = "📏"
+
+[[principles]]
+number = 3
+name = "Verify Continuously"
+description = "Test after every transformation"
+emoji = "✓"
+
+[[principles]]
+number = 4
+name = "Version Iteratively"
+description = "Keep track of each optimization attempt"
+emoji = "🔄"
+
+[[principles]]
+number = 5
+name = "Embrace Reversibility"
+description = "Be ready to revert any change"
+emoji = "↩"
+
+[[principles]]
+number = 6
+name = "Converge Systematically"
+description = "Stop when no more byte savings found"
+emoji = "⚡"
+
+[metrics.primary]
+name = "total_byte_reduction"
+unit = "bytes"
+formula = "initial_size - final_size"
+
+[metrics.secondary]
+name = "optimization_iterations"
+unit = "count"
+formula = "number_of_successful_passes"
+
+[metrics.constraint]
+name = "functionality_preservation"
+unit = "percentage"
+requirement = 100
+formula = "test_pass_rate"
+
+[metrics.efficiency]
+name = "reduction_percentage"
+unit = "percentage"
+formula = "100 * (initial_size - final_size) / initial_size"
+
+[example_results]
+initial_size = 1047
+final_size = 803
+reduction_bytes = 244
+reduction_percentage = 23.3
+iterations = 10
+functionality_preserved = true
+test_pass_rate = 100
+
+[implementations]
+total_count = 19
+
+[implementations.lisp_family]
+languages = [
+    "guile_scheme",
+    "common_lisp",
+    "emacs_lisp",
+    "echo_lisp",
+    "racket"
+]
+
+[implementations.logic]
+languages = ["prolog"]
+
+[implementations.systems]
+languages = ["c", "cpp", "go", "zig", "limbo"]
+
+[implementations.scripting]
+languages = ["perl", "raku", "python", "ruby", "julia"]
+
+[implementations.functional]
+languages = ["haskell", "ocaml"]
+
+[implementations.esoteric]
+languages = ["forth"]
+
+[metadata]
+author = "Smol Agent"
+repository = "e9-o9/smallest-agent"
+license = "Educational/Research"
+related_concepts = [
+    "code_golf",
+    "constraint_optimization",
+    "program_transformation",
+    "software_testing"
+]

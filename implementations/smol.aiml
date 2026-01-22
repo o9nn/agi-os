@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml version="2.0">
+  <!-- 
+    AIML Implementation of Smol Agent Protocol
+    Code Minimalization as Constraint Optimization
+  -->
+  
+  <!-- Meta Information -->
+  <category>
+    <pattern>SMOL PROTOCOL VERSION</pattern>
+    <template>1.0.0</template>
+  </category>
+  
+  <category>
+    <pattern>SMOL PROTOCOL DESCRIPTION</pattern>
+    <template>Code Minimalization as Constraint Optimization - A systematic approach to minimize code size while preserving complete functionality</template>
+  </category>
+
+  <!-- Optimization Problem Definition -->
+  <category>
+    <pattern>OPTIMIZATION OBJECTIVE</pattern>
+    <template>
+      minimize f(x) where f(x) = size(code) measured in bytes
+    </template>
+  </category>
+
+  <category>
+    <pattern>OPTIMIZATION CONSTRAINT</pattern>
+    <template>
+      g(x) = 0 where g(x) = functionality(original) - functionality(optimized)
+      Hard constraint: functionality must be preserved exactly
+    </template>
+  </category>
+
+  <!-- Phase 1: Baseline Establishment -->
+  <category>
+    <pattern>PHASE 1 BASELINE ESTABLISHMENT</pattern>
+    <template>
+      <think>Initializing baseline measurement phase</think>
+      Execute the following steps:
+      1. MEASURE INITIAL STATE
+      2. IDENTIFY OPTIMIZATION SURFACE
+    </template>
+  </category>
+
+  <category>
+    <pattern>MEASURE INITIAL STATE</pattern>
+    <template>
+      <think>Recording baseline metrics</think>
+      Actions:
+      - Record exact byte count of target file
+      - Document all functionality to preserve
+      - Run test suite for baseline verification
+      - Create functionality verification suite
+      Result: Baseline established
+    </template>
+  </category>
+
+  <category>
+    <pattern>IDENTIFY OPTIMIZATION SURFACE</pattern>
+    <template>
+      <think>Analyzing optimization opportunities</think>
+      Actions:
+      - Scan for removable elements (comments, whitespace, verbose syntax)
+      - Map transformation opportunities
+      - Prioritize by expected byte savings
+      Result: Optimization surface identified
+    </template>
+  </category>
+
+  <!-- Phase 2: Iterative Optimization Loop -->
+  <category>
+    <pattern>PHASE 2 OPTIMIZATION LOOP</pattern>
+    <template>
+      <think>Starting iterative optimization</think>
+      Apply transformations in priority order:
+      1. SYNTAX COMPACTION
+      2. STATEMENT REDUCTION
+      3. STRUCTURAL OPTIMIZATION
+      4. SEMANTIC EQUIVALENCE
+      After each transformation: VERIFY FUNCTIONALITY
+    </template>
+  </category>
+
+  <!-- Transformation Categories -->
+  <category>
+    <pattern>SYNTAX COMPACTION</pattern>
+    <template>
+      <think>Applying syntax compaction transformations</think>
+      Techniques:
+      - Remove unnecessary whitespace
+      - Eliminate optional semicolons
+      - Use shorthand operators
+      - Shorten variable names to single characters
+      Priority: 1 (Highest)
+    </template>
+  </category>
+
+  <category>
+    <pattern>STATEMENT REDUCTION</pattern>
+    <template>
+      <think>Applying statement reduction transformations</think>
+      Techniques:
+      - Convert function declarations to arrow functions: function f(){} → f=()=>{}
+      - Use comma operator to combine statements
+      - Merge conditional structures
+      - Eliminate redundant code paths
+      Priority: 2
+    </template>
+  </category>
+
+  <category>
+    <pattern>STRUCTURAL OPTIMIZATION</pattern>
+    <template>
+      <think>Applying structural optimization transformations</think>
+      Techniques:
+      - Hoist constants to reduce repetition
+      - Extract repeated patterns into shorter forms
+      - Use numeric literals in scientific notation: 4000 → 4e3
+      - Inline single-use variables
+      Priority: 3
+    </template>
+  </category>
+
+  <category>
+    <pattern>SEMANTIC EQUIVALENCE</pattern>
+    <template>
+      <think>Applying semantic equivalence transformations</think>
+      Techniques:
+      - Replace verbose strings with shorter equivalents
+      - Use shorter property access patterns
+      - Leverage JavaScript coercion rules
+      - Replace explicit undefined returns with implicit ones
+      Priority: 4
+    </template>
+  </category>
+
+  <!-- Verification Protocol -->
+  <category>
+    <pattern>VERIFY FUNCTIONALITY</pattern>
+    <template>
+      <think>Running verification protocol</think>
+      Verification steps:
+      1. Syntax check: node -c &lt;file&gt;
+      2. Measure new size: wc -c &lt;file&gt;
+      3. Run functionality tests: npm test
+      4. Document change and byte savings
+      Next: MAKE DECISION
+    </template>
+  </category>
+
+  <!-- Decision Rules -->
+  <category>
+    <pattern>MAKE DECISION</pattern>
+    <template>
+      <think>Evaluating transformation result</think>
+      <condition name="functionality_preserved" value="true">
+        <condition name="size_reduced" value="true">
+          <srai>DECISION ACCEPT</srai>
+        </condition>
+        <condition name="size_reduced" value="false">
+          <condition name="size_same" value="true">
+            <srai>DECISION NEUTRAL</srai>
+          </condition>
+          <condition name="size_same" value="false">
+            <srai>DECISION REJECT SIZE</srai>
+          </condition>
+        </condition>
+      </condition>
+      <condition name="functionality_preserved" value="false">
+        <srai>DECISION REJECT FUNCTIONALITY</srai>
+      </condition>
+    </template>
+  </category>
+
+  <category>
+    <pattern>DECISION ACCEPT</pattern>
+    <template>
+      Result: ACCEPT
+      Action: Continue optimization - transformation preserved functionality and reduced size
+      Next: PHASE 2 OPTIMIZATION LOOP
+    </template>
+  </category>
+
+  <category>
+    <pattern>DECISION NEUTRAL</pattern>
+    <template>
+      Result: NEUTRAL
+      Action: Try different optimization - functionality preserved but size unchanged
+      Next: Try alternative transformation from PHASE 2 OPTIMIZATION LOOP
+    </template>
+  </category>
+
+  <category>
+    <pattern>DECISION REJECT SIZE</pattern>
+    <template>
+      Result: REJECT
+      Action: Revert changes - functionality preserved but size increased
+      Next: Try alternative transformation or CHECK CONVERGENCE
+    </template>
+  </category>
+
+  <category>
+    <pattern>DECISION REJECT FUNCTIONALITY</pattern>
+    <template>
+      Result: REJECT IMMEDIATELY
+      Action: Revert changes immediately - functionality not preserved
+      Priority: HIGHEST
+      Next: Try alternative transformation or CHECK CONVERGENCE
+    </template>
+  </category>
+
+  <!-- Convergence Check -->
+  <category>
+    <pattern>CHECK CONVERGENCE</pattern>
+    <template>
+      <think>Checking if optimization has converged</think>
+      <condition name="no_more_optimizations" value="true">
+        <srai>PHASE 3 FINALIZATION</srai>
+      </condition>
+      <condition name="no_more_optimizations" value="false">
+        <srai>PHASE 2 OPTIMIZATION LOOP</srai>
+      </condition>
+    </template>
+  </category>
+
+  <!-- Phase 3: Validation and Finalization -->
+  <category>
+    <pattern>PHASE 3 FINALIZATION</pattern>
+    <template>
+      <think>Finalizing optimization process</think>
+      Steps:
+      1. COMPREHENSIVE TESTING
+      2. GENERATE DOCUMENTATION
+    </template>
+  </category>
+
+  <category>
+    <pattern>COMPREHENSIVE TESTING</pattern>
+    <template>
+      <think>Running comprehensive test suite</think>
+      Tests:
+      - Run full test suite on minimal version
+      - Verify all edge cases and error handling
+      - Confirm output matches original exactly
+      Result: All tests passed
+    </template>
+  </category>
+
+  <category>
+    <pattern>GENERATE DOCUMENTATION</pattern>
+    <template>
+      <think>Documenting optimization results</think>
+      Documentation:
+      - Record final byte count
+      - Calculate total reduction percentage
+      - Document key transformations applied
+      - Note any limitations or trade-offs
+      Result: Optimization complete
+    </template>
+  </category>
+
+  <!-- Metrics and Reporting -->
+  <category>
+    <pattern>CALCULATE METRICS</pattern>
+    <template>
+      <think>Computing optimization metrics</think>
+      Metrics:
+      - Primary: total_byte_reduction = initial_size - final_size
+      - Secondary: optimization_iterations = number_of_passes
+      - Constraint: functionality_preservation = 100%
+      - Efficiency: reduction_percentage = 100 * (initial_size - final_size) / initial_size
+    </template>
+  </category>
+
+  <!-- Principles -->
+  <category>
+    <pattern>SMOL PRINCIPLES</pattern>
+    <template>
+      Core Principles:
+      1. Functionality is Sacred - Never sacrifice working code for size
+      2. Measure Everything - Every change must be measured in bytes
+      3. Verify Continuously - Test after every transformation
+      4. Version Iteratively - Keep track of each optimization attempt
+      5. Embrace Reversibility - Be ready to revert any change
+      6. Converge Systematically - Stop when no more byte savings found
+    </template>
+  </category>
+
+  <!-- Algorithm Entry Point -->
+  <category>
+    <pattern>START OPTIMIZATION *</pattern>
+    <template>
+      <think>Starting Smol Agent Protocol optimization for: <star/></think>
+      Target file: <star/>
+      <srai>PHASE 1 BASELINE ESTABLISHMENT</srai>
+    </template>
+  </category>
+
+  <!-- Success Metrics -->
+  <category>
+    <pattern>SUCCESS METRICS</pattern>
+    <template>
+      Primary: Total byte reduction (measured in bytes and percentage)
+      Secondary: Number of optimization iterations required
+      Constraint: Zero functionality loss (100% test pass rate maintained)
+    </template>
+  </category>
+
+  <!-- Help and Information -->
+  <category>
+    <pattern>SMOL HELP</pattern>
+    <template>
+      Smol Agent Protocol - Code Minimalization as Constraint Optimization
+      
+      Usage: START OPTIMIZATION [filepath]
+      
+      The protocol will:
+      1. Establish baseline measurements
+      2. Apply iterative transformations
+      3. Verify functionality preservation
+      4. Converge to minimal size
+      5. Generate final report
+      
+      For more information:
+      - SMOL PRINCIPLES
+      - OPTIMIZATION OBJECTIVE
+      - OPTIMIZATION CONSTRAINT
+      - SUCCESS METRICS
+    </template>
+  </category>
+
+  <!-- Default Response -->
+  <category>
+    <pattern>*</pattern>
+    <template>
+      I am the Smol Agent Protocol implementation in AIML.
+      For help, say: SMOL HELP
+      To start optimization, say: START OPTIMIZATION [filepath]
+    </template>
+  </category>
+
+</aiml>
